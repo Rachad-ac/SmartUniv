@@ -24,6 +24,7 @@ export class ListeUsersComponent implements OnInit {
   dataSource: any;
   user: any;
   loadingIndicator = true;
+  searchTerm: string = ''; 
 
   constructor(
     private modalService: NgbModal,
@@ -77,39 +78,22 @@ export class ListeUsersComponent implements OnInit {
 
   // Ouvrir modal d’ajout
   openAddUser(content: TemplateRef<any>): void {
-    this.openModal(content, 'md');
+    this.openModal(content, 'lg');
   }
 
   // Ouvrir modal d’édition
   openEditUser(content: TemplateRef<any>, user: any): void {
     this.userToUpdate = user;
-    this.openModal(content, 'md');
-  }
-
-  // Ouvrir modal d’infos
-  openInfoUser(content: TemplateRef<any>, user: any): void {
-    this.user = user;
-    this.openModal(content, 'md');
+    this.openModal(content, 'lg');
   }
 
   // Ouvrir modal générique
-  openModal(content: TemplateRef<any>, size: 'md'): void {
+  openModal(content: TemplateRef<any>, size: 'md' | 'sm' | 'lg' | 'xl'): void {
     this.modalService.open(content, { size, backdrop: 'static'}).result.then(
       () => {},
       () => {}
     );
   }
-
-showRegisterModal = false;
-
-openRegisterModal() {
-  this.showRegisterModal = true;
-}
-
-closeRegisterModal() {
-  this.showRegisterModal = false;
-}
-
 
   // Suppression utilisateur
   deleteUser(user: any): void {
@@ -139,15 +123,21 @@ closeRegisterModal() {
     this.getUserById();
   }
 
-  // Recherche
-  doSearch(data: any): void {
-    this.pageOptions = {
-      ...data,
-      page: 0,
-      size: 20
-    };
-    console.log("Filtres appliqués : ", this.pageOptions);
-    this.getAllUsers();
-    this.modalService.dismissAll();
+  doSearch(criteria: any): void {
+    
+    if (Object.keys(criteria).length === 0) {
+        this.getAllUsers();
+        return;
+    }
+
+    this.userService.SearchUsers(criteria).subscribe({
+      next: (response: any) => {
+        this.user = response.data;
+        const count = response.count !== undefined ? response.count : response.data.length;
+      },
+      error: (err) => {
+        console.error("Erreur de recherche par critères", err);
+      }
+    });
   }
 }

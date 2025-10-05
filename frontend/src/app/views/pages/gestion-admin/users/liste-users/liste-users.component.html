@@ -8,18 +8,13 @@
 
   <div class="d-flex justify-content-end align-items-center gap-2">
     <!-- Bouton Recherche -->
-    <button type="button" class="btn btn-secondary btn-icon me-2">
+    <button type="button" class="btn btn-secondary btn-icon me-2"  (click)="openAddUser(SearchUserModal)">
       <i class="feather icon-search"></i>
     </button>
     <!-- Bouton Ajouter -->
-    <button type="button" class="btn btn-primary btn-icon-text"  (click)="openRegisterModal()">
+    <button type="button" class="btn btn-primary btn-icon-text"  (click)="openAddUser(AddhUserModal)">
       <i class="feather icon-plus-circle"></i> Nouvel Utilisateur
     </button>
-    <div *ngIf="showRegisterModal">
-      <div class="container">
-        <app-register (submit)="closeRegisterModal()"></app-register>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -66,7 +61,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item >
+              <button mat-menu-item (click)="openEditUser(EditUserModal , user)">
                 <mat-icon class="text-warning">edit</mat-icon>
                 <span class="text-warning">Modifier</span>
               </button>
@@ -107,26 +102,14 @@
 </div>
 
 <ng-template #AddhUserModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title"> Utilisateur</h5>
+  <div class="modal-header mb-0">
+    <h5 class="modal-title">Ajouter un utilisateur</h5>
     <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    <app-register (submit)="close()"></app-register>
+    <app-add-user [isSearch]="false" (submit)="close()"></app-add-user>
   </div>
 </ng-template>
-
-<!--
-<ng-template #SearchUserModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Recherche Utilisateur</h5>
-    <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
-  </div>
-  <div class="modal-body">
-    <app-register [isSearch]="true" (search)="doSearch($event)" (submit)="close()"></app-register>
-  </div>
-</ng-template>
-
 
 <ng-template #EditUserModal let-modal>
   <div class="modal-header">
@@ -134,6 +117,17 @@
     <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    <app-register [isSearch]="false" [userToUpdate]="userToUpdate" (submit)="close()"></app-register>
+    <app-add-user [isSearch]="false" [userToUpdate]="userToUpdate" (submit)="close()"></app-add-user>
   </div>
-</ng-template> -->
+</ng-template> 
+
+<!-- MODALE : Recherche Utilisateur -->
+<ng-template #SearchUserModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Recherche Utilisateur</h5>
+    <button type="button" class="btn-close"  (click)="modal.close('by: close icon')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <app-add-user (search)="doSearch($event)" [isSearch]="true" (submit)="close()"></app-add-user>
+  </div>
+</ng-template>
