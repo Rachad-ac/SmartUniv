@@ -28,7 +28,7 @@ class ValidationMail extends Mailable
      */
     public function build()
     {
-        $subject = $this->decision === 'valide' 
+        $subject = $this->decision === 'validée' 
             ? 'Votre réservation a été validée' 
             : 'Votre réservation a été refusée';
 

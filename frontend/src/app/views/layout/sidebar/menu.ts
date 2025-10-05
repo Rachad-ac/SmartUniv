@@ -16,8 +16,14 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Utilisateurs',
-    icon: 'users', 
+    icon: 'user', 
     link: '/admin/gestion-admin/users',
+    roles: ['Admin']
+  },
+  {
+    label: 'Roles',
+    icon: 'shield', 
+    link: '/admin/gestion-admin/role',
     roles: ['Admin']
   },
   {
@@ -52,8 +58,14 @@ export const MENU: MenuItem[] = [
     roles: ['Admin']
   },
   {
+    label: 'Classes',
+    icon: 'users', 
+    link: '/admin/gestion-planning/classe',
+    roles: ['Admin']
+  },
+  {
     label: 'Planning',
-    icon: 'users',
+    icon: 'clock',
     link: '/admin/gestion-planning/planning',
     roles: ['Admin']
   },
@@ -90,8 +102,14 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Historique reservation',
-    icon: 'clock', 
+    icon: 'bookmark', 
     link: '/users/gestion-reservation/historique-reservation',
+    roles: ['Etudiant', 'Enseignant']
+  },
+  {
+    label: 'Mon planning',
+    icon: 'clock', 
+    link: '/users/gestion-reservation/mon-planning',
     roles: ['Etudiant', 'Enseignant']
   },
   {

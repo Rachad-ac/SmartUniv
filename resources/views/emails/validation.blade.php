@@ -60,7 +60,7 @@
         <div class="card-body">
             <p>Bonjour {{ $reservation->user->prenom }} {{ $reservation->user->nom }},</p>
 
-            @if($decision === 'valide')
+            @if($decision === 'validée')
                 <p>
                     Votre réservation de la salle 
                     <strong>{{ $reservation->salle->nom }}</strong> 

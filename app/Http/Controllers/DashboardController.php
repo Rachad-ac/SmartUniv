@@ -13,8 +13,8 @@ class DashboardController extends Controller
     {
         return response()->json([
             'total_users' => User::count(),
-            //'total_salles' => Salle::count(),
-            //'reservations' => Reservation::count(),
+            'total_salles' => Salle::count(),
+            'reservations' => Reservation::count(),
         ]);
     }
 }

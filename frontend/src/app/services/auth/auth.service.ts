@@ -13,11 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   register(user:any) : Observable<any> {
-    return this.http.post<any>(`${environment.baseUrl}register`, user)
-      .pipe(tap((res: any) => {
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('role', res.role);
-    }));
+    return this.http.post<any>(`${environment.baseUrl}register`, user);
   }
 
   login(user: any) : Observable<any> {
