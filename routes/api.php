@@ -18,7 +18,6 @@ use App\Http\Controllers\PlanningController;
 
 
 // Routes publiques
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // Routes protégées (auth:sanctum)
@@ -28,77 +27,97 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}', fn (Request $request) => $request->user());
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Routes Equipement
-    Route::get('/equipements', [EquipementController::class, 'index']);
-    Route::post('/equipements', [EquipementController::class, 'store']);
-    Route::get('/equipements/{id}', [EquipementController::class, 'show']);
-    Route::put('/equipements/{id}', [EquipementController::class, 'update']);
-    Route::delete('/equipements/{id}', [EquipementController::class, 'destroy']);
-
     // Route réservée uniquement aux admins
     Route::middleware('role:Admin')->group(function () {
+
         Route::get('/dashboard', [DashboardController::class, 'stats']);
-        Route::get('/users', [UserController::class, 'index']);
-        Route::delete('/user/{id}', [UserController::class, 'destroy']);
-        
-        Route::post('/reservations', [ReservationController::class, 'store']);
-        Route::post('/salles/store', [SalleController::class, 'store']);
-        Route::post('/salles/update/{id}', [SalleController::class, 'update']);
-        Route::delete('salles/delete/{id}' , [SalleController::class , 'destroy']);
-        Route::get('/equipements', [EquipementController::class, 'index']);
-        Route::put('/reservations/{id}/valider', [ReservationController::class, 'valider']);
-        Route::put('/reservations/{id}/rejeter', [ReservationController::class, 'rejeter']);
+        Route::post('/register', [AuthController::class, 'register']);
 
-        Route::get('/filieres', [FiliereController::class, 'index']);
-        Route::post('/filieres', [FiliereController::class, 'store']);
-        Route::get('/filieres/{id}', [FiliereController::class, 'show']);
-        Route::put('/filieres/{id}', [FiliereController::class, 'update']);
-        Route::delete('/filieres/{id}', [FiliereController::class, 'destroy']);
+        Route::prefix('/users')->group(function () {
+            Route::get('/all', [UserController::class, 'index']);
+            Route::delete('/{id}', [UserController::class, 'destroy']);
+            Route::get('/search', [UserController::class, 'search']);
+        });
 
-        Route::prefix('/matieres')->group(function () {
-            Route::get('/', [MatiereController::class , 'index']);
+        Route::prefix('roles')->group(function () {
+            Route::get('/all', [RoleController::class, 'index']);    
+            Route::post('/create', [RoleController::class, 'store']); 
+            Route::put('/{id}', [RoleController::class, 'update']);
+            Route::delete('/{id}', [RoleController::class, 'destroy']);
+        });
+
+        Route::prefix('reservations')->group(function () {
+            Route::post('/create', [ReservationController::class, 'store']);
+            Route::put('{id}/valider', [ReservationController::class, 'valider']);
+            Route::put('{id}/rejeter', [ReservationController::class, 'rejeter']);
+        });
+
+        Route::prefix('salles')->group(function () {
+            Route::get('/all', [SalleController::class, 'index']);
+            Route::post('/create', [SalleController::class, 'store']);
+            Route::post('/{id}', [SalleController::class, 'update']);
+            Route::delete('/{id}' , [SalleController::class , 'destroy']);
+        });
+
+        // Routes Equipement
+        Route::prefix('equipements')->group(function () {
+            Route::get('/all', [EquipementController::class, 'index']);
+            Route::post('/create', [EquipementController::class, 'store']);
+            Route::get('/{id}', [EquipementController::class, 'show']);
+            Route::put('/{id}', [EquipementController::class, 'update']);
+            Route::delete('/{id}', [EquipementController::class, 'destroy']);
+        });
+
+        Route::prefix('filieres')->group(function () {
+            Route::get('/all', [FiliereController::class, 'index']);
+            Route::post('/create', [FiliereController::class, 'store']);
+            Route::get('/{id}', [FiliereController::class, 'show']);
+            Route::put('/{id}', [FiliereController::class, 'update']);
+            Route::delete('/{id}', [FiliereController::class, 'destroy']);
+        });
+
+        Route::prefix('matieres')->group(function () {
+            Route::get('/all', [MatiereController::class , 'index']);
             Route::post('/create', [MatiereController::class , 'store']);
-            Route::delete('/delete/{id}', [MatiereController::class , 'destroy']);
-            Route::put('/update/{id}', [MatiereController::class , 'update']);
+            Route::delete('/{id}', [MatiereController::class , 'destroy']);
+            Route::put('/{id}', [MatiereController::class , 'update']);
         });
 
-        Route::prefix('/classes')->group(function () {
-            Route::get('/', [ClasseController::class , 'index']);
+        Route::prefix('classes')->group(function () {
+            Route::get('/all', [ClasseController::class , 'index']);
             Route::post('/create', [ClasseController::class , 'store']);
-            Route::delete('/delete/{id}', [ClasseController::class , 'destroy']);
-            Route::put('/update/{id}', [ClasseController::class , 'update']);
+            Route::delete('/{id}', [ClasseController::class , 'destroy']);
+            Route::put('/{id}', [ClasseController::class , 'update']);
         });
 
-        Route::prefix('planning')->group(function () {
-            Route::get('/', [PlanningController::class , 'index']);
+        Route::prefix('plannings')->group(function () {
+            Route::get('/all', [PlanningController::class , 'index']);
             Route::post('/create', [PlanningController::class , 'store']);
-            Route::delete('/delete/{id}', [PlanningController::class , 'destroy']);
-            Route::put('/update/{id}', [PlanningController::class , 'update']);
-        });
-
-        Route::prefix('/cours')->group(function () {
-            Route::get('/', [CoursController::class, 'index']);
-            Route::post('/create', [CoursController::class, 'store']);
-            Route::put('/update/{id}', [CoursController::class, 'update']);
-            Route::delete('/delete/{id}', [CoursController::class, 'destroy']);
-        });
+            Route::delete('/{id}', [PlanningController::class , 'destroy']);
+            Route::put('/{id}', [PlanningController::class , 'update']);
+        });  
 
     });
 
     // Routes Enseigant et Etudiant uniquement
     Route::middleware(['role:Enseignant,Etudiant'])->group(function () {
-        Route::get('/reservations', [ReservationController::class, 'index']);
-        Route::post('/reservations', [ReservationController::class, 'store']);
-        Route::get('/reservations/{id}', [ReservationController::class, 'show']);
-        Route::put('/reservations/{id}', [ReservationController::class, 'update']);
-        Route::delete('/reservations/{id}', [ReservationController::class, 'destroy']);
-        Route::get('/mes-reservations/{id}', [ReservationController::class, 'mesReservations']);
+
+        Route::prefix('reservations')->group(function () {
+            Route::get('/all', [ReservationController::class, 'index']);
+            Route::post('/reserver', [ReservationController::class, 'store']);
+            Route::get('/{id}', [ReservationController::class, 'show']);
+            Route::put('/{id}', [ReservationController::class, 'update']);
+            Route::delete('/{id}', [ReservationController::class, 'destroy']);
+            Route::get('/mes-reservations/{id}', [ReservationController::class, 'mesReservations']);
+        });
+
+        
     });
    
     Route::prefix('/notifications')->group(function () {
         Route::get('/{userId}', [NotificationController::class, 'index']); 
         Route::patch('/{id}/read', [NotificationController::class, 'markAsRead']); 
-        Route::delete('/delete/{id}', [NotificationController::class, 'destroy']);
+        Route::delete('/{id}', [NotificationController::class, 'destroy']);
     });
 
 });

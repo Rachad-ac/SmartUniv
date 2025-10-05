@@ -12,7 +12,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
 import { ListeUsersComponent } from './users/liste-users/liste-users.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { RegisterComponent } from '../auth/register/register.component';
+import { AddUserComponent } from './users/add-user/add-user/add-user.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { RegisterComponent } from '../auth/register/register.component';
     // ajouter les composant de admin ici 
     ListeUsersComponent,
     DashboardComponent,
-    RegisterComponent
+    AddUserComponent,
+    EditUserComponent
   ],
   imports: [
     CommonModule,
