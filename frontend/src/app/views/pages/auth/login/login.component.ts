@@ -37,7 +37,6 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
         nom: res.user.nom,
         prenom: res.user.prenom,
         email: res.user.email,
-        roleId: res.user.id_role,
         role: res.user.role
       };
 
@@ -46,10 +45,9 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
       // Redirection selon le rôle
       if (user.role === 'Admin') {
           this.router.navigate(['/admin/gestion-admin']);
-        } else if (user.role === 'Etudiant') {
-          this.router.navigate(['/etudiant/gestion-users']);
-        } else if (user.role === 'Enseignant') {
-          this.router.navigate(['/enseignant/gestion-users']);
+        } else if (user.role === 'Etudiant' || user.role === 'Enseignant') {
+          console.log(`role : ${user.role}`)
+          this.router.navigate(['/users/gestion-reservation']);
         } else {
           this.router.navigate(['/error']);
       }

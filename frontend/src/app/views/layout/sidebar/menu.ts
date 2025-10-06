@@ -26,18 +26,6 @@ export const MENU: MenuItem[] = [
     link: '/admin/gestion-admin/role',
     roles: ['Admin']
   },
-  {
-    label: 'Salles',
-    icon: 'layers', 
-    link: '/admin/gestion-planning/salles',
-    roles: ['Admin']
-  },
-  {
-    label: 'Equipements',
-    icon: 'cpu', 
-    link: '/admin/gestion-planning/equipements',
-    roles: ['Admin']
-  },
 
   // gestion planning
   {
@@ -55,6 +43,18 @@ export const MENU: MenuItem[] = [
     label: 'Matières',
     icon: 'book-open', 
     link: '/admin/gestion-planning/matieres',
+    roles: ['Admin']
+  },
+  {
+    label: 'Salles',
+    icon: 'layers', 
+    link: '/admin/gestion-planning/salles',
+    roles: ['Admin']
+  },
+  {
+    label: 'Equipements',
+    icon: 'cpu', 
+    link: '/admin/gestion-planning/equipements',
     roles: ['Admin']
   },
   {
@@ -82,7 +82,7 @@ export const MENU: MenuItem[] = [
     roles: ['Admin']
   },
 
-  // Section gestion reservation
+  // Section gestion users
   {
     label: 'Gestion Réservations',
     isTitle: true,
@@ -91,7 +91,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Réserver une salle',
     icon: 'plus-circle',
-    link: '/users/gestion-reservation/reservation',
+    link: '/users/gestion-reservation',
     roles: ['Etudiant', 'Enseignant']
   },
   {
