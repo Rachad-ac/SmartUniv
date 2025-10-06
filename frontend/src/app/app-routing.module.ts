@@ -19,31 +19,19 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/gestion-admin/gestion-admin.module').then(m => m.GestionAdminModule)
       },
       {
-        path: 'gestion-reservation',
-        loadChildren: () => import('./views/pages/gestion-reservation/gestion-reservation.module').then(m => m.GestionReservationModule)
+        path: 'gestion-planning',
+        loadChildren: () => import('./views/pages/gestion-planning/gestion-planning.module').then(m => m.GestionPlanningModule)
       },
     ]
   },
   {
-    path: 'etudiant',
+    path: 'users',
     component: BaseComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { expectedRole: 'Etudiant' },
+    data: { expectedRole: ['Etudiant', 'Enseignant']},
     children: [
       {
-        path: 'gestion-users',
-        loadChildren: () => import('./views/pages/gestion-reservation/gestion-reservation.module').then(m => m.GestionReservationModule)
-      }
-    ]
-  },
-  {
-    path: 'enseignant',
-    component: BaseComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { expectedRole: 'Enseignant' },
-    children: [
-      {
-        path: 'gestion-users',
+        path: 'gestion-reservation',
         loadChildren: () => import('./views/pages/gestion-reservation/gestion-reservation.module').then(m => m.GestionReservationModule)
       }
     ]
