@@ -81,16 +81,7 @@ class UserController extends Controller
                 'prenom' => 'sometimes|string|max:255',
                 'email' => 'sometimes|email|unique:users,email,' . $id, 
                 'role' => 'sometimes|in:Admin,Etudiant,Enseignant', 
-                'password' => 'sometimes|nullable|string|min:8|confirmed',
             ]);
-
-            // 3. Remplir le modèle avec les données du formulaire
-            $user->fill($request->except('password', 'password_confirmation'));
-
-            // 4. Gérer la mise à jour du mot de passe
-            if ($request->filled('password')) {
-                $user->password = Hash::make($request->input('password'));
-            }
 
             // 5. Sauvegarder les modifications
             $user->save();

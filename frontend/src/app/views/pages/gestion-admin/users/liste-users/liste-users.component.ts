@@ -22,6 +22,8 @@ export class ListeUsersComponent implements OnInit {
   userId: any;
   pageOptions: any = { page: 0, size: 10 };
   dataSource: any;
+  rows: any[] = [];
+  total = 0;
   user: any;
   loadingIndicator = true;
   searchTerm: string = ''; 
@@ -39,8 +41,10 @@ export class ListeUsersComponent implements OnInit {
   // Charger tous les utilisateurs
   getAllUsers(): void {
     this.userService.getUsers().subscribe({
-      next: response => {
-        this.dataSource = response;
+      next: (response: any) => {
+        const payload = (response && (response.payload || response.data)) ?? (Array.isArray(response) ? response : []);
+        const metadata = response?.metadata ?? { totalElements: Array.isArray(payload) ? payload.length : 0 };
+        this.dataSource = { payload, metadata };
         this.loadingIndicator = false;
       },
       error: err => {

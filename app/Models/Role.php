@@ -15,5 +15,6 @@ class Role extends Model
     // Colonnes qui peuvent être remplies automatiquement
     protected $fillable = [
         'nom_role',
+        'desc'
     ];
 }

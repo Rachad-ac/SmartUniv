@@ -41,4 +41,9 @@ export class NavbarComponent implements OnInit{
       error: err => console.error('Erreur lors de la déconnexion', err)
     });
   }
+
+  getInitials(prenom: string, nom: string): string {
+    if (!prenom || !nom) return 'U';
+    return (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
+  }
 }

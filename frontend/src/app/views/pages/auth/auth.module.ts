@@ -5,11 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { LoginGuard } from 'src/app/core/guard/login.guard';
+
 
 const routes: Routes = [
   {
     path: '',
     component: AuthComponent,
+    canActivate: [LoginGuard],
     children: [
       {
         path: '',

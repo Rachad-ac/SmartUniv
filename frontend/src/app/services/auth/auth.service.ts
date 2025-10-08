@@ -31,6 +31,7 @@ export class AuthService {
         // Supprimer le token et les infos utilisateur après réussite
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.clear();
         this.router.navigate(['/login']);
       })
     );

@@ -3,25 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cours extends Model
 {
+    use HasFactory;
+
+    protected $primaryKey = 'id_cours';
 
     protected $fillable = ['nom', 'code', 'description', 'id_matiere', 'id_filiere'];
 
-    // Relations (commentées pour tests indépendants)
-    // Un cours appartient à une matière
+    // Un cours appartient à une matière (clé étrangère personnalisée)
     public function matiere()
-     {
-         return $this->belongsTo(Matiere::class);
-     }
+    {
+        return $this->belongsTo(Matiere::class, 'id_matiere', 'id_matiere');
+    }
 
-    // Un cours appartient à une filière
-     public function filiere()
-     {
-         return $this->belongsTo(Filiere::class);
-     }
+    // Un cours appartient à une filière (clé étrangère personnalisée)
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
+    }
 
     // Un cours peut avoir plusieurs enseignants
     public function enseignants()

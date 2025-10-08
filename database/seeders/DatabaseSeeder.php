@@ -12,30 +12,20 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-        ]);
-
-        User::create([
-            'nom' => 'Rachad',
-            'prenom' => 'Ahmed Combo',
-            'email' => 'bent35005@gmail.com',
-            'password' => 'rachad123',
-            'role' => 'Admin',
-        ]);
-
-        User::create([
-            'nom' => 'Sow',
-            'prenom' => 'Ali',
-            'email' => 'ali@example.com',
-            'password' => 'ali123',
-            'role' => 'Etudiant',
-        ]);
-
-        User::create([
-            'nom' => 'Ba',
-            'prenom' => 'Said',
-            'email' => 'said@example.com',
-            'password' => 'said123',
-            'role' => 'Enseignant',
+            UserSeeder::class,
+            SalleSeeder::class,
+            FiliereSeeder::class,
+            MatiereSeeder::class,
+            CourSeeder::class,
+            ReservationSeeder::class,
+            NotificationSeeder::class,
+            ClasseSeeder::class,
+            PlanningSeeder::class,
+                EtudiantSeeder::class,
+                EnseignantSeeder::class,
+                EnseignantMatiereSeeder::class,
+                EtudiantFiliereSeeder::class,
+                ClasseFiliereSeeder::class,
         ]);
     }
 }

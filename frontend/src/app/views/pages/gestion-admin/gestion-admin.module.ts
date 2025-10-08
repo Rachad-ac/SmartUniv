@@ -12,8 +12,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
 import { ListeUsersComponent } from './users/liste-users/liste-users.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { AddUserComponent } from './users/add-user/add-user/add-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { ListRoleComponent } from './role/list-role/list-role.component';
+import { AddRoleComponent } from './role/add-role/add-role.component';
+import { EditRoleComponent } from './role/edit-role/edit-role.component';
+import { AddUserComponent } from './users/add-user/add-user.component';
 
 
 @NgModule({
@@ -22,7 +25,10 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
     ListeUsersComponent,
     DashboardComponent,
     AddUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    ListRoleComponent,
+    AddRoleComponent,
+    EditRoleComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,19 @@
+<div class="planning-details-container">
+    <!-- Breadcrumb à gauche -->
+    <nav class="page-breadcrumb cursor-pointer">
+        <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+            <a routerLink="/admin/gestion-planning/planning"
+            >List planning</a
+            >
+        </li>
+        <li class="breadcrumb-item active"><a>Details Planning</a></li>
+        </ol>
+    </nav>
+    <div>         
+        <h3 class="mb-4">Planning détaillé</h3>
+        <div *ngIf="loading" class="fs-3">Chargement...</div>
+        <div *ngIf="error" class="error">{{ error }}</div>
+        <full-calendar *ngIf="!loading && !error" [options]="calendarOptions"></full-calendar>
+    </div>
+</div>

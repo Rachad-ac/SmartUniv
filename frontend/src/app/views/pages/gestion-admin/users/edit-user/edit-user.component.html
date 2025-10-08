@@ -1,1 +1,46 @@
-<p>edit-user works!</p>
+<section>
+  <form [formGroup]="form">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom <small style="color: red;">*</small></label>
+          <input type="text" class="form-control form-control-lg" id="nom" placeholder="Nom" formControlName="nom">
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label for="prenom" class="form-label">Prénom <small style="color: red;">*</small></label>
+          <input type="text" class="form-control form-control-lg" id="prenom" placeholder="Prénom" formControlName="prenom">
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email <small style="color: red;">*</small></label>
+          <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" formControlName="email">
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label">Rôle <small style="color: red;">*</small></label>
+          <ng-select
+            [items]="roles"
+            bindValue="value"
+            bindLabel="label"
+            placeholder="Sélectionner..."
+            formControlName="role">
+          </ng-select>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+    <button type="button" class="btn btn-primary" (click)="update()" [disabled]="!form.valid">Enregistrer</button>
+  </div>
+</section>

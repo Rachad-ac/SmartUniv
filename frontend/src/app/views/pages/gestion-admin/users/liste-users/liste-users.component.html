@@ -23,7 +23,7 @@
   <div class="card-body p-0">
     <section class="table-container mat-elevation-z8" tabindex="0">
 
-      <table mat-table [dataSource]="dataSource?.data">
+      <table mat-table [dataSource]="dataSource?.payload">
 
         <!-- Nom -->
         <ng-container matColumnDef="nom">
@@ -80,7 +80,7 @@
 
       <!-- Message si vide -->
       <span *ngIf="dataSource?.payload?.length === 0" class="paginate text-danger mt-4">
-        Chergemment en cours...
+        Aucun utilisateur trouvé
       </span>
 
       <!-- Pagination -->
@@ -117,7 +117,7 @@
     <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    <app-add-user [isSearch]="false" [userToUpdate]="userToUpdate" (submit)="close()"></app-add-user>
+    <app-edit-user (submit)="close()" [userToUpdate]="userToUpdate"></app-edit-user>
   </div>
 </ng-template> 
 

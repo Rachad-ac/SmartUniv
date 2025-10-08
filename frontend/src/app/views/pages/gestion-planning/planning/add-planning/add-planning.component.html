@@ -1,0 +1,42 @@
+<section>
+   <form [formGroup]="form" class="needs-validation" novalidate>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Classe <span class="text-danger">*</span></label>
+        <ng-select [items]="classes" bindLabel="nom" bindValue="id_classe" placeholder="Sélectionner..." formControlName="id_classe"></ng-select>
+        <div *ngIf="form.get('id_classe')?.invalid && form.get('id_classe')?.touched" class="text-danger small">Classe requise</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Cours <span class="text-danger">*</span></label>
+        <ng-select [items]="cours" bindLabel="nom" bindValue="id_cours" placeholder="Sélectionner..." formControlName="id_cours"></ng-select>
+        <div *ngIf="form.get('id_cours')?.invalid && form.get('id_cours')?.touched" class="text-danger small">Cours requis</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Salle <span class="text-danger">*</span></label>
+        <ng-select [items]="salles" bindLabel="nom" bindValue="id_salle" placeholder="Sélectionner..." formControlName="id_salle"></ng-select>
+        <div *ngIf="form.get('id_salle')?.invalid && form.get('id_salle')?.touched" class="text-danger small">Salle requise</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Date début <span class="text-danger">*</span></label>
+        <input type="datetime-local" class="form-control" formControlName="date_debut">
+        <div *ngIf="form.get('date_debut')?.invalid && form.get('date_debut')?.touched" class="text-danger small">Date début requise</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Date fin <span class="text-danger">*</span></label>
+        <input type="datetime-local" class="form-control" formControlName="date_fin">
+        <div *ngIf="form.get('date_fin')?.invalid && form.get('date_fin')?.touched" class="text-danger small">Date fin requise</div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <label class="form-label fw-bold">Description</label>
+        <input type="text" class="form-control" formControlName="description" maxlength="500">
+        <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="text-danger small">500 caractères max</div>
+      </div>
+    </div>
+  </form>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+  <button type="button" class="btn btn-primary" *ngIf="!isSearch" (click)="create()" [disabled]="!form.valid">Enregistrer</button>
+  <button type="button" class="btn btn-primary" *ngIf="isSearch" (click)="doSearch()">Rechercher</button>
+</div>
+
+</section>

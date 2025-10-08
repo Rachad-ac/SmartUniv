@@ -28,4 +28,10 @@ class Classe extends Model
     {
         return $this->hasMany(User::class, 'id_classe');
     }
+
+        // Relation Many-to-Many avec Filiere
+        public function filieres()
+        {
+            return $this->belongsToMany(Filiere::class, 'classe_filiere', 'id_classe', 'id_filiere');
+        }
 }

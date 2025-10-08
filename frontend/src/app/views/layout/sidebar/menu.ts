@@ -10,7 +10,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Dashboard',
-    icon: 'home', 
+    icon: 'grid', 
     link: '/admin/gestion-admin/dashboard',
     roles: ['Admin']
   },
@@ -23,7 +23,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Roles',
     icon: 'shield', 
-    link: '/admin/gestion-admin/role',
+    link: '/admin/gestion-admin/roles',
     roles: ['Admin']
   },
 
@@ -47,7 +47,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Salles',
-    icon: 'layers', 
+    icon: 'home', 
     link: '/admin/gestion-planning/salles',
     roles: ['Admin']
   },
@@ -91,7 +91,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Réserver une salle',
     icon: 'plus-circle',
-    link: '/users/gestion-reservation',
+    link: '/users/gestion-reservation/reservation',
     roles: ['Etudiant', 'Enseignant']
   },
   {

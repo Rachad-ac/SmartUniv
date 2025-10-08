@@ -10,7 +10,7 @@ class ClasseController extends Controller
     // Liste toutes les classes
     public function index()
     {
-        $classe = Classe::with('filiere')->get();
+        $classe = Classe::all();
         
         return response()->json([
             'message' => 'Liste des classes',

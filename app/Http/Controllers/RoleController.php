@@ -10,18 +10,26 @@ class RoleController extends Controller
     // Liste des rôles
     public function index()
     {
-        return response()->json(Role::all());
+        $roles = Role::all();
+        return response()->json([
+            'message' => 'Liste des rôles',
+            'data' => $roles
+        ]);
     }
 
     // Créer un rôle
     public function store(Request $request)
     {
         $request->validate([
-            'nom_role' => 'required|unique:roles'
+            'role' => 'required|unique:roles',
+            'desc' => 'required|string'
         ]);
 
         $role = Role::create($request->all());
-        return response()->json($role, 201);
+        return response()->json([
+            'message' => 'Rôle créé avec succès',
+            'data' => $role
+        ], 201);
     }
 
     // Supprimer un rôle

@@ -31,11 +31,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:Admin')->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'stats']);
+        Route::get('/latest-users', [DashboardController::class, 'latestUsers']);
         Route::post('/register', [AuthController::class, 'register']);
+
+        Route::prefix('roles')->group(function () {
+            Route::get('/all', [RoleController::class, 'index']);    
+            Route::post('/create', [RoleController::class, 'store']); 
+            Route::put('/{id}', [RoleController::class, 'update']);
+            Route::delete('/{id}', [RoleController::class, 'destroy']);
+        });
 
         Route::prefix('/users')->group(function () {
             Route::get('/all', [UserController::class, 'index']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
+            Route::put('/{id}', [UserController::class, 'update']);
             Route::get('/search', [UserController::class, 'search']);
         });
 
@@ -57,6 +66,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/create', [SalleController::class, 'store']);
             Route::post('/{id}', [SalleController::class, 'update']);
             Route::delete('/{id}' , [SalleController::class , 'destroy']);
+        });
+
+        Route::prefix('cours')->group(function () {
+            Route::get('/all', [CoursController::class, 'index']);
+            Route::get('/{id}', [CoursController::class, 'show']);
+            Route::get('/stats', [CoursController::class, 'stats']);
+            Route::post('/create', [CoursController::class, 'store']);
+            Route::put('/{id}', [CoursController::class, 'update']);
+            Route::delete('/{id}' , [CoursController::class , 'destroy']);
         });
 
         // Routes Equipement
