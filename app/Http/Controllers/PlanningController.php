@@ -16,7 +16,8 @@ class PlanningController extends Controller
         // Supposons que vos modèles Salle, Classe, User et Cours ont un champ 'nom' ou 'titre'
         return [
             'id' => $planning->id_planning,
-            'title' => $planning->cours->titre . ' - ' . $planning->classe->nom . ' (' . $planning->salle->nom . ')',
+            // Correction potentielle : utilisez titre si c'est le nom du champ de cours
+            'title' => $planning->cours->nom . ' - ' . $planning->classe->nom . ' (' . $planning->salle->nom . ')'.  ' - Mr. ' . $planning->user->prenom . ' ' . $planning->user->nom , 
             'start' => $planning->date_debut,
             'end' => $planning->date_fin,
             'extendedProps' => [
@@ -24,6 +25,8 @@ class PlanningController extends Controller
                 'classe_nom' => $planning->classe->nom,
                 'cours_id' => $planning->id_cours,
                 'filiere_nom' => $planning->classe->filiere->nom,
+                'id_filiere' => $planning->classe->filiere->id_filiere, // Assurez-vous d'utiliser la relation pour l'ID de filière
+                'id_classe' => $planning->id_classe,
                 'user_id' => $planning->id_user,
                 'description' => $planning->description,
             ],
@@ -42,34 +45,66 @@ class PlanningController extends Controller
     }
 
     /**
-     * Affiche une liste de plannings, avec filtrage optionnel.
+     * Affiche une liste plate des combinaisons uniques Filière/Classe ayant des plannings.
+     * C'est la liste d'entités sans doublons pour la table principale.
      */
     public function index(Request $request)
     {
-        $query = Planning::with(['cours', 'salle', 'classe', 'user']);
+        // Récupère les plannings et leurs relations (classe, filiere) pour extraire les entités uniques.
+        $plannings = Planning::with(['classe.filiere'])
+            ->get();
 
-        // --- Logique de Filtrage (Exemples) ---
+        $uniqueEntities = collect();
+        $seen = []; // Utilisé pour stocker les clés uniques "FiliereId-ClasseId"
 
-        if ($request->filled('id_classe')) {
-            $query->where('id_classe', $request->id_classe);
+        foreach ($plannings as $planning) {
+            $classe = $planning->classe;
+            
+            // S'assurer que les relations existent
+            if (!$classe || !$classe->filiere) {
+                continue;
+            }
+
+            $filiereId = $classe->filiere->id_filiere;
+            $classeId = $classe->id_classe;
+            
+            $key = "{$filiereId}-{$classeId}";
+
+            // Si cette combinaison n'a pas été vue, l'ajouter à la liste plate
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $uniqueEntities->push([
+                    'id_filiere' => $filiereId,
+                    'filiere_nom' => $classe->filiere->nom,
+                    'id_classe' => $classeId,
+                    'classe_nom' => $classe->nom,
+                ]);
+            }
         }
-
-        if ($request->filled('id_cours')) {
-            $query->where('id_cours', $request->id_cours);
-        }
-
-        // Ajoutez ici d'autres filtres (id_filiere, id_salle, id_user, etc.)
-        // Pour filtrer par filière, vous devrez utiliser whereHas sur la relation classe :
-        if ($request->filled('id_filiere')) {
-             $query->whereHas('classe.filiere', fn ($q) => $q->where('id_filiere', $request->id_filiere));
-         }
+        
+        return response()->json([
+            'message' => 'Liste plate des combinaisons Filière/Classe uniques chargée.',
+            'data' => $uniqueEntities->all(),
+        ]);
+    }
+    
+    /**
+     * ⬅️ NOUVELLE MÉTHODE DÉDIÉE AU FILTRAGE PAR CLASSE ET FILIÈRE.
+     * @param int $id_classe
+     * @param int $id_filiere
+     */
+    public function getPlanningFiliereClasse(int $id_filiere , int $id_classe)
+    {
+        $query = Planning::with(['cours', 'salle', 'classe', 'user', 'classe.filiere'])
+            ->where('id_classe', $id_classe) // Filtre direct par classe ID
+            ->whereHas('classe.filiere', fn ($q) => $q->where('id_filiere', $id_filiere)); // Filtre par filière
 
         $plannings = $query->get();
 
         $events = $plannings->map(fn($p) => $this->formatEventForFullCalendar($p));
 
         return response()->json([
-            'message' => 'Liste des plannings chargée',
+            'message' => "Planning chargé pour la classe $id_classe et la filière $id_filiere",
             'data' => $events,
         ]);
     }
@@ -183,20 +218,26 @@ class PlanningController extends Controller
             return response()->json(['error' => 'Conflit : la salle est déjà réservée sur ce créneau.'], 409);
         }
         if ($conflitUser) {
-            return response()->json(['error' => 'Conflit : l’enseignant est déjà occupé sur ce créneau.'], 409);
+            return response()->json(['error' => 'Conflit : l\'enseignant est déjà occupé sur ce créneau.'], 409);
         }
 
+        // Mettre à jour le planning
         $planning->update($data);
+
+        // Recharger les relations AVANT de formater la réponse
+        $planning->refresh();
         $planning->load(['cours', 'salle', 'classe', 'user']);
 
+        // Formater la réponse avec gestion des relations null
         return response()->json($this->formatEventForFullCalendar($planning));
     }
 
     /**
      * Suppression d'un planning (DELETE).
      */
-    public function destroy(Planning $planning)
+    public function destroy($id)
     {
+        $planning = Planning::where('id_planning', $id)->firstOrFail();
         $planning->delete();
         return response()->json(['message' => 'Planning supprimé avec succès.'], 200);
     }

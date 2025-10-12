@@ -110,6 +110,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('plannings')->group(function () {
             Route::get('/all', [PlanningController::class , 'index']);
+            Route::get('/by-filiere-classe/{id_filiere}/{id_classe}', [PlanningController::class, 'getPlanningFiliereClasse']);
             Route::post('/create', [PlanningController::class , 'store']);
             Route::delete('/{id}', [PlanningController::class , 'destroy']);
             Route::put('/{id}', [PlanningController::class , 'update']);

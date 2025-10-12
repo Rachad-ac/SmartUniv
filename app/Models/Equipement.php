@@ -10,10 +10,8 @@ class Equipement extends Model
 {
     protected $fillable = ['nom', 'quantite', 'description'];
 
-    // Relations (commentées pour tests indépendants)
-    // Un équipement appartient à une salle
-    // public function salle()
-    // {
-    //     return $this->belongsTo(Salle::class);
-    // }
+    public function salle()
+    {
+         return $this->belongsTo(Salle::class);
+    }
 }

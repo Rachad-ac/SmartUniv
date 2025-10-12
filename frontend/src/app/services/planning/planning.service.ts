@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -12,9 +12,28 @@ export class PlanningService {
   constructor(private http: HttpClient) { }
 
   // Récupérer tous les plannings
-  getPlannings(): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}plannings/all`);
-  }
+ 
+
+  // Méthode générale (inchangée)
+  getPlannings(filters?: any): Observable<any> {
+    // ... (Logique de construction des HttpParams pour l'index) ...
+    let params = new HttpParams();
+    if (filters) {
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                params = params.set(key, filters[key]);
+            }
+        });
+    }
+    return this.http.get(`${environment.baseUrl}plannings/all`, { params });
+}
+
+// ⬅️ NOUVELLE MÉTHODE POUR LA VUE DÉTAILLÉE
+getPlanningByFiliereAndClasse(id_filiere: number, id_classe: number): Observable<any> {
+    // Cible la nouvelle route définie dans routes/api.php
+    return this.http.get(`${environment.baseUrl}plannings/by-filiere-classe/${id_filiere}/${id_classe}`);
+}
+
 
   // Récupérer un planning par ID
   getPlanning(id: number): Observable<any> {
@@ -27,7 +46,7 @@ export class PlanningService {
   }
 
   // Mettre à jour un planning existant
-  updatePlanning(id: number, data: any): Observable<any> {
+  updatePlanning(id: any, data: any): Observable<any> {
     return this.http.put<any>(`${environment.baseUrl}plannings/${id}`, data);
   }
 
@@ -40,6 +59,10 @@ export class PlanningService {
   // 🔹 Récupérer toutes les classes
   getClasses(): Observable<any> {
     return this.http.get(`${environment.baseUrl}classes/all`);
+  }
+
+  getFilieres(): Observable<any> {
+    return this.http.get(`${environment.baseUrl}filieres/all`);
   }
 
   // 🔹 Récupérer tous les cours

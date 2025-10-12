@@ -11,14 +11,17 @@ import { Alertes } from 'src/app/util/alerte';
 })
 export class ListPlanningComponent implements OnInit {
 	displayedColumns: string[] = [
-		'classe',
 		'filiere',
+		'classe',
+		'planning',
 		'actions'
 	];
 
 	planningToUpdate: any;
 	pageOptions: any = { page: 0, size: 10 };
 	dataSource: any;
+	classeId: number | null = null;
+	filiereId: number | null = null;
 	loadingIndicator = true;
 
 	constructor(
@@ -81,7 +84,7 @@ export class ListPlanningComponent implements OnInit {
 	deletePlanning(planning: any): void {
 		Alertes.confirmAction(
 			'Voulez-vous supprimer ?',
-			'Cet élément sera définitivement supprimé',
+			'Attention ! Vous etes sur le point de définitivement supprimé le planning de toute une classe !',
 			() => {
 				this.planningService.deletePlanning(planning.id).subscribe({
 					next: () => {
@@ -111,5 +114,12 @@ export class ListPlanningComponent implements OnInit {
 		};
 		this.getAllPlannings();
 		this.modalService.dismissAll();
+	}
+
+	savedPlanning(filiereId: number, classeId: number): void {
+		if (filiereId != null && classeId != null) {
+			localStorage.setItem('filiereId', filiereId.toString());
+			localStorage.setItem('classeId', classeId.toString());
+		}	
 	}
 }

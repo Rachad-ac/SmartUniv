@@ -1,19 +1,97 @@
 <div class="planning-details-container">
-    <!-- Breadcrumb à gauche -->
-    <nav class="page-breadcrumb cursor-pointer">
-        <ol class="breadcrumb mb-0">
-        <li class="breadcrumb-item">
-            <a routerLink="/admin/gestion-planning/planning"
-            >List planning</a
-            >
-        </li>
-        <li class="breadcrumb-item active"><a>Details Planning</a></li>
+    <!-- Breadcrumb Bootstrap -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a routerLink="/admin/gestion-planning/planning" class="text-decoration-none">Liste des plannings</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Détails du planning</li>
         </ol>
     </nav>
-    <div>         
-        <h3 class="mb-4">Planning détaillé</h3>
-        <div *ngIf="loading" class="fs-3">Chargement...</div>
-        <div *ngIf="error" class="error">{{ error }}</div>
-        <full-calendar *ngIf="!loading && !error" [options]="calendarOptions"></full-calendar>
+
+    <div class="container-fluid">
+        <!-- En-tête et boutons d'action -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="mb-1">Planning détaillé</h3>
+                <p class="text-muted mb-0">{{ filiereNom }} - {{ classeNom }}</p>
+            </div>
+            <div class="d-flex gap-2">
+                <!-- Export PDF -->
+                <button type="button" 
+                        class="btn btn-info d-flex align-items-center" 
+                        (click)="exportPdf()" 
+                        [disabled]="loading">
+                    <i class="feather icon-download-cloud me-2"></i>
+                    {{ loading ? 'Génération...' : 'Exporter PDF' }}
+                </button>
+
+                <!-- Ajouter planning -->
+                <button type="button" 
+                        class="btn btn-primary d-flex align-items-center" 
+                        (click)="openAddPlanning(addPlanningModal)">
+                    <i class="feather icon-plus-circle me-2"></i>
+                    Nouveau Planning
+                </button>
+            </div>
+        </div>
+
+        <!-- États de chargement et d'erreur -->
+        <div *ngIf="loading" class="alert alert-info text-center">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            Chargement du planning...
+        </div>
+
+        <div *ngIf="error" class="alert alert-danger">
+            <i class="feather icon-alert-triangle me-2"></i>
+            {{ error }}
+        </div>
+
+        <!-- Calendrier -->
+        <div #calendarEl class="card shadow-sm position-relative" *ngIf="!loading && !error">
+            <div class="card-body p-3">
+                <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Menu contextuel Bootstrap - UN SEUL MENU POUR TOUS LES ÉVÉNEMENTS -->
+<div *ngIf="showEventMenu" 
+     class="dropdown-menu show event-context-menu"
+     [style.position]="'absolute'"
+     [style.left.px]="menuPosition.x"
+     [style.top.px]="menuPosition.y"
+     (click)="$event.stopPropagation()">
+    <button class="dropdown-item" (click)="openEditModal(EditPlanningModal)">
+        <i class="feather icon-edit me-2"></i>
+        Modifier
+    </button>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item text-danger" (click)="deleteEvent()">
+        <i class="feather icon-trash-2 me-2"></i>
+        Supprimer
+    </button>
+</div>
+
+<!-- Modal Ajouter Planning -->
+<ng-template #addPlanningModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Ajouter Planning</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <app-add-planning [isSearch]="false" (submit)="close()"></app-add-planning>
+    </div>
+</ng-template>
+
+<!-- Modal Modifier Planning -->
+<ng-template #EditPlanningModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Modifier Planning</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <app-edit-planning (submit)="close()" [planningToUpdate]="planningToUpdate"></app-edit-planning>
+    </div>
+</ng-template>

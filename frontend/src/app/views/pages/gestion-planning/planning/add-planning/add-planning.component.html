@@ -7,6 +7,11 @@
         <div *ngIf="form.get('id_classe')?.invalid && form.get('id_classe')?.touched" class="text-danger small">Classe requise</div>
       </div>
       <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Enseignant <span class="text-danger">*</span></label>
+        <ng-select [items]="users" bindLabel="fullName" bindValue="id_user" placeholder="Sélectionner..." formControlName="id_user"></ng-select>
+        <div *ngIf="form.get('id_user')?.invalid && form.get('id_user')?.touched" class="text-danger small">Classe requise</div>
+      </div>
+      <div class="col-md-6 mb-3">
         <label class="form-label fw-bold">Cours <span class="text-danger">*</span></label>
         <ng-select [items]="cours" bindLabel="nom" bindValue="id_cours" placeholder="Sélectionner..." formControlName="id_cours"></ng-select>
         <div *ngIf="form.get('id_cours')?.invalid && form.get('id_cours')?.touched" class="text-danger small">Cours requis</div>

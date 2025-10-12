@@ -15,14 +15,14 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
 
   { path: 'planning', component: ListPlanningComponent },
-  { path: 'planning/add', component: AddPlanningComponent },
+  { path: 'planning', component: AddPlanningComponent },
   { path: 'planning', component: EditPlanningComponent },
   { path: 'planning', component: InfosPlanningComponent },
-  { path: 'planning/details/:id', component: PlanningDetailsComponent },
+  { path: 'planning/details/:id_filiere/:id_classe', component: PlanningDetailsComponent },
 
   { path: 'roles', component: ListRoleComponent },
-  { path: 'roles/add', component: AddRoleComponent },
-  { path: 'roles/edit/:id', component: EditRoleComponent },
+  { path: 'roles', component: AddRoleComponent },
+  { path: 'roles', component: EditRoleComponent },
 ];
 
 @NgModule({
