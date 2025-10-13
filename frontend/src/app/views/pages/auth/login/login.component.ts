@@ -36,8 +36,12 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
         id: res.user.id,
         nom: res.user.nom,
         prenom: res.user.prenom,
+        telephone: res.user.telephone,
         email: res.user.email,
-        role: res.user.role
+        statut: res.user.statut,
+        date_inscription: res.user.date_inscription,
+        role_id: res.user.role_id,
+        role: res.user.role.nom
       };
 
       this.authService.saveUser(user);

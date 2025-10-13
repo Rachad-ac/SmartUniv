@@ -5,54 +5,103 @@
       <!-- nom -->
       <div class="col-sm-6">
         <div class="mb-3">
-          <label for="nom" class="form-label">Nom</label>
-          <input type="text" class="form-control form-control-lg" id="nom" placeholder="Entre votre nom" formControlName="nom">
+          <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+          <input 
+            type="text" 
+            class="form-control form-control-lg" 
+            [class.is-invalid]="hasError('nom')"
+            id="nom" 
+            placeholder="Entrez le nom" 
+            formControlName="nom">
+          <div class="invalid-feedback" *ngIf="hasError('nom')">
+            {{ getErrorMessage('nom') }}
+          </div>
         </div>
       </div>
 
       <!-- prenom -->
       <div class="col-sm-6">
         <div class="mb-3">
-          <label for="prenom" class="form-label">Prenom</label>
-          <input type="text" class="form-control form-control-lg" id="prenom" placeholder="Entre votre prenom" formControlName="prenom">
+          <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+          <input 
+            type="text" 
+            class="form-control form-control-lg" 
+            [class.is-invalid]="hasError('prenom')"
+            id="prenom" 
+            placeholder="Entrez le prénom" 
+            formControlName="prenom">
+          <div class="invalid-feedback" *ngIf="hasError('prenom')">
+            {{ getErrorMessage('prenom') }}
+          </div>
         </div>
       </div>
 
       <!-- email -->
       <div class="col-sm-6">
         <div class="mb-3">
-          <label for="email" class="form-label">E-mail</label>
-          <input type="email" class="form-control form-control-lg" id="email" placeholder="votre.email@gmail.com" formControlName="email">
+          <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+          <input 
+            type="email" 
+            class="form-control form-control-lg" 
+            [class.is-invalid]="hasError('email')"
+            id="email" 
+            placeholder="exemple@email.com" 
+            formControlName="email">
+          <div class="invalid-feedback" *ngIf="hasError('email')">
+            {{ getErrorMessage('email') }}
+          </div>
         </div>
       </div>
 
       <!-- roles -->
       <div class="col-sm-6">
         <div class="mb-3">
-          <label  class="form-label">Role<small style="color: red;">*</small></label>
+          <label class="form-label">Rôle <span class="text-danger">*</span></label>
           <ng-select
             [items]="roles"
             bindLabel="label"
             bindValue="value"
-            placeholder="Selectionner un role..."
-            formControlName="role">
+            placeholder="Sélectionner un rôle..."
+            [class.is-invalid]="hasError('role_id')"
+            formControlName="role_id">
           </ng-select>
+          <div class="invalid-feedback" *ngIf="hasError('role_id')">
+            {{ getErrorMessage('role_id') }}
+          </div>
         </div>
       </div>
 
-      <!-- password -->
-      <div class="col-sm-6">
+      <!-- password (seulement pour l'ajout) -->
+      <div class="col-sm-6" *ngIf="!isSearch">
         <div class="mb-3">
-          <label for="password" class="form-label">Mot de passe</label>
-          <input type="password" class="form-control form-control-lg" id="password" placeholder="Entre votre mot de passe" formControlName="password">
+          <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
+          <input 
+            type="password" 
+            class="form-control form-control-lg" 
+            [class.is-invalid]="hasError('password')"
+            id="password" 
+            placeholder="Entrez le mot de passe" 
+            formControlName="password">
+          <div class="invalid-feedback" *ngIf="hasError('password')">
+            {{ getErrorMessage('password') }}
+          </div>
         </div>
       </div>
 
-      <!-- password_confirmation -->
-      <div class="col-sm-6">
+      <!-- password_confirmation (seulement pour l'ajout) -->
+      <div class="col-sm-6" *ngIf="!isSearch">
         <div class="mb-3">
-          <label for="password" class="form-label">Confiramtion mot de passe</label>
-          <input type="password" class="form-control form-control-lg" id="password_confirmation" placeholder="Comfirmer votre mot de passe" formControlName="password_confirmation">
+          <label for="password_confirmation" class="form-label">Confirmation mot de passe <span class="text-danger">*</span></label>
+          <input 
+            type="password" 
+            class="form-control form-control-lg" 
+            [class.is-invalid]="hasError('password_confirmation')"
+            id="password_confirmation" 
+            placeholder="Confirmez le mot de passe" 
+            formControlName="password_confirmation">
+          <div class="invalid-feedback" *ngIf="hasError('password_confirmation')">
+            {{ getErrorMessage('password_confirmation') }}
+          </div>
         </div>
       </div>
    
@@ -62,7 +111,21 @@
   <!-- Boutons -->
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
-    <button type="button" class="btn btn-primary" *ngIf="!isSearch" (click)="create()" [disabled]="!form.valid">Enregistrer</button>
-    <button type="button" class="btn btn-primary" *ngIf="isSearch" (click)="doSearch()">Rechercher</button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      *ngIf="!isSearch" 
+      (click)="create()" 
+      [disabled]="!form.valid || loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ loading ? 'Création...' : 'Enregistrer' }}
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      *ngIf="isSearch" 
+      (click)="doSearch()">
+      <i class="feather icon-search me-2"></i>Rechercher
+    </button>
   </div>
 </section>

@@ -88,11 +88,20 @@
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                  <span *ngIf=" user.role === 'Admin'" class="text-primary">{{ user.role }}</span>
-                  <span *ngIf=" user.role === 'Etudiant'" class="text-success">{{ user.role }}</span>
-                  <span *ngIf=" user.role === 'Enseignant'" class="text-warning">{{ user.role }}</span>
-                </td>
-                <td>{{ user.created_at | date:'dd/MM/yyyy \'à\' HH:mm' }}</td>
+                  <span [ngSwitch]="user.role.nom">
+                      
+                      <span *ngSwitchCase="'Admin'" class="text-primary">{{ user.role.nom }}</span>
+                      
+                      <span *ngSwitchCase="'Etudiant'" class="text-success">{{ user.role.nom }}</span>
+                      
+                      <span *ngSwitchCase="'Enseignant'" class="text-warning">{{ user.role.nom }}</span>
+
+                      <span *ngSwitchCase="'Chef-filiere'" class="text-danger">{{ user.role.nom }}</span>
+                      
+                      <span *ngSwitchDefault class="text-infos">{{ user.role.nom }}</span>
+                  </span>
+              </td>
+                <td>{{ user.date_inscription | date:'dd/MM/yyyy \'à\' HH:mm' }}</td>
               </tr>
               <tr *ngIf="latestUsers.length === 0">
                 <td colspan="5" class="text-center text-muted">Aucun utilisateur récemment inscrit</td>

@@ -15,6 +15,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\TestController;
 
 
 // Routes publiques
@@ -48,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/search', [UserController::class, 'search']);
         });
 
-        Route::prefix('roles')->group(function () {
+        Route::prefix('historique-reservations')->group(function () {
             Route::get('/all', [RoleController::class, 'index']);    
             Route::post('/create', [RoleController::class, 'store']); 
             Route::put('/{id}', [RoleController::class, 'update']);
@@ -64,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('salles')->group(function () {
             Route::get('/all', [SalleController::class, 'index']);
             Route::post('/create', [SalleController::class, 'store']);
-            Route::post('/{id}', [SalleController::class, 'update']);
+            Route::put('/{id}', [SalleController::class, 'update']);
             Route::delete('/{id}' , [SalleController::class , 'destroy']);
         });
 
@@ -114,7 +116,22 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/create', [PlanningController::class , 'store']);
             Route::delete('/{id}', [PlanningController::class , 'destroy']);
             Route::put('/{id}', [PlanningController::class , 'update']);
-        });  
+        });
+
+        // Routes pour les rappels automatiques
+        Route::prefix('reminders')->group(function () {
+            Route::post('/send-upcoming', [ReminderController::class, 'sendUpcomingReminders']);
+            Route::post('/cancel-expired', [ReminderController::class, 'cancelExpiredReservations']);
+            Route::post('/send-pending', [ReminderController::class, 'sendPendingReminders']);
+            Route::post('/run-all', [ReminderController::class, 'runAllReminders']);
+        });
+
+        // Routes de test (développement uniquement)
+        Route::prefix('test')->group(function () {
+            Route::post('/conflict-detection', [TestController::class, 'testConflictDetection']);
+            Route::post('/reminder-system', [TestController::class, 'testReminderSystem']);
+            Route::get('/conflict-stats', [TestController::class, 'getConflictStats']);
+        });
 
     });
 
@@ -128,6 +145,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('/{id}', [ReservationController::class, 'update']);
             Route::delete('/{id}', [ReservationController::class, 'destroy']);
             Route::get('/mes-reservations/{id}', [ReservationController::class, 'mesReservations']);
+            Route::post('/check-availability', [ReservationController::class, 'checkAvailability']);
         });
 
         

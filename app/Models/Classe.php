@@ -9,29 +9,37 @@ class Classe extends Model
 {
     use HasFactory;
 
+    protected $table = 'classes';
     protected $primaryKey = 'id_classe';
+    public $timestamps = true;
 
     protected $fillable = [
         'nom',
-        'id_filiere',
         'niveau',
+        'effectif',
+        'id_filiere',
     ];
 
-    // Relation avec Filière
     public function filiere()
     {
-        return $this->belongsTo(Filiere::class, 'id_filiere');
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
     }
 
-    // Une classe peut avoir plusieurs étudiants (si tu ajoutes l'entité Etudiant)
-    public function user()
+    // étudiants de la classe (pivot user_classe)
+    public function etudiants()
     {
-        return $this->hasMany(User::class, 'id_classe');
+        return $this->belongsToMany(User::class, 'user_classe', 'id_classe', 'id_user')
+                    ->withTimestamps();
     }
 
-        // Relation Many-to-Many avec Filiere
-        public function filieres()
-        {
-            return $this->belongsToMany(Filiere::class, 'classe_filiere', 'id_classe', 'id_filiere');
-        }
+    // réservations associées (si tu stockes id_classe dans reservation)
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'id_classe', 'id_classe');
+    }
+
+    public function plannings()
+    {
+        return $this->hasMany(Planning::class, 'id_classe', 'id_classe');
+    }
 }

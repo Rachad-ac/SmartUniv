@@ -12,26 +12,15 @@ return new class extends Migration {
             $table->string('prenom');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role' , 50);
+            $table->enum('statut', ['actif', 'inactif', 'suspendu'])->default('actif');
+            $table->timestamp('date_inscription')->useCurrent();
+
+            // 🔹 clé étrangère vers roles
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('role')->references('role')->on('roles')->onDelete('cascade');
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
         });
     }
 

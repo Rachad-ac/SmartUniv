@@ -2,120 +2,90 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException; 
-use Exception; 
-use Illuminate\Support\Facades\Hash; 
-use Illuminate\Validation\ValidationException; // Ajout de l'import pour la validation
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 class UserController extends Controller
 {
     /**
-     * Récupère et retourne la liste de tous les utilisateurs.
-     * Accessible via : GET /api/users/all
+     * Liste de tous les utilisateurs.
+     * GET /api/users/all
      */
     public function index()
     {
         try {
-            $users = User::all();
-
-            return response()->json([
-                'success' => true,
-                'data' => $users
-            ], 200);
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur serveur : ' . $e->getMessage(),
-            ], 500);
+            $users = User::with('role')->get();
+            return response()->json(['success' => true, 'data' => $users], 200);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Erreur serveur.', 'details' => config('app.debug') ? $e->getMessage() : null], 500);
         }
     }
 
     /**
-     * Recherche des utilisateurs en fonction d'un terme de recherche (filtre) sur plusieurs colonnes.
-     * Accessible via : GET /api/users/search?query=valeur_a_chercher
+     * Recherche filtrée d'utilisateurs.
+     * GET /api/users/search?nom=&prenom=&email=&role_id=
      */
-   public function search(Request $request)
+    public function search(Request $request)
     {
-        $users = User::query(); 
+        $users = User::query();
 
         if ($request->filled('nom')) {
-            $users->where('nom', 'LIKE', '%' . $request->input('nom') . '%');
+            $users->where('nom', 'LIKE', '%' . $request->nom . '%');
         }
-
         if ($request->filled('prenom')) {
-            $users->where('prenom', 'LIKE', '%' . $request->input('prenom') . '%');
+            $users->where('prenom', 'LIKE', '%' . $request->prenom . '%');
         }
-
         if ($request->filled('email')) {
-            $users->where('email', 'LIKE', '%' . $request->input('nom') . '%');
+            $users->where('email', 'LIKE', '%' . $request->email . '%');
+        }
+        if ($request->filled('role_id')) {
+            $users->where('role_id', $request->role_id);
         }
 
-        if ($request->filled('role')) {
-            $users->where('role', $request->input('role'));
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $users->get()
-        ], 200);
+        return response()->json(['success' => true, 'data' => $users->get()], 200);
     }
 
-
     /**
-     * Met à jour les informations d'un utilisateur spécifique.
-     * Accessible via : PUT /api/users/{id}
+     * Mettre à jour un utilisateur.
+     * PUT /api/users/{id}
      */
     public function update($id, Request $request)
     {
         try {
-            // 1. Trouver l'utilisateur
             $user = User::findOrFail($id);
 
-            // 2. Valider les données reçues
             $request->validate([
                 'nom' => 'sometimes|string|max:255',
                 'prenom' => 'sometimes|string|max:255',
-                'email' => 'sometimes|email|unique:users,email,' . $id, 
-                'role' => 'sometimes|in:Admin,Etudiant,Enseignant', 
+                'email' => 'sometimes|email|unique:users,email,' . $id,
+                'role_id' => 'sometimes|exists:roles,id',
+                'password' => 'sometimes|string|min:8|confirmed',
             ]);
 
-            // 5. Sauvegarder les modifications
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->fill($request->only(['nom', 'prenom', 'email', 'role_id']));
             $user->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Utilisateur mis à jour avec succès.',
-                'data' => $user
-            ]);
-
+            return response()->json(['success' => true, 'message' => 'Utilisateur mis à jour.', 'data' => $user]);
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Utilisateur non trouvé.'
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Utilisateur non trouvé.'], 404);
         } catch (ValidationException $e) {
-            // Gérer spécifiquement les erreurs de validation (422)
-            return response()->json([
-                'success' => false,
-                'message' => 'Les données fournies sont invalides.',
-                'errors' => $e->errors()
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur interne du serveur lors de la mise à jour.',
-                'details' => config('app.debug') ? $e->getMessage() : null
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Erreur serveur.', 'details' => config('app.debug') ? $e->getMessage() : null], 500);
         }
     }
 
     /**
-     * Supprime un utilisateur spécifique.
-     * Accessible via : DELETE /api/users/{id}
+     * Supprimer un utilisateur.
+     * DELETE /api/users/{id}
      */
     public function destroy($id)
     {
@@ -123,21 +93,11 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User supprimé avec succès.'
-            ]);
+            return response()->json(['success' => true, 'message' => 'Utilisateur supprimé.']);
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User non trouvé.'
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Utilisateur non trouvé.'], 404);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur serveur.',
-                'details' => config('app.debug') ? $e->getMessage() : null
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Erreur serveur.', 'details' => config('app.debug') ? $e->getMessage() : null], 500);
         }
     }
 }

@@ -43,10 +43,16 @@ export class DashboardComponent implements OnInit {
     new Chart('usersChart', {
       type: 'doughnut',
       data: {
-        labels: ['Admins', 'Etudiants', 'Enseignants'],
+        labels: ['Admins', 'Etudiants', 'Enseignants' , 'Chef filiere' , 'Assistante'],
         datasets: [{
-          data: [this.stats.admins, this.stats.etudiants, this.stats.enseignants],
-          backgroundColor: ['#0d6efd', '#198754', '#ffc107'],
+          data: [this.stats.admins, this.stats.etudiants, this.stats.enseignants , this.stats.chef_filiere , this.stats.assistante],
+          backgroundColor: [
+            '#0d6efd', // Admin (Bleu - Primary)
+            '#198754', // Etudiant (Vert - Success)
+            '#ffc107', // Enseignant (Jaune - Warning)
+            '#dc3545', // Chef de filière (Rouge - Danger/nouveau)
+            '#6c757d'  // Assistante (Gris - Secondary/nouveau)
+        ],
         }]
       }
     });

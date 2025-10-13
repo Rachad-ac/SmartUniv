@@ -3,50 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface Salle {
-  id: number;
-  nom: string;
-  capacite: number;
-  description?: string;
-  type?: string;
-  equipements?: Array<{
-    id: number;
-    nom: string;
-    type: string;
-  }>;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface CreateSalleRequest {
-  nom: string;
-  capacite: number;
-  description?: string;
-  type?: string;
-  equipements?: number[];
-}
-
-export interface UpdateSalleRequest {
-  nom?: string;
-  capacite?: number;
-  description?: string;
-  type?: string;
-  equipements?: number[];
-}
-
-export interface SalleDisponibilite {
-  salle_id: number;
-  date_debut: string;
-  date_fin: string;
-  disponible: boolean;
-  conflits?: Array<{
-    id: number;
-    titre: string;
-    date_debut: string;
-    date_fin: string;
-  }>;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -64,35 +20,35 @@ export class SalleService {
   /**
    * Récupère une salle par son ID
    */
-  getSalle(id: number): Observable<Salle> {
-    return this.http.get<Salle>(`${environment.baseUrl}salles/${id}`);
+  getSalle(id: any): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}salles/${id}`);
   }
 
   /**
    * Crée une nouvelle salle
    */
-  createSalle(salleData: CreateSalleRequest): Observable<Salle> {
-    return this.http.post<Salle>(`${environment.baseUrl}salles/create`, salleData);
+  createSalle(salleData: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}salles/create`, salleData);
   }
 
   /**
    * Met à jour une salle existante
    */
-  updateSalle(id: number, salleData: UpdateSalleRequest): Observable<Salle> {
-    return this.http.put<Salle>(`${environment.baseUrl}salles/${id}`, salleData);
+  updateSalle(id: any, salleData: any): Observable<any> {
+    return this.http.put<any>(`${environment.baseUrl}salles/${id}`, salleData);
   }
 
   /**
    * Supprime une salle
    */
-  deleteSalle(id: number): Observable<any> {
+  deleteSalle(id: any): Observable<any> {
     return this.http.delete(`${environment.baseUrl}salles/${id}`);
   }
 
   /**
    * Recherche des salles par nom
    */
-  searchSalles(query: string): Observable<any> {
+  searchSalles(query: any): Observable<any> {
     const params = new HttpParams().set('search', query);
     return this.http.get<any>(`${environment.baseUrl}salles/all`, { params });
   }
@@ -108,11 +64,11 @@ export class SalleService {
   /**
    * Vérifie la disponibilité d'une salle pour une période donnée
    */
-  checkDisponibilite(salleId: number, dateDebut: string, dateFin: string): Observable<SalleDisponibilite> {
+  checkDisponibilite(salleId: any, dateDebut: string, dateFin: string): Observable<any> {
     const params = new HttpParams()
       .set('date_debut', dateDebut)
       .set('date_fin', dateFin);
-    return this.http.get<SalleDisponibilite>(`${environment.baseUrl}salles/${salleId}/disponibilite`, { params });
+    return this.http.get<any>(`${environment.baseUrl}salles/${salleId}/disponibilite`, { params });
   }
 
   /**

@@ -4,85 +4,140 @@ namespace App\Http\Controllers;
 
 use App\Models\Filiere;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 
 class FiliereController extends Controller
 {
-    // Lister toutes les filières
+    /**
+     * Lister toutes les filières
+     */
     public function index()
     {
         try {
             $filieres = Filiere::all();
-            return response()->json(['success' => true, 'data' => $filieres], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Liste des filières',
+                'data'    => $filieres
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Erreur serveur'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
         }
     }
 
-    // Créer une filière
+    /**
+     * Créer une nouvelle filière
+     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:100',
-            'code' => 'required|string|max:20|unique:filieres,code',
-            'description' => 'nullable|string'
-        ]);
+        try {
+            $validated = $request->validate([
+                'nom'         => 'required|string|max:100',
+                'code'        => 'required|string|max:20|unique:filieres,code',
+                'description' => 'nullable|string'
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            $filiere = Filiere::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Filière créée avec succès',
+                'data'    => $filiere
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
         }
-
-        $filiere = Filiere::create($request->only(['nom', 'code', 'description']));
-
-        return response()->json(['success' => true, 'data' => $filiere], 201);
     }
 
-    // Afficher une filière par ID
+    /**
+     * Afficher une filière par ID
+     */
     public function show($id)
     {
         try {
             $filiere = Filiere::findOrFail($id);
-            return response()->json(['success' => true, 'data' => $filiere], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Filière trouvée',
+                'data'    => $filiere
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Filière non trouvée'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Filière non trouvée'
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
         }
     }
 
-    // Mettre à jour une filière
+    /**
+     * Mettre à jour une filière
+     */
     public function update(Request $request, $id)
     {
         try {
             $filiere = Filiere::findOrFail($id);
 
-            $validator = Validator::make($request->all(), [
-                'nom' => 'sometimes|string|max:100',
-                'code' => 'sometimes|string|max:20|unique:filieres,code,' . $id,
+            $validated = $request->validate([
+                'nom'         => 'sometimes|string|max:100',
+                'code'        => 'sometimes|string|max:20|unique:filieres,code,' . $id,
                 'description' => 'nullable|string'
             ]);
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            }
+            $filiere->update($validated);
 
-            $filiere->update($request->only(['nom', 'code', 'description']));
-
-            return response()->json(['success' => true, 'data' => $filiere], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Filière mise à jour avec succès',
+                'data'    => $filiere
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Filière non trouvée'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Filière non trouvée'
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
         }
     }
 
-    // Supprimer une filière
+    /**
+     * Supprimer une filière
+     */
     public function destroy($id)
     {
         try {
             $filiere = Filiere::findOrFail($id);
             $filiere->delete();
-            return response()->json(['success' => true, 'message' => 'Filière supprimée'], 200);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Filière supprimée avec succès'
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Filière non trouvée'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Filière non trouvée'
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
         }
     }
 }

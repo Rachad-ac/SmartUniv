@@ -28,13 +28,14 @@ export class AddRoleComponent implements OnInit {
 
   initForm(): void {
     this.form = new FormGroup({
-      role: new FormControl('', Validators.required),
-      desc: new FormControl('', Validators.maxLength(500)),
+      nom: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.maxLength(500)),
     });
   }
 
   create(): void {
     const role = this.form.value;
+    console.log('role : ', role);
     this.roleService.createRole(role).subscribe({
       next: () => {
         Alertes.alerteAddSuccess('Rôle ajouté avec succès');

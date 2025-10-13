@@ -14,6 +14,7 @@ class Planning extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'id_reservation', // si tu relies planning <-> reservation
         'id_salle',
         'id_user',
         'id_cours',
@@ -21,26 +22,36 @@ class Planning extends Model
         'date_debut',
         'date_fin',
         'description',
+        'statut', // Libre/Occupee/Maintenance
     ];
+
+    protected $casts = [
+        'date_debut' => 'datetime',
+        'date_fin'   => 'datetime',
+    ];
+
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class, 'id_reservation', 'id_reservation');
+    }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function salle()
     {
-        return $this->belongsTo(Salle::class, 'id_salle' , 'id_salle');
+        return $this->belongsTo(Salle::class, 'id_salle', 'id_salle');
     }
 
     public function cours()
     {
-        return $this->belongsTo(Cours::class, 'id_cours' , 'id_cours');
+        return $this->belongsTo(Cours::class, 'id_cours', 'id_cours');
     }
 
     public function classe()
     {
-        return $this->belongsTo(Classe::class, 'id_classe' , 'id_classe');
+        return $this->belongsTo(Classe::class, 'id_classe', 'id_classe');
     }
-
 }

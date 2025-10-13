@@ -11,9 +11,15 @@
     <button type="button" class="btn btn-secondary btn-icon me-2"  (click)="openAddUser(SearchUserModal)">
       <i class="feather icon-search"></i>
     </button>
+    
     <!-- Bouton Ajouter -->
     <button type="button" class="btn btn-primary btn-icon-text"  (click)="openAddUser(AddhUserModal)">
-      <i class="feather icon-plus-circle"></i> Nouvel Utilisateur
+      <i class="feather icon-plus-circle me-2"></i> Nouvel Utilisateur
+    </button>
+
+    <!-- Bouton Ajouter -->
+    <button type="button" class="btn btn-info btn-icon-text"  (click)="refresh()">
+      <i class="feather icon-refresh-cw me-2"></i> Actualiser
     </button>
   </div>
 </div>
@@ -42,14 +48,31 @@
           <th mat-header-cell *matHeaderCellDef class="table-head-text">Email</th>
           <td mat-cell *matCellDef="let user">{{ user.email }}</td>
         </ng-container>
+        
+        <!-- Date inscription -->
+        <ng-container matColumnDef="date_inscription">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Date inscription</th>
+          <td mat-cell *matCellDef="let user">{{ user.date_inscription | date:'dd/MM/yyyy \'à\' HH:mm' }}</td>
+        </ng-container>
 
         <!-- Rôle -->
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Rôle</th>
           <td mat-cell *matCellDef="let user" class="text-center">
-            <span *ngIf="user.role == 'Admin'" class="text-danger">{{ user.role }}</span>
-            <span *ngIf="user.role == 'Etudiant'" class="text-success">{{ user.role }}</span>
-            <span *ngIf="user.role == 'Enseignant'" class="text-warning">{{ user.role }}</span>
+            <span [class]="getRoleClass(user.role?.nom || user.role)">
+              {{ getRoleName(user.role_id) || user.role?.nom || user.role }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Statut</th>
+          <td mat-cell *matCellDef="let user" class="text-center">
+            <span [class]="getStatusClass(user.statut)">
+              <i class="feather icon-circle me-1"></i>
+              {{ user.statut | titlecase }}
+            </span>
           </td>
         </ng-container>
 

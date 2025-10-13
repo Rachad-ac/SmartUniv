@@ -9,12 +9,17 @@ class Role extends Model
 {
     use HasFactory;
 
-    // Nom de la table
     protected $table = 'roles';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
 
-    // Colonnes qui peuvent être remplies automatiquement
     protected $fillable = [
-        'nom_role',
-        'desc'
+        'nom',   // ex: Admin, Enseignant, Etudiant
+        'description',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id', 'id');
+    }
 }

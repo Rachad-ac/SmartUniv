@@ -22,7 +22,7 @@ class RoleMiddleware
         }
 
         // Vérifier si l'utilisateur a l'un des rôles requis
-        $userRole = $request->user()->role;
+        $userRole = $request->user()->role->nom;
 
         foreach ($roles as $role) {
             if ($userRole === $role) {

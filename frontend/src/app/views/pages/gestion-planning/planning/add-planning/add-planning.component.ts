@@ -61,7 +61,7 @@ export class AddPlanningComponent implements OnInit {
           ...user,
           fullName: `${user.prenom} ${user.nom}`,
           id_user: user.id,
-        })).filter((user : any) => user.role === 'Enseignant');
+        })).filter((user : any) => user.role.nom === 'Enseignant');
       }
   })
   }

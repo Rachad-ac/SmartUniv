@@ -1,74 +1,109 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Validator;
+
 use App\Models\Equipement;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 class EquipementController extends Controller
 {
-    // Liste des équipements
     public function index()
     {
         $equipements = Equipement::all();
-        return response()->json($equipements, 200);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Liste des équipements',
+            'data' => $equipements
+        ]);
     }
 
-    // Créer un équipement
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'quantite' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'id_salle' => 'required|exists:salles,id_salle',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        $equipement = Equipement::create($validated);
 
-        $equipement = Equipement::create($request->only(['nom', 'quantite', 'description']));
-
-        return response()->json($equipement, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Équipement créé avec succès',
+            'data' => $equipement
+        ], 201);
     }
 
-    // Afficher un équipement
     public function show($id)
     {
-        $equipement = Equipement::find($id);
+        try {
+            $equipement = Equipement::findOrFail($id);
 
-        if (!$equipement) {
-            return response()->json(['message' => 'Équipement non trouvé'], 404);
+            return response()->json([
+                'success' => true,
+                'message' => 'Équipement trouvé',
+                'data' => $equipement
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Équipement non trouvé'
+            ], 404);
         }
-
-        return response()->json($equipement, 200);
     }
 
-    // Mettre à jour un équipement
     public function update(Request $request, $id)
     {
-        $equipement = Equipement::find($id);
+        try {
+            $equipement = Equipement::findOrFail($id);
 
-        if (!$equipement) {
-            return response()->json(['message' => 'Équipement non trouvé'], 404);
+            $validated = $request->validate([
+                'nom' => 'sometimes|required|string|max:255',
+                'quantite' => 'sometimes|required|integer|min:1',
+                'description' => 'nullable|string',
+                'id_salle' => 'sometimes|required|exists:salles,id_salle',
+            ]);
+
+            $equipement->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Équipement mis à jour avec succès',
+                'data' => $equipement
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Équipement non trouvé'
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur',
+                'details' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
         }
-
-        $equipement->update($request->only(['nom', 'quantite', 'description']));
-
-        return response()->json($equipement, 200);
     }
 
-    // Supprimer un équipement
     public function destroy($id)
     {
-        $equipement = Equipement::find($id);
+        try {
+            $equipement = Equipement::findOrFail($id);
+            $equipement->delete();
 
-        if (!$equipement) {
-            return response()->json(['message' => 'Équipement non trouvé'], 404);
+            return response()->json([
+                'success' => true,
+                'message' => 'Équipement supprimé avec succès'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Équipement non trouvé'
+            ], 404);
         }
-
-        $equipement->delete();
-
-        return response()->json(['message' => 'Équipement supprimé avec succès'], 200);
     }
 }

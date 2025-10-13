@@ -4,11 +4,11 @@ import { DashboardComponent } from '../gestion-admin/dashboard/dashboard/dashboa
 import { ListPlanningComponent } from './planning/list-planning/list-planning.component';
 import { AddPlanningComponent } from './planning/add-planning/add-planning.component';
 import { EditPlanningComponent } from './planning/edit-planning/edit-planning.component';
-import { ListRoleComponent } from '../gestion-admin/role/list-role/list-role.component';
-import { AddRoleComponent } from '../gestion-admin/role/add-role/add-role.component';
-import { EditRoleComponent } from '../gestion-admin/role/edit-role/edit-role.component';
 import { InfosPlanningComponent } from './planning/infos-planning/infos-planning.component';
 import { PlanningDetailsComponent } from './planning/planning-details/planning-details.component';
+import { ListSalleComponent } from './salle/list-salle/list-salle.component';
+import { AddSalleComponent } from './salle/add-salle/add-salle.component';
+import { EditSalleComponent } from './salle/edit-salle/edit-salle.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -20,9 +20,9 @@ const routes: Routes = [
   { path: 'planning', component: InfosPlanningComponent },
   { path: 'planning/details/:id_filiere/:id_classe', component: PlanningDetailsComponent },
 
-  { path: 'roles', component: ListRoleComponent },
-  { path: 'roles', component: AddRoleComponent },
-  { path: 'roles', component: EditRoleComponent },
+  { path: 'salles', component: ListSalleComponent },
+  { path: 'salles', component: AddSalleComponent },
+  { path: 'salles', component: EditSalleComponent },
 ];
 
 @NgModule({
