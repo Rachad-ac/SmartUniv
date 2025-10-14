@@ -1,1 +1,102 @@
-<p>add-classe works!</p>
+<section>
+    <form [formGroup]="form">
+        <div class="row">
+            <!-- Champ Nom -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom <span *ngIf="!isSearch" class="text-danger">*</span></label>
+                <input 
+                    type="text" 
+                    class="form-control form-control-lg" 
+                    id="nom" 
+                    formControlName="nom" 
+                    placeholder="Entrer le nom de la classe" 
+                    [class.is-invalid]="hasError('nom') && !isSearch">
+                <div *ngIf="hasError('nom') && !isSearch" class="invalid-feedback">
+                    {{ getErrorMessage('nom') }}
+                </div>
+            </div>
+        </div>
+    
+        <!-- Champ Niveau -->
+        <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label">Niveau <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="niveaux"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Sélectionner un niveau..."
+                [class.is-invalid]="hasError('niveau')"
+                formControlName="miveau">
+              </ng-select>
+              <div class="invalid-feedback" *ngIf="hasError('niveau')">
+                {{ getErrorMessage('niveau') }}
+              </div>
+            </div>
+          </div>
+    
+        <!-- Champ Filière -->
+    
+        <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label">Filiere <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="filieres"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Sélectionner une filiere..."
+                [class.is-invalid]="hasError('filiere')"
+                formControlName="filiere">
+              </ng-select>
+              <div class="invalid-feedback" *ngIf="hasError('filiere')">
+                {{ getErrorMessage('filiere') }}
+              </div>
+            </div>
+          </div>
+    
+        <!-- Champ Effectif (Visible uniquement en mode Ajout) -->
+        <div class="col-md-6" *ngIf="!isSearch">
+            <div class="mb-3">
+                <label for="effectif" class="form-label">Effectif</label>
+                <input 
+                    type="number" 
+                    class="form-control form-control-lg" 
+                    id="effectif" 
+                    formControlName="effectif" 
+                    [min]="0"
+                    placeholder="0"
+                    [class.is-invalid]="hasError('effectif')">
+                <div *ngIf="hasError('effectif')" class="invalid-feedback">
+                    {{ getErrorMessage('effectif') }}
+                </div>
+            </div>
+        </div>
+    
+        <!-- Boutons d'action -->
+        <div class="col-12 mt-4 text-end">
+            <div class="modal-footer d-flex justify-content-end p-0 border-0">
+                <button type="button" class="btn btn-secondary me-2" (click)="close()">Fermer</button>
+                
+                <button 
+                type="button" 
+                class="btn btn-primary" 
+                *ngIf="!isSearch" 
+                (click)="create()" 
+                [disabled]="!form.valid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ loading ? 'Création...' : 'Enregistrer' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-primary" 
+                *ngIf="isSearch" 
+                (click)="doSearch()">
+                <i class="feather icon-search me-2"></i>Rechercher
+              </button>
+            </div>
+        </div>
+        </div>
+    </form>
+    
+</section>

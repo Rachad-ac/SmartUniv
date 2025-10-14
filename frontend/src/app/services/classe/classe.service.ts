@@ -3,17 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-
-export interface CreateClasseRequest {
-  nom: string;
-  id_filiere: number;
-}
-
-export interface UpdateClasseRequest {
-  nom?: string;
-  id_filiere?: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -46,14 +35,14 @@ export class ClasseService {
   /**
    * Crée une nouvelle classe
    */
-  createClasse(classeData: CreateClasseRequest): Observable<any> {
+  createClasse(classeData: any): Observable<any> {
     return this.http.post<any>(`${environment.baseUrl}classes/create`, classeData);
   }
 
   /**
    * Met à jour une classe existante
    */
-  updateClasse(id: number, classeData: UpdateClasseRequest): Observable<any> {
+  updateClasse(id: number, classeData: any): Observable<any> {
     return this.http.put<any>(`${environment.baseUrl}classes/${id}`, classeData);
   }
 

@@ -1,1 +1,91 @@
-<p>edit-classe works!</p>
+<section>
+    <form [formGroup]="form">
+        <div class="row">
+
+            <!-- Nom de la Classe -->
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom de la Classe <span class="text-danger">*</span></label>
+                    <input 
+                        type="text" 
+                        class="form-control form-control-lg" 
+                        [class.is-invalid]="hasError('nom')"
+                        id="nom" 
+                        placeholder="Ex: SIL M1 S1" 
+                        formControlName="nom">
+                    <div class="invalid-feedback" *ngIf="hasError('nom')">
+                        {{ getErrorMessage('nom') }}
+                    </div>
+                </div>
+            </div>
+
+           
+        <!-- Champ Niveau -->
+        <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label">Niveau <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="niveaux"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Sélectionner un niveau..."
+                [class.is-invalid]="hasError('niveau')"
+                formControlName="miveau">
+              </ng-select>
+              <div class="invalid-feedback" *ngIf="hasError('niveau')">
+                {{ getErrorMessage('niveau') }}
+              </div>
+            </div>
+          </div>
+    
+        <!-- Champ Filière -->
+    
+        <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label">Filiere <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="filieres"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Sélectionner une filiere..."
+                [class.is-invalid]="hasError('id_filiere')"
+                formControlName="id_filiere">
+              </ng-select>
+              <div class="invalid-feedback" *ngIf="hasError('id_filiere')">
+                {{ getErrorMessage('id_filiere') }}
+              </div>
+            </div>
+          </div>
+
+            <!-- Effectif maximal -->
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label for="effectif" class="form-label">Effectif maximal</label>
+                    <input 
+                        type="number" 
+                        class="form-control form-control-lg" 
+                        [class.is-invalid]="hasError('effectif')"
+                        id="effectif" 
+                        placeholder="Ex: 30" 
+                        formControlName="effectif">
+                    <div class="invalid-feedback" *ngIf="hasError('effectif')">
+                        {{ getErrorMessage('effectif') }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="update()" 
+          [disabled]="!form.valid || loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? 'Modification...' : 'Enregistrer' }}
+        </button>
+    </div>
+</section>

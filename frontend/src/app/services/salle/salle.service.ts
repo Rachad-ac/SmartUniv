@@ -97,10 +97,4 @@ export class SalleService {
     return this.http.get<any>(`${environment.baseUrl}salles/all`, { params });
   }
 
-  /**
-   * Récupère les statistiques des salles
-   */
-  getSallesStats(): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}salles/stats`);
-  }
 }

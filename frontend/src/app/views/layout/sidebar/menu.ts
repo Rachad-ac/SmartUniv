@@ -60,7 +60,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Classes',
     icon: 'users', 
-    link: '/admin/gestion-planning/classe',
+    link: '/admin/gestion-planning/classes',
     roles: ['Admin']
   },
   {
@@ -78,7 +78,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Réservations',
     icon: 'calendar',
-    link: '/admin/gestion-planning/reservation',
+    link: '/admin/gestion-planning/reservations',
     roles: ['Admin']
   },
 

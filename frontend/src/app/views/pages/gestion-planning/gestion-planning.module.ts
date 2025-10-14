@@ -61,7 +61,7 @@ import { ListResevationComponent } from './reservation/list-resevation/list-rese
     ListCoursComponent,
     AddCoursComponent,
     EditCoursComponent,
-    ListResevationComponent
+    ListResevationComponent,
   ],
   imports: [
     CommonModule,

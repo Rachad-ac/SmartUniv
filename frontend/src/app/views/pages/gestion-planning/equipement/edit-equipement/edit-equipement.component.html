@@ -1,1 +1,94 @@
-<p>edit-equipement works!</p>
+<section>
+    <form [formGroup]="form">
+      <div class="row">
+  
+        <!-- Nom -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              id="nom"
+              class="form-control form-control-lg"
+              placeholder="Entrez le nom de l'équipement"
+              formControlName="nom"
+              [class.is-invalid]="hasError('nom')"
+            >
+            <div class="invalid-feedback" *ngIf="hasError('nom')">
+              {{ getErrorMessage('nom') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Quantité -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="quantite" class="form-label">Quantité <span class="text-danger">*</span></label>
+            <input
+              type="number"
+              id="quantite"
+              min="1"
+              class="form-control form-control-lg"
+              placeholder="Entrez la quantité"
+              formControlName="quantite"
+              [class.is-invalid]="hasError('quantite')"
+            >
+            <div class="invalid-feedback" *ngIf="hasError('quantite')">
+              {{ getErrorMessage('quantite') }}
+            </div>
+          </div>
+        </div>
+
+         <!-- Salle -->
+         <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label">Salle <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="salles"
+                bindValue="value"
+                bindLabel="label"
+                placeholder="Sélectionnez une salle..."
+                formControlName="id_salle"
+                [class.is-invalid]="hasError('id_salle')"
+              ></ng-select>
+              <div class="invalid-feedback" *ngIf="hasError('id_salle')">
+                {{ getErrorMessage('id_salle') }}
+              </div>
+            </div>
+          </div>
+  
+        <!-- Description -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              rows="2"
+              class="form-control form-control-lg"
+              placeholder="Décrivez l'équipement"
+              formControlName="description"
+              [class.is-invalid]="hasError('description')"
+            ></textarea>
+            <div class="invalid-feedback" *ngIf="hasError('description')">
+              {{ getErrorMessage('description') }}
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </form>
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="update()"
+        [disabled]="!form.valid || loading"
+      >
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </section>
+  

@@ -1,1 +1,139 @@
-<p>edit-cours works!</p>
+<section>
+    <form [formGroup]="form">
+      <div class="row">
+  
+        <!-- Nom du Cours -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom du Cours <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg" 
+              [class.is-invalid]="hasError('nom')"
+              id="nom" 
+              placeholder="Ex: Programmation Avancée" 
+              formControlName="nom">
+            <div class="invalid-feedback" *ngIf="hasError('nom')">
+              {{ getErrorMessage('nom') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Code du Cours -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="code" class="form-label">Code <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg" 
+              [class.is-invalid]="hasError('code')"
+              id="code" 
+              placeholder="Ex: PA401" 
+              formControlName="code">
+            <div class="invalid-feedback" *ngIf="hasError('code')">
+              {{ getErrorMessage('code') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Filière (Select) -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Filière <span class="text-danger">*</span></label>
+            <ng-select
+              [items]="filieres"
+              bindLabel="label"
+              bindValue="value"
+              placeholder="Sélectionner une filière..."
+              [class.is-invalid]="hasError('id_filiere')"
+              formControlName="id_filiere">
+            </ng-select>
+            <div class="invalid-feedback" *ngIf="hasError('id_filiere')">
+              {{ getErrorMessage('id_filiere') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Matière (Select) -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Matière <span class="text-danger">*</span></label>
+            <ng-select
+              [items]="matieres"
+              bindLabel="label"
+              bindValue="value"
+              placeholder="Sélectionner une matière..."
+              [class.is-invalid]="hasError('id_matiere')"
+              formControlName="id_matiere">
+            </ng-select>
+            <div class="invalid-feedback" *ngIf="hasError('id_matiere')">
+              {{ getErrorMessage('id_matiere') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Semestre (Select) -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Semestre <span class="text-danger">*</span></label>
+            <ng-select
+              [items]="semestres"
+              placeholder="Sélectionner un semestre..."
+              [class.is-invalid]="hasError('semestre')"
+              formControlName="semestre">
+            </ng-select>
+            <div class="invalid-feedback" *ngIf="hasError('semestre')">
+              {{ getErrorMessage('semestre') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Volume Horaire -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="volume_horaire" class="form-label">Volume Horaire (heures) <span class="text-danger">*</span></label>
+            <input 
+              type="number" 
+              min="1"
+              class="form-control form-control-lg" 
+              [class.is-invalid]="hasError('volume_horaire')"
+              id="volume_horaire" 
+              placeholder="Ex: 40" 
+              formControlName="volume_horaire">
+            <div class="invalid-feedback" *ngIf="hasError('volume_horaire')">
+              {{ getErrorMessage('volume_horaire') }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description (Optionnel)</label>
+            <textarea 
+              class="form-control" 
+              id="description" 
+              rows="3" 
+              formControlName="description"
+              placeholder="Ajouter une description détaillée du cours...">
+            </textarea>
+          </div>
+        </div>
+      
+      </div>
+    </form>
+  
+    <!-- Boutons -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="update()" 
+        [disabled]="!form.valid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loading ? 'Modification...' : 'Modifier' }}
+      </button>
+    </div>
+  </section>
+  
