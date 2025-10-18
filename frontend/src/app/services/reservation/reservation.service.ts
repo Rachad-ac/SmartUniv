@@ -16,15 +16,24 @@ export class ReservationService {
    */
   getAllReservations(): Observable<any> {
     // Controller index() maps to a standard GET on the resource route
-    return this.http.get<any>(`${environment.baseUrl}reservations`);
+    return this.http.get<any>(`${environment.baseUrl}reservations/all`);
+  }
+
+  /**
+   * Récupère toutes les réservations (index)
+   * GET /api/reservations
+   */
+  getReservationEnAttente(): Observable<any> {
+    // Controller reservationEnAttente() maps to a standard GET on the resource route
+    return this.http.get<any>(`${environment.baseUrl}reservations/en-attente`);
   }
 
   /**
    * Récupère les réservations d'un utilisateur spécifique (mesReservations)
-   * GET /api/reservations/user/{id}
+   * GET /api/mes-reservations/{id}
    */
   getUserReservations(userId: number): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}reservations/user/${userId}`);
+    return this.http.get<any>(`${environment.baseUrl}reservations/mes-reservations/${userId}`);
   }
 
   /**
@@ -55,10 +64,10 @@ export class ReservationService {
 
   /**
    * Crée une nouvelle réservation (store)
-   * POST /api/reservations
+   * POST /api/reservations/reserver
    */
   createReservation(reservation: any): Observable<any> {
-    return this.http.post<any>(`${environment.baseUrl}reservations`, reservation);
+    return this.http.post<any>(`${environment.baseUrl}reservations/reserver`, reservation);
   }
 
   /**
@@ -67,6 +76,14 @@ export class ReservationService {
    */
   updateReservation(reservationId: any, reservation: any): Observable<any> {
     return this.http.put<any>(`${environment.baseUrl}reservations/${reservationId}`, reservation);
+  }
+
+  /**
+   * Met à jour une réservation existante (update)
+   * PUT /api/reservations/{id}
+   */
+  annulerReservation(reservationId: any): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}reservations/annuler/${reservationId}`, {});
   }
 
   /**

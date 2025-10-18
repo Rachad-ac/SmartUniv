@@ -58,9 +58,12 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('reservations')->group(function () {
-            Route::post('/create', [ReservationController::class, 'store']);
-            Route::put('{id}/valider', [ReservationController::class, 'valider']);
-            Route::put('{id}/rejeter', [ReservationController::class, 'rejeter']);
+            Route::get('/all', [ReservationController::class, 'index']);
+            Route::get('/en-attente', [ReservationController::class, 'reservationEnAttente']);
+            Route::post('/reserver', [ReservationController::class, 'store']);
+            Route::get('/{id}', [ReservationController::class, 'show']);
+            Route::put('/valider/{id}', [ReservationController::class, 'valider']);
+            Route::put('/rejeter/{id}', [ReservationController::class, 'rejeter']);
         });
 
         Route::prefix('salles')->group(function () {
@@ -138,11 +141,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes Enseigant et Etudiant uniquement
     Route::middleware(['role:Enseignant,Etudiant'])->group(function () {
 
+        Route::get('salles/all', [SalleController::class, 'index']);
+        Route::get('salles/{id}', [SalleController::class, 'show']);
+        Route::get('equipements/{id}', [EquipementController::class, 'show']);
+
+        
+
         Route::prefix('reservations')->group(function () {
-            Route::get('/all', [ReservationController::class, 'index']);
             Route::post('/reserver', [ReservationController::class, 'store']);
-            Route::get('/{id}', [ReservationController::class, 'show']);
             Route::put('/{id}', [ReservationController::class, 'update']);
+            Route::post('/annuler/{id}', [ReservationController::class, 'annulerReservation']);
             Route::delete('/{id}', [ReservationController::class, 'destroy']);
             Route::get('/mes-reservations/{id}', [ReservationController::class, 'mesReservations']);
             Route::post('/check-availability', [ReservationController::class, 'checkAvailability']);

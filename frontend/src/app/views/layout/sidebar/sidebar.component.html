@@ -15,9 +15,37 @@
   </div>
 
   <div class="sidebar-body" (mouseenter)="operSidebarFolded()" (mouseleave)="closeSidebarFolded()" [perfectScrollbar]>
-
+   <div *ngIf="currentUser.role != 'Admin' && isSidebarFolded()" class="m-3 mb-0 d-flex align-items-center justify-content-center flex-row">
+    <a class="nav-link">
+      <div class="wd-30 ht-30 rounded-circle bg-info d-flex align-items-center justify-content-center text-white fw-bold" *ngIf="currentUser">
+        {{ getInitials(currentUser.prenom, currentUser.nom) }}
+      </div>
+      <div class="wd-30 ht-30 rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold" *ngIf="!currentUser">
+        U
+      </div>
+    </a>
+   </div>
+    <div class="px-0"  *ngIf="currentUser.role != 'Admin' && !isSidebarFolded()">
+      <div class="d-flex flex-column align-items-center border-bottom px-3 py-3">
+        <div class="mb-3">
+          <div class="wd-80 ht-80 rounded-circle bg-info d-flex align-items-center justify-content-center text-white fw-bold fs-2" *ngIf="currentUser">
+            {{ getInitials(currentUser.prenom, currentUser.nom) }}
+          </div>
+          <div class="wd-80 ht-80 rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold fs-2" *ngIf="!currentUser">
+            U
+          </div>
+        </div>
+        <div class="text-center" *ngIf="currentUser">
+          <p class="tx-12 text-muted">{{ currentUser.prenom }} {{ currentUser.nom }}</p>
+          <p class="tx-12 fw-bolder">{{ currentUser.email }}</p>
+          <p class="tx-12 text-muted"><small>{{ currentUser.role }}</small></p>
+        </div>
+      </div>
+    </div>
+    
     <ul class="sidebar-nav metismenu" id="sidebar-menu" #sidebarMenu>
       <ng-container *ngFor="let item of menuItems">
+        
         <!-- Title -->
         <li class="nav-item nav-category" *ngIf="item.isTitle">{{ item.label }}</li>
 

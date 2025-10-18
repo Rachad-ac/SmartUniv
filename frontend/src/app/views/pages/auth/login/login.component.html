@@ -55,7 +55,9 @@
               type="submit" 
               class="btn btn-primary btn-sm" 
               (click)="onLoggedin($event, loginForm.value)">
-              <i class="fas fa-sign-in-alt me-2"></i> Se connecter
+              <i *ngIf="!loading" class="feather icon-log-out me-2 text-success"></i>
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              <span> {{ loading ? 'Connexion...' : 'Se connecter' }}</span>
             </button>
           </div>
         </form>

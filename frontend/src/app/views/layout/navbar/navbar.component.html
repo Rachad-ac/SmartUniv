@@ -81,7 +81,21 @@
           </div>
         </div>
       </li>
-      <li class="nav-item nav-profile" ngbDropdown>
+
+      <li  *ngIf="currentUser.role != 'Admin'" class="nav-item d-flex align-items-center">
+        <button
+          class="btn btn-outline-danger btn-sm d-flex align-items-center ms-2"
+          (click)="onLogout($event)"
+         >
+          <i *ngIf="!loading" class="feather icon-log-out me-2 text-warning"></i>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          <span> {{ loading ? 'Deconnexion...' : 'Se deconnecter' }}</span>
+        </button>
+      </li>
+      
+
+
+      <li class="nav-item nav-profile" ngbDropdown *ngIf="currentUser.role == 'Admin' ">
         <a class="nav-link" ngbDropdownToggle id="profileDropdown">
           <div class="wd-30 ht-30 rounded-circle bg-info d-flex align-items-center justify-content-center text-white fw-bold" *ngIf="currentUser">
             {{ getInitials(currentUser.prenom, currentUser.nom) }}

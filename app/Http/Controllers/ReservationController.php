@@ -32,6 +32,18 @@ class ReservationController extends Controller
         ], 200);
     }
 
+    // liste de toutes les réservations en attente
+    public function reservationEnAttente()
+    {
+        $reservations = Reservation::where('statut' , 'En attente')->with(['salle', 'user', 'cours'])->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Liste des réservations',
+            'data' => $reservations
+        ], 200);
+    }
+
     // Les réservations d'un utilisateur
     public function mesReservations($id)
     {
@@ -108,6 +120,7 @@ class ReservationController extends Controller
         }
     }
 
+
     // Créer une réservation
     public function store(Request $request)
     {
@@ -122,7 +135,6 @@ class ReservationController extends Controller
             'type_reservation' => 'required|in:Cours,Examen,Evenement,TP',
             'statut' => 'nullable|in:En attente,Validée,Refusée,Annulée',
             'motif' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:500',
         ]);
 
         // 🔍 Vérification des conflits AVANT de créer la réservation
@@ -161,6 +173,59 @@ class ReservationController extends Controller
         ], 201);
     }
 
+    // Annuler une réservation
+    public function annulerReservation($id)
+    {
+        try {
+            $reservation = Reservation::findOrFail($id);
+            $reservation->statut = 'Annulée';
+            $reservation->save();
+
+            // Envoi de mail à l'utilisateur
+            Mail::to($reservation->user->email)
+                ->send(new ValidationMail($reservation, 'Annulée'));
+
+            Mail::to('bent35005@gmail.com')->send(new ReservationMail($reservation));
+
+            // Création de notification
+            Notification::create([
+                'message' => "Vous avez annulé votre réservation de la salle {$reservation->salle->nom}.",
+                'date_envoi' => now(),
+                'lu' => false,
+                'id_user' => $reservation->id_user,
+                'id_reservation' => $reservation->id_reservation,
+            ]);
+
+            Notification::create([
+                'message' => "L'utilisateur {$reservation->user->nom} {$reservation->user->prenom} a annulé sa réservation de la salle {$reservation->salle->nom}.",
+                'date_envoi' => now(),
+                'lu' => false,
+                'id_user' => 1, // id de l'admin
+                'id_reservation' => $reservation->id_reservation,
+            ]);
+            
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Réservation annulée et notification envoyée',
+                'data' => $reservation
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Réservation non trouvée'
+            ], 404);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur'
+            ], 500);
+        }
+    }
+
+
     // Mettre à jour une réservation
     public function update(Request $request, $id)
     {
@@ -178,7 +243,6 @@ class ReservationController extends Controller
                 'statut' => 'nullable|in:En attente,Validée,Refusée,Annulée',
                 'type_reservation' => 'sometimes|in:Cours,Examen,Evenement,TP',
                 'motif' => 'nullable|string|max:255',
-                'description' => 'nullable|string|max:500',
             ]);
 
             // 🔍 Vérification des conflits pour la mise à jour

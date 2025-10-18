@@ -245,9 +245,9 @@ export class ListeUsersComponent implements OnInit {
    */
   getRoleClass(roleName: string): string {
     switch (roleName?.toLowerCase()) {
-      case 'admin': return 'text-danger fw-bold';
-      case 'enseignant': return 'text-warning fw-bold';
-      case 'etudiant': return 'text-success fw-bold';
+      case 'Admin': return 'text-danger fw-bold';
+      case 'Enseignant': return 'text-warning fw-bold';
+      case 'Etudiant': return 'text-success fw-bold';
       default: return 'text-secondary';
     }
   }

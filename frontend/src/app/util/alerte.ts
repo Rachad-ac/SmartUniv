@@ -45,7 +45,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: successMessage? successMessage: errorMessage,
                 icon:  successMessage? 'success': 'error'
@@ -59,7 +59,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Enregistrement réussi: '+' '+ message, 
                 icon: 'success'
@@ -77,7 +77,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Enregistrement échoué: '+' '+ message, 
                 icon: 'error'
@@ -95,7 +95,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Suppresion réussie :'+' '+message, 
                 icon: 'success'
@@ -113,7 +113,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Suppresion échoué: '+' '+ message, 
                 icon: 'error'
@@ -131,7 +131,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Modification réussie: '+' '+ message, 
                 icon: 'success'
@@ -149,7 +149,7 @@ export class Alertes {
                 toast: true,
                 position: 'top-end', 
                 showConfirmButton: false, 
-                timer: 3000, 
+                timer: 5000, 
                 timerProgressBar: true, 
                 title: 'Modification échouée: '+' '+ message, 
                 icon: 'error'

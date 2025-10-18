@@ -20,6 +20,7 @@ const routes: Routes = [
   {path: 'roles' , component : ListRoleComponent},
   {path: 'roles' , component : AddRoleComponent},
   {path: 'roles' , component : EditRoleComponent},
+
 ];
 
 @NgModule({

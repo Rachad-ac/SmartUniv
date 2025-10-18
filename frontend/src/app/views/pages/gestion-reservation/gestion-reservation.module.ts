@@ -10,10 +10,21 @@ import { NgbDropdownModule, NgbModule, NgbNavModule, NgbPaginationModule } from 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
+import { ReserverSalleComponent } from './reserver-salle/reserver-salle.component';
+import { HistoriquesComponent } from './historiques/historiques.component';
+import { MesReservationsComponent } from './mes-reservations/mes-reservations.component';
+import { EmploieDuTempsComponent } from './emploie-du-temps/emploie-du-temps.component';
+import { DetailSalleComponent } from './detail-salle/detail-salle.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ReserverSalleComponent,
+    HistoriquesComponent,
+    MesReservationsComponent,
+    EmploieDuTempsComponent,
+    DetailSalleComponent,
+  ],
   imports: [
     CommonModule,
     GestionReservationRoutingModule,

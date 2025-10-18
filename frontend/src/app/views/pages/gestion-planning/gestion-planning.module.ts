@@ -18,7 +18,6 @@ import { PlanningDetailsComponent } from './planning/planning-details/planning-d
 import { ListSalleComponent } from './salle/list-salle/list-salle.component';
 import { AddSalleComponent } from './salle/add-salle/add-salle.component';
 import { EditSalleComponent } from './salle/edit-salle/edit-salle.component';
-import { ListFiliereComponent } from './filiere/list-filiere/list-filiere.component';
 import { AddFiliereComponent } from './filiere/add-filiere/add-filiere.component';
 import { EditFiliereComponent } from './filiere/edit-filiere/edit-filiere.component';
 import { ListMatiereComponent } from './matiere/list-matiere/list-matiere.component';
@@ -34,6 +33,8 @@ import { ListCoursComponent } from './cours/list-cours/list-cours.component';
 import { AddCoursComponent } from './cours/add-cours/add-cours.component';
 import { EditCoursComponent } from './cours/edit-cours/edit-cours.component';
 import { ListResevationComponent } from './reservation/list-resevation/list-resevation.component';
+import { ListFiliereComponent } from './filiere/list-filiere/list-filiere.component';
+import { HistoriqueReservationComponent } from './reservation/historique-reservation/historique-reservation.component';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { ListResevationComponent } from './reservation/list-resevation/list-rese
     AddCoursComponent,
     EditCoursComponent,
     ListResevationComponent,
+    HistoriqueReservationComponent,
   ],
   imports: [
     CommonModule,

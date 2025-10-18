@@ -54,7 +54,7 @@ class SalleController extends Controller
     public function show($id)
     {
         try {
-            $salle = Salle::where('id_salle', $id)->firstOrFail();
+            $salle = Salle::where('id_salle', $id)->with('equipements')->firstOrFail();
             return response()->json([
                 'success' => true,
                 'message' => 'Salle trouvée',

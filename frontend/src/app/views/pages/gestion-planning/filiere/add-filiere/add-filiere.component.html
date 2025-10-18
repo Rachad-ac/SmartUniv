@@ -1,1 +1,80 @@
-<p>add-filiere works!</p>
+<section>
+    <form [formGroup]="form">
+      <div class="row">
+  
+        <!-- Nom -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom de la filière <span class="text-danger" *ngIf="!isSearch">*</span></label>
+            <input 
+              type="text" 
+              id="nom"
+              class="form-control form-control-lg"
+              [class.is-invalid]="hasError('nom')"
+              placeholder="Ex : Informatique, Génie logiciel..."
+              formControlName="nom">
+            <div class="invalid-feedback" *ngIf="hasError('nom')">
+              {{ getErrorMessage('nom') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Code -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="code" class="form-label">Code <span class="text-danger" *ngIf="!isSearch">*</span></label>
+            <input 
+              type="text" 
+              id="code"
+              class="form-control form-control-lg"
+              [class.is-invalid]="hasError('code')"
+              placeholder="Ex : GL, RT, INFO..."
+              formControlName="code">
+            <div class="invalid-feedback" *ngIf="hasError('code')">
+              {{ getErrorMessage('code') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Description (optionnelle, pas en recherche) -->
+        <div class="col-sm-12" *ngIf="!isSearch">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              rows="3"
+              class="form-control form-control-lg"
+              placeholder="Ajoutez une courte description de la filière (facultatif)"
+              formControlName="description"></textarea>
+          </div>
+        </div>
+  
+      </div>
+    </form>
+  
+    <!-- Boutons -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+  
+      <!-- Bouton Enregistrer -->
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        *ngIf="!isSearch" 
+        (click)="create()" 
+        [disabled]="!form.valid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loading ? 'Création...' : 'Enregistrer' }}
+      </button>
+  
+      <!-- Bouton Rechercher -->
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        *ngIf="isSearch" 
+        (click)="doSearch()">
+        <i class="feather icon-search me-2"></i>Rechercher
+      </button>
+    </div>
+  </section>
+  

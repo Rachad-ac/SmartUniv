@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class NavbarComponent implements OnInit{
 
   currentUser: any = null;
+  loading = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document, 
@@ -35,12 +36,23 @@ export class NavbarComponent implements OnInit{
 
   onLogout(e: Event) {
     e.preventDefault();
-
-    this.authService.logout().subscribe({
-      next: res => console.log(res.message),
-      error: err => console.error('Erreur lors de la déconnexion', err)
-    });
+  
+    this.loading = true;
+  
+    setTimeout(() => {
+      this.authService.logout().subscribe({
+        next: res => {
+          console.log(res.message);
+          this.loading = false;
+        },
+        error: err => {
+          console.error('Erreur lors de la déconnexion', err);
+          this.loading = false;
+        }
+      });
+    }, 300); // délai de 0,3 seconde (ajuste selon ton animation)
   }
+  
 
   getInitials(prenom: string, nom: string): string {
     if (!prenom || !nom) return 'U';

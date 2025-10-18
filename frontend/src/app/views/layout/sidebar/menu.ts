@@ -75,47 +75,55 @@ export const MENU: MenuItem[] = [
     link: '/admin/gestion-planning/cours',
     roles: ['Admin']
   },
+
+  //section reservations admin
+  {
+    label: 'Gestion reservations',
+    isTitle: true,
+    roles: ['Admin']
+  },
   {
     label: 'Réservations',
     icon: 'calendar',
     link: '/admin/gestion-planning/reservations',
     roles: ['Admin']
   },
+  {
+    label: 'Historique reservation',
+    icon: 'bookmark', 
+    link: '/admin/gestion-planning/historique-resevations',
+    roles: ['Admin']
+  },
 
   // Section gestion users
   {
-    label: 'Gestion Réservations',
+    label: 'Réservations et plannings',
     isTitle: true,
     roles: ['Etudiant', 'Enseignant']
   },
   {
     label: 'Réserver une salle',
     icon: 'plus-circle',
-    link: '/users/gestion-reservation/reservation',
+    link: '/users/gestion-reservation/reserver-salles',
     roles: ['Etudiant', 'Enseignant']
   },
   {
     label: 'Mes Réservations',
     icon: 'check-square', 
-    link: '/users/gestion-reservation/mes-reservation',
+    link: '/users/gestion-reservation/mes-reservations',
     roles: ['Etudiant', 'Enseignant']
   },
   {
     label: 'Historique reservation',
     icon: 'bookmark', 
-    link: '/users/gestion-reservation/historique-reservation',
+    link: '/users/gestion-reservation/historiques',
     roles: ['Etudiant', 'Enseignant']
   },
   {
-    label: 'Mon planning',
+    label: 'Emploi du temps',
     icon: 'clock', 
-    link: '/users/gestion-reservation/mon-planning',
+    link: '/users/gestion-reservation/emploi-du-temps',
     roles: ['Etudiant', 'Enseignant']
   },
-  {
-    label: 'Mes cours',
-    icon: 'book', 
-    link: '/users/gestion-reservation/mes-cours',
-    roles: ['Etudiant', 'Enseignant']
-  },
+
 ];

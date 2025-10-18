@@ -15,7 +15,7 @@ class FiliereController extends Controller
     public function index()
     {
         try {
-            $filieres = Filiere::all();
+            $filieres = Filiere::with('etudiants' , 'classes')->get();
             return response()->json([
                 'success' => true,
                 'message' => 'Liste des filières',

@@ -318,7 +318,7 @@ export class PlanningDetailsComponent implements OnInit {
     const pdfWidth = pdf.internal.pageSize.getWidth();       
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;              
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);       
-    pdf.save(`planning-f${this.filiereId}-c${this.classeId}.pdf`);     
+    pdf.save(`planning-${this.filiereNom}-${this.classeNom}.pdf`);     
   } catch (e) {       
     console.error(e);       
     alert('Erreur lors de la génération du PDF');     

@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   returnUrl: any;
   message : string = '';
+  loading = false;
 
   constructor(private router: Router, private route: ActivatedRoute , private authService: AuthService) { }
 
@@ -26,6 +27,7 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
     return;
   }
 
+  this.loading = true;
   this.authService.login(formValues).subscribe({
     next: (res: any) => {
       // Stocker le token

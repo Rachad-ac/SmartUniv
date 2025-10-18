@@ -18,12 +18,13 @@ import { AddCoursComponent } from './cours/add-cours/add-cours.component';
 import { EditCoursComponent } from './cours/edit-cours/edit-cours.component';
 import { ListClasseComponent } from './classe/list-classe/list-classe.component';
 import { AddClasseComponent } from './classe/add-classe/add-classe.component';
-import { ListFiliereComponent } from './filiere/list-filiere/list-filiere.component';
 import { AddFiliereComponent } from './filiere/add-filiere/add-filiere.component';
 import { EditFiliereComponent } from './filiere/edit-filiere/edit-filiere.component';
 import { ListMatiereComponent } from './matiere/list-matiere/list-matiere.component';
 import { AddMatiereComponent } from './matiere/add-matiere/add-matiere.component';
 import { EditMatiereComponent } from './matiere/edit-matiere/edit-matiere.component';
+import { ListFiliereComponent } from './filiere/list-filiere/list-filiere.component';
+import { HistoriqueReservationComponent } from './reservation/historique-reservation/historique-reservation.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -60,6 +61,7 @@ const routes: Routes = [
   { path: 'cours', component:  EditCoursComponent},
 
   { path: 'reservations', component: ListResevationComponent},
+  { path: 'historique-resevations', component: HistoriqueReservationComponent},
 ];
 
 @NgModule({

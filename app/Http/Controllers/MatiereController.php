@@ -15,7 +15,7 @@ class MatiereController extends Controller
     public function index()
     {
         try {
-            $matieres = Matiere::orderBy('nom')->get();
+            $matieres = Matiere::orderBy('nom')->with('cours')->get();
             return response()->json([
                 'success' => true,
                 'message' => 'Liste des matières',

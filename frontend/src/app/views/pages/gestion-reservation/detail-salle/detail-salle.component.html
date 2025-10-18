@@ -1,0 +1,187 @@
+<div class="container-fluid">
+    <!-- EN-TÊTE AVEC BREADCRUMB + BOUTONS -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3 border-bottom pb-2">
+      <div class="d-flex align-items-center mt-2">
+        <nav aria-label="breadcrumb" class="mb-0">
+          <ol class="breadcrumb bg-transparent mb-0">
+            <li class="breadcrumb-item">
+              <a routerLink="/users/gestion-reservation/reserver-salles" class="text-decoration-none text-primary">
+                <i class="feather icon-calendar me-1"></i> Réserver une salle
+              </a>
+            </li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">Détail Salle</li>
+          </ol>
+        </nav>
+      </div>
+  
+      <div class="d-flex gap-2 mt-2">
+        <button type="button" class="btn btn-outline-primary btn-sm"
+          (click)="openModal(DisponibiliteModal, 'md')">
+          <i class="feather icon-search me-1"></i> Vérifier disponibilité
+        </button>
+  
+        <button type="button" class="btn btn-success btn-sm"
+          (click)="openModal(ReserverModal, 'md')">
+          <i class="feather icon-check-circle me-1"></i> Réserver la salle
+        </button>
+      </div>
+    </div>
+  
+    <!-- DÉTAIL DE LA SALLE -->
+    <div class="card shadow-sm border-0 rounded-3">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start flex-wrap">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="icon-wrapper bg-primary bg-opacity-10 p-3 rounded-circle">
+              <i class="feather icon-home text-primary fs-3"></i>
+            </div>
+            <div>
+              <h3 class="text-uppercase fw-bold text-primary mb-1">{{ salle?.nom }}</h3>
+              <small class="text-muted fst-italic">Identifiant #{{ salle?.id_salle }}</small>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Infos salle -->
+        <div class="row g-4 mt-2">
+          <div class="col-md-6 col-lg-3">
+            <div class="border-start border-4 border-primary ps-3">
+              <p class="mb-1 text-muted small">Type</p>
+              <h6 class="fw-semibold">{{ salle?.type_salle }}</h6>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="border-start border-4 border-success ps-3">
+              <p class="mb-1 text-muted small">Capacité</p>
+              <h6 class="fw-semibold">{{ salle?.capacite }} personnes</h6>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="border-start border-4 border-info ps-3">
+              <p class="mb-1 text-muted small">Localisation</p>
+              <h6 class="fw-semibold">{{ salle?.localisation }}</h6>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3"> 
+            <div class="border-start border-4 border-secondary ps-3"> 
+                <p class="mb-1 text-muted small">État</p> <h6 class="fw-semibold">{{ salle?.etat }}</h6>
+            </div> 
+        </div>
+        </div>
+  
+        <hr class="my-4">
+  
+        <!-- Table équipements -->
+        <div class="table-responsive mt-4">
+          <h5 class="text-primary mb-3"><i class="feather icon-cpu me-2"></i>Équipements disponibles</h5>
+          <table class="table table-bordered text-center align-middle shadow-sm">
+            <thead class="table-light">
+              <tr>
+                <th>Nom</th>
+                <th>Quantité</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let e of salle?.equipements">
+                <td>{{ e.nom }}</td>
+                <td>{{ e.quantite }}</td>
+                <td>{{ e.description }}</td>
+              </tr>
+              <tr *ngIf="!salle?.equipements || salle?.equipements.length === 0">
+                <td colspan="3" class="text-muted">Aucun équipement disponible...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ <!-- 🔹 MODALE Vérifier Disponibilité -->
+<ng-template #DisponibiliteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Vérification disponibilité</h5>
+      <button type="button" class="btn-close" (click)="close()"></button>
+    </div>
+  
+    <form [formGroup]="disponibiliteForm" (ngSubmit)="checkDisponibilite()">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-12">
+            <label>Date de début</label>
+            <input type="datetime-local" class="form-control" formControlName="date_debut" />
+          </div>
+          <div class="col-md-12">
+            <label>Date de fin</label>
+            <input type="datetime-local" class="form-control" formControlName="date_fin" />
+          </div>
+        </div>
+  
+        <div class="mt-4 text-center" *ngIf="disponibilite !== null">
+          <div *ngIf="disponibilite" class="alert alert-success">
+            Creneaux disponible ! 
+          </div>
+          <div *ngIf="!disponibilite" class="alert alert-danger">
+            Salle non disponible à cette période. <br>Merci de choisir un autre creneaux
+          </div>
+        </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="close()">Fermer</button>
+        <button class="btn btn-primary" type="submit" [disabled]="checking">
+          {{ checking ? 'Vérification...' : 'Vérifier' }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+  
+  
+  <!-- 🔹 MODALE Réserver -->
+  <ng-template #ReserverModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Demende de reservation</h5>
+      <button type="button" class="btn-close" (click)="close()"></button>
+    </div>
+  
+    <form [formGroup]="reservationForm" (ngSubmit)="reserver()">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-12">
+            <label>Date de début <small class="text-danger">*</small></label>
+            <input type="datetime-local" class="form-control" formControlName="date_debut" />
+          </div>
+  
+          <div class="col-md-12">
+            <label>Date de fin <small class="text-danger">*</small></label>
+            <input type="datetime-local" class="form-control" formControlName="date_fin" />
+          </div>
+  
+          <div class="col-md-12">
+            <label>Type réservation <small class="text-danger">*</small></label>
+            <ng-select
+              [items]="types"
+              bindValue="value"
+              bindLabel="label"
+              placeholder="Sélectionner..."
+              formControlName="type_reservation">
+            </ng-select>
+          </div>
+  
+          <div class="col-md-12">
+            <label>Motif <small class="text-danger">*</small></label>
+            <textarea rows="3" class="form-control" formControlName="motif"></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="close()">Fermer</button>
+        <button class="btn btn-primary" type="submit" [disabled]="submitting">
+          {{ submitting ? 'Réservation en cours...' : 'Réserver' }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+  

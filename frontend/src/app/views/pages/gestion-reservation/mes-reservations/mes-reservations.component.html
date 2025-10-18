@@ -1,0 +1,99 @@
+<!-- EN-TÊTE AVEC BREADCRUMB ET BOUTONS -->
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin mb-1">
+    <nav class="page-breadcrumb cursor-pointer">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item active"><a>Mes Réservations</a></li>
+      </ol>
+    </nav>
+  </div>
+  
+  <!-- LISTE DES RÉSERVATIONS -->
+  <div class="row g-3" *ngIf="dataSource && dataSource.length > 0">
+    <div class="col-md-4 col-sm-6" *ngFor="let res of dataSource">
+      <div class="card shadow-sm h-100 border-0 rounded-3">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title text-primary fw-bold mb-2">
+            <i class="feather icon-home me-2 text-secondary"></i>
+            {{ res.salle?.nom || 'Salle inconnue' }}
+          </h5>
+  
+          <p class="mb-1">Date début : <span class="text-primary">{{ res.date_debut | date:'dd/MM/yyyy \'à\' HH:mm' }}</span></p>
+          <p class="mb-1">Date fin : <span class="text-primary">{{ res.date_fin | date:'dd/MM/yyyy \'à\' HH:mm' }}</span></p>
+          <p class="mb-1">Localisation : <span class="text-primary">{{ res.salle?.localisation }}</span></p>
+          <p class="mb-1">Statut :
+            <span [ngClass]="{
+              'text-warning': res.statut === 'En attente',
+              'text-success': res.statut === 'Validée',
+              'text-danger': res.statut === 'Rejeter'
+            }">
+              {{ res.statut }}
+            </span>
+          </p>
+  
+          <div class="mt-3 d-flex flex-row gap-3">
+            <button class="btn btn-outline-secondary btn-sm w-100" (click)="openEditRes(EditResModal , res)" [disabled]="res.statut !== 'En attente'">
+              <i class="feather icon-edit me-1"></i> Modifier
+            </button>
+  
+            <button class="btn btn-outline-danger btn-sm w-100" (click)="annulerReservation(res)" [disabled]="res.statut !== 'En attente'">
+              <i class="feather icon-x me-1"></i> Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Message si aucune réservation -->
+  <ng-template #noReservation>
+    <div class="text-center text-danger mt-4">
+      Aucune réservation trouvée...
+    </div>
+  </ng-template>
+
+<!--Edit Reservation-->
+<ng-template #EditResModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="EditResModalLabel">Modifier Réservation</h5>
+      <button type="button" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="reservationForm">
+        <div class="row g-3">
+          <div class="col-md-12">
+            <label>Date début <small style="color: red;">*</small></label>
+            <input type="datetime-local" class="form-control" formControlName="date_debut" />
+          </div>
+  
+          <div class="col-md-12">
+            <label>Date fin <small style="color: red;">*</small></label>
+            <input type="datetime-local" class="form-control" formControlName="date_fin" />
+          </div>
+  
+          <div class="col-sm-12">
+            <label>Type réservation <small style="color: red;">*</small></label>
+            <ng-select
+              [items]="types"
+              bindValue="value"
+              bindLabel="label"
+              placeholder="Sélectionner..."
+              formControlName="type_reservation">
+            </ng-select>
+          </div>
+  
+          <div class="col-md-12">
+            <label>Motif</label>
+            <textarea rows="3" class="form-control" formControlName="motif"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning" (click)="modal.close()">Fermer</button>
+      <button class="btn btn-primary" type="submit" [disabled]="reservationForm.invalid" (click)="updatedReservation()">
+        Modifier
+      </button>
+    </div>
+  </ng-template>
+  
+  

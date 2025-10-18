@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->enum('type_reservation', ['Cours', 'Examen', 'Evenement', 'TP']);
             $table->enum('statut', ['En attente', 'Validée', 'Refusée', 'Annulée'])->default('En attente');
             $table->string('motif')->nullable();
-            $table->text('description')->nullable();
 
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_salle');

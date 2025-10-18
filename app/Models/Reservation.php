@@ -24,7 +24,6 @@ class Reservation extends Model
         'type_reservation',
         'statut',
         'motif',
-        'description',
     ];
 
     protected $casts = [
