@@ -14,7 +14,6 @@ class Planning extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'id_reservation', // si tu relies planning <-> reservation
         'id_salle',
         'id_user',
         'id_cours',
@@ -22,18 +21,12 @@ class Planning extends Model
         'date_debut',
         'date_fin',
         'description',
-        'statut', // Libre/Occupee/Maintenance
     ];
 
     protected $casts = [
         'date_debut' => 'datetime',
         'date_fin'   => 'datetime',
     ];
-
-    public function reservation()
-    {
-        return $this->belongsTo(Reservation::class, 'id_reservation', 'id_reservation');
-    }
 
     public function user()
     {

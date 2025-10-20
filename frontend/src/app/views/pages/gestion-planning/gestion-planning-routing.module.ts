@@ -40,9 +40,9 @@ const routes: Routes = [
   { path: 'salles', component: AddSalleComponent },
   { path: 'salles', component: EditSalleComponent },
 
-  { path: 'equipements', component: ListEquipementComponent },
-  { path: 'equipements', component: AddEquipementComponent },
-  { path: 'equipements', component: EditEquipementComponent },
+  { path: 'salles/equipements/:id_salle', component: ListEquipementComponent },
+  { path: 'salles/equipements', component: AddEquipementComponent },
+  { path: 'salles/equipements', component: EditEquipementComponent },
 
   { path: 'filieres', component:  ListFiliereComponent},
   { path: 'filieres', component:  AddFiliereComponent},
@@ -52,9 +52,11 @@ const routes: Routes = [
   { path: 'matieres', component:  AddMatiereComponent},
   { path: 'matieres', component:  EditMatiereComponent},
 
-  { path: 'classes', component: ListClasseComponent },
-  { path: 'classes', component:  AddClasseComponent},
-  { path: 'classes', component:  EditCoursComponent},
+  { path: 'filieres/classes/:id_filiere', component: ListClasseComponent },
+
+  { path: 'filieres/classes', component: ListClasseComponent },
+  { path: 'filieres/classes', component:  AddClasseComponent},
+  { path: 'filieres/classes', component:  EditCoursComponent},
 
   { path: 'cours', component:  ListCoursComponent},
   { path: 'cours', component:  AddCoursComponent},

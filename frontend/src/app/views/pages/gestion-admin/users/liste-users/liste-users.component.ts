@@ -167,7 +167,6 @@ export class ListeUsersComponent implements OnInit {
 
   refresh(): void {
     this.getAllUsers();
-    this.getUserById();
   }
 
   /**
@@ -244,10 +243,10 @@ export class ListeUsersComponent implements OnInit {
    * Obtient la classe CSS pour le rôle
    */
   getRoleClass(roleName: string): string {
-    switch (roleName?.toLowerCase()) {
-      case 'Admin': return 'text-danger fw-bold';
-      case 'Enseignant': return 'text-warning fw-bold';
-      case 'Etudiant': return 'text-success fw-bold';
+    switch (roleName) {
+      case 'Admin': return 'text-primary';
+      case 'Enseignant': return 'text-warning';
+      case 'Etudiant': return 'text-success';
       default: return 'text-secondary';
     }
   }

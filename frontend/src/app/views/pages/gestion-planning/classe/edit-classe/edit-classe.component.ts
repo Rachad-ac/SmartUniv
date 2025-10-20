@@ -6,6 +6,7 @@ import { Alertes } from 'src/app/util/alerte';
 // Services assumés
 import { ClasseService } from 'src/app/services/classe/classe.service';
 import { FiliereService } from 'src/app/services/filiere/filiere.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-classe',
@@ -22,6 +23,7 @@ export class EditClasseComponent implements OnInit {
 
   filieres: any[] = [];
   loading = false;
+  id_filiere : any;
   
   // Liste statique des niveaux pour l'ajout/recherche
   niveaux: any [] = [
@@ -35,11 +37,13 @@ export class EditClasseComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private classeService: ClasseService,
+    private route: ActivatedRoute,
     private filiereService: FiliereService,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.id_filiere = this.route.snapshot.paramMap.get('id_filiere');
     this.loadFilieres();
     this.initForm();
     this.loadFields();
@@ -73,7 +77,7 @@ export class EditClasseComponent implements OnInit {
       nom: ['', [Validators.required, Validators.maxLength(50)]],
       niveau: ['', Validators.required],
       effectif: [0, [Validators.min(0)]], 
-      id_filiere: ['', Validators.required]
+      id_filiere: [this.id_filiere, Validators.required]
     });
   }
 

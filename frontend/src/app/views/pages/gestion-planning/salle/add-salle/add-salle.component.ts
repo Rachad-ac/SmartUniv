@@ -23,7 +23,11 @@ export class AddSalleComponent implements OnInit {
 
   // CONFORMITÉ MIGRATION : Utilisation des valeurs ENUM comme chaînes
   typesSalles: string[] = ['TP', 'Amphi', 'Cours'];
-  etats: string[] = ['Disponible', 'Occupée', 'Maintenance'];
+  etats: any = [
+    {value : 'Disponible' , label : 'Disponible'},
+    {value : 'Occupée' , label : 'Occupée'},
+    {value : 'Maintenance' , label : 'Maintenance'},
+  ];
 
   constructor(
     private salleService: SalleService,

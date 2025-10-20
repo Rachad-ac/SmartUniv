@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // ATTENTION : Ce service n'existe pas encore, il faudra le créer
 import { SalleService } from 'src/app/services/salle/salle.service'; 
@@ -18,7 +19,7 @@ export class ListSalleComponent implements OnInit {
     'capacite',
     'localisation',
     'etat',
-    'photo',
+    'equipements',
     'actions'
   ];
 
@@ -40,7 +41,7 @@ export class ListSalleComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    // Service à injecter (doit être créé)
+    private router : Router,
     private salleService: SalleService 
   ) {}
 
@@ -167,6 +168,17 @@ export class ListSalleComponent implements OnInit {
     this.getAllSalles();
   }
 
+  detailSalle(id: number) {
+
+    if (!id) {
+
+      console.error('⚠️ ID non défini');
+      return;
+    }
+
+    this.router.navigate(['admin/gestion-planning/salles/equipements', id]);
+  }
+
   /**
    * Ouvre le modal d'ajout de salle
    */
@@ -185,8 +197,8 @@ export class ListSalleComponent implements OnInit {
   /**
    * Ouvre le modal d'équipements
    */
-  openEquipements(content: TemplateRef<any>, equipements: any): void {
-    this.salleToEquipements = equipements
+  openEquipements(content: TemplateRef<any>, salle: any): void {
+    this.salleToEquipements = salle
     this.openModal(content, 'lg');
   }
 

@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Alertes } from 'src/app/util/alerte';
 import { UserService } from 'src/app/services/user/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-planning',
@@ -22,13 +23,16 @@ export class AddPlanningComponent implements OnInit {
   salles: any[] = [];
   users: any[] = [];
   loading = false;
+  id_classe : any;
 
   constructor(
-    private planningService: PlanningService, 
+    private planningService: PlanningService,
+    private route: ActivatedRoute, 
     private userService : UserService, 
     private modalService: NgbModal) {}
 
   ngOnInit() {
+    this.id_classe = parseInt(this.route.snapshot.paramMap.get('id_classe') || '0', 10);
     this.initForm();
     this.loadOptions();
   }
@@ -42,7 +46,7 @@ export class AddPlanningComponent implements OnInit {
 
   initForm(): void {
     this.form = new FormGroup({
-      id_classe: new FormControl('', Validators.required),
+      id_classe: new FormControl(this.id_classe, Validators.required),
       id_cours: new FormControl('', Validators.required),
       id_salle: new FormControl('', Validators.required),
       id_user: new FormControl('', Validators.required),

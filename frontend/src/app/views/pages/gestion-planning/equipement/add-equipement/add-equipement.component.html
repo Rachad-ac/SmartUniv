@@ -34,30 +34,10 @@
               {{ getErrorMessage('quantite') }}
             </div>
           </div>
-
-
-        </div>
-
-         <!-- Salle -->
-        <div class="col-sm-6">
-          <div class="mb-3">
-            <label class="form-label">Salle <span class="text-danger">*</span></label>
-            <ng-select
-              [items]="salles"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Sélectionner une salle..."
-              formControlName="id_salle"
-              [class.is-invalid]="hasError('id_salle')">
-            </ng-select>
-            <div class="invalid-feedback" *ngIf="hasError('id_salle')">
-              {{ getErrorMessage('id_salle') }}
-            </div>
-          </div>
         </div>
   
         <!-- Description -->
-        <div class="col-sm-6">
+        <div class="col-sm-12">
           <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea 

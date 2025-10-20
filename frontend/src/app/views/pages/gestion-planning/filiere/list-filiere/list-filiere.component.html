@@ -48,20 +48,16 @@
             <th mat-header-cell *matHeaderCellDef class="table-head-text">Description</th>
             <td mat-cell *matCellDef="let filiere">{{ filiere.description }}</td>
           </ng-container>
-  
-          <!-- Nombre de Classes -->
-          <ng-container matColumnDef="nb_classes">
-            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Nombre de classes</th>
+
+          <ng-container matColumnDef="classe">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Classes</th>
             <td mat-cell *matCellDef="let filiere" class="text-center">
-              {{ filiere.classes?.length || 0 }}
-            </td>
-          </ng-container>
-  
-          <!-- Nombre d'Étudiants -->
-          <ng-container matColumnDef="nb_etudiants">
-            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Nombre d'etudiants</th>
-            <td mat-cell *matCellDef="let filiere" class="text-center">
-              {{ filiere.etudiants?.length || 0 }}
+              <button 
+              class="border-0 bg-transparent text-warning" 
+              mat-icon 
+              (click)="detailFiliere(filiere?.id_filiere)">
+                <mat-icon>school</mat-icon>
+              </button>
             </td>
           </ng-container>
   

@@ -15,6 +15,7 @@ import { HistoriquesComponent } from './historiques/historiques.component';
 import { MesReservationsComponent } from './mes-reservations/mes-reservations.component';
 import { EmploieDuTempsComponent } from './emploie-du-temps/emploie-du-temps.component';
 import { DetailSalleComponent } from './detail-salle/detail-salle.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { DetailSalleComponent } from './detail-salle/detail-salle.component';
     ReactiveFormsModule,
     NgSelectModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    FullCalendarModule
   ]
 })
 export class GestionReservationModule { }

@@ -30,35 +30,16 @@
                 bindValue="value"
                 placeholder="Sélectionner un niveau..."
                 [class.is-invalid]="hasError('niveau')"
-                formControlName="miveau">
+                formControlName="niveau">
               </ng-select>
               <div class="invalid-feedback" *ngIf="hasError('niveau')">
                 {{ getErrorMessage('niveau') }}
               </div>
             </div>
           </div>
-    
-        <!-- Champ Filière -->
-    
-        <div class="col-sm-6">
-            <div class="mb-3">
-              <label class="form-label">Filiere <span class="text-danger">*</span></label>
-              <ng-select
-                [items]="filieres"
-                bindLabel="label"
-                bindValue="value"
-                placeholder="Sélectionner une filiere..."
-                [class.is-invalid]="hasError('id_filiere')"
-                formControlName="id_filiere">
-              </ng-select>
-              <div class="invalid-feedback" *ngIf="hasError('id_filiere')">
-                {{ getErrorMessage('id_filiere') }}
-              </div>
-            </div>
-          </div>
 
             <!-- Effectif maximal -->
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="mb-3">
                     <label for="effectif" class="form-label">Effectif maximal</label>
                     <input 

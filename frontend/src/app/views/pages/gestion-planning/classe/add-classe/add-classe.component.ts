@@ -6,6 +6,7 @@ import { Alertes } from 'src/app/util/alerte';
 // Services assumés
 import { ClasseService } from 'src/app/services/classe/classe.service';
 import { FiliereService } from 'src/app/services/filiere/filiere.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-classe',
@@ -17,6 +18,7 @@ export class AddClasseComponent implements OnInit {
   message = '';
   filieres: any[] = [];
   loading = false;
+  id_filiere : any;
 
   form!: FormGroup;
   @Output() submit: EventEmitter<boolean> = new EventEmitter();
@@ -36,11 +38,15 @@ export class AddClasseComponent implements OnInit {
   constructor(
     private classeService: ClasseService,
     private filiereService: FiliereService,
+    private route: ActivatedRoute,
     private modalService: NgbModal,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+
+    this.id_filiere = this.route.snapshot.paramMap.get('id_filiere');
+
     this.loadFilieres();
     
     if (this.isSearch) {
@@ -77,7 +83,7 @@ export class AddClasseComponent implements OnInit {
     this.form = this.fb.group({
       nom: [''], 
       niveau: [''],
-      id_filiere: ['']
+      id_filiere: [null]
     });
   }
 
@@ -89,7 +95,7 @@ export class AddClasseComponent implements OnInit {
       nom: ['', [Validators.required, Validators.maxLength(50)]],
       niveau: ['', Validators.required],
       effectif: [0, [Validators.min(0)]], // Effectif initial à 0 par défaut
-      id_filiere: ['', Validators.required]
+      id_filiere: [this.id_filiere, Validators.required]
     });
   }
 

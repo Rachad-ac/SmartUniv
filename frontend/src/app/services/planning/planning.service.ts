@@ -34,6 +34,11 @@ getPlanningByFiliereAndClasse(id_filiere: number, id_classe: number): Observable
     return this.http.get(`${environment.baseUrl}plannings/by-filiere-classe/${id_filiere}/${id_classe}`);
 }
 
+// 🔹 Planning par enseignant
+getPlanningByUser(id_user: number): Observable<any> {
+  return this.http.get(`${environment.baseUrl}plannings/by-user/${id_user}`);
+}
+
 
   // Récupérer un planning par ID
   getPlanning(id: number): Observable<any> {

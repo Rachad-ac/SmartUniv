@@ -18,6 +18,7 @@ export class EditFiliereComponent implements OnInit {
   @Input() isSearch: boolean = false;
 
   loading = false;
+  id_filiere : any;
 
   constructor(
     private modalService: NgbModal,

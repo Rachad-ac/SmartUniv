@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeatherIconModule } from './core/feather-icon/feather-icon.module';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AuthInterceptor } from './core/interceptor/auth.interceptor';
     HttpClientModule,
     PipeModule,
     FormsModule,
+    FullCalendarModule
   ],
   providers: [
     AuthGuard,

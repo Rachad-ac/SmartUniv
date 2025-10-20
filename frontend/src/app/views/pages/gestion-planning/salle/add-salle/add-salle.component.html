@@ -62,8 +62,8 @@
         <label for="etat" class="form-label">État <span *ngIf="!isSearch" class="text-danger">*</span></label>
         <ng-select 
           [items]="etats" 
-          bindLabel="self" 
-          bindValue="self" 
+          bindLabel="label" 
+          bindValue="value" 
           placeholder="Sélectionner..." 
           formControlName="etat"
           [class.is-invalid]="hasError('etat')">

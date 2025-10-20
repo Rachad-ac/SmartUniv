@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Alertes } from 'src/app/util/alerte';
 import { Helper } from 'src/app/util/helper';
 import { UserService } from 'src/app/services/user/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-planning',
@@ -21,14 +22,16 @@ export class EditPlanningComponent implements OnInit {
   users: any[] = [];
   loading = false;
   optionsLoaded = false; // Nouvelle variable pour suivre le chargement
+  id_classe : any;
 
   constructor(
     private planningService: PlanningService, 
     private userService : UserService,
+    private route: ActivatedRoute,
     private modalService: NgbModal) {}
 
   async ngOnInit() {
-    console.log('📥 Données reçues dans EditPlanning:', this.planningToUpdate);
+    this.id_classe = parseInt(this.route.snapshot.paramMap.get('id_classe') || '0', 10);
     this.initForm();
     await this.loadOptions(); // Attendre le chargement des options
     this.loadFields();
@@ -67,12 +70,12 @@ export class EditPlanningComponent implements OnInit {
     return new Promise((resolve) => {
       this.userService.getUsers().subscribe({
         next: (res) => {
-          console.log('Recruteur récupérés :', res.data);
+          console.log('users récupérés :', res.data);
           this.users = res.data.map((user: any) => ({
             ...user,
             fullName: `${user.prenom} ${user.nom}`,
             id_user: user.id,
-          })).filter((user: any) => user.role === 'Enseignant');
+          })).filter((user: any) => user.role.nom === 'Enseignant');
           resolve();
         },
         error: (err) => {
@@ -85,7 +88,7 @@ export class EditPlanningComponent implements OnInit {
 
   initForm(): void {
     this.form = new FormGroup({
-      id_classe: new FormControl('', Validators.required),
+      id_classe: new FormControl(this.id_classe, Validators.required),
       id_cours: new FormControl('', Validators.required),
       id_salle: new FormControl('', Validators.required),
       id_user: new FormControl('', Validators.required),

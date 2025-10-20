@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Services assumés pour la gestion des classes et des filières
 import { ClasseService } from 'src/app/services/classe/classe.service';
@@ -28,19 +29,22 @@ export class ListClasseComponent implements OnInit {
   loadingIndicator = true;
   searchTerm: string = '';
   filieres: any[] = []; // Utilisé pour mapper l'ID de filière au nom
+  id_filiere : any;
 
   constructor(
     private modalService: NgbModal,
-    // Note: Assurez-vous que ces services sont définis
-    // et importés correctement dans votre environnement Angular
+    private route: ActivatedRoute,
     private classeService: ClasseService,
     private filiereService: FiliereService 
   ) {}
 
   ngOnInit(): void {
+
+    this.id_filiere = this.route.snapshot.paramMap.get('id_filiere');
+
     this.loadFilieres();
     // Le chargement des classes est lancé après le chargement des filières (ou peut être parallèle)
-    this.getAllClasses(); 
+    this.getAllClasses(this.id_filiere); 
   }
 
   /**
@@ -67,9 +71,9 @@ export class ListClasseComponent implements OnInit {
   /**
    * Charge toutes les classes
    */
-  getAllClasses(): void {
+  getAllClasses(id : any): void {
     this.loadingIndicator = true;
-    this.classeService.getClasses().subscribe({
+    this.classeService.getClasse(id).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.dataSource = { 
@@ -102,7 +106,7 @@ export class ListClasseComponent implements OnInit {
   paginate($event: number): void {
     this.loadingIndicator = true;
     this.pageOptions.page = $event - 1;
-    this.getAllClasses();
+    this.getAllClasses(this.id_filiere);
   }
 
   /**
@@ -143,7 +147,7 @@ export class ListClasseComponent implements OnInit {
           next: (response: any) => {
             if (response.success) {
               Alertes.alerteAddSuccess('Classe supprimée avec succès');
-              this.getAllClasses();
+              this.getAllClasses(this.id_filiere);
             } else {
               Alertes.alerteAddDanger(response.message || 'Erreur lors de la suppression');
             }
@@ -157,7 +161,7 @@ export class ListClasseComponent implements OnInit {
   }
 
   refresh(): void {
-    this.getAllClasses();
+    this.getAllClasses(this.id_filiere);
   }
 
   /**
@@ -165,7 +169,7 @@ export class ListClasseComponent implements OnInit {
    */
   close(): void {
     this.modalService.dismissAll();
-    this.getAllClasses();
+    this.getAllClasses(this.id_filiere);
   }
 
   /**
@@ -173,7 +177,7 @@ export class ListClasseComponent implements OnInit {
    */
   doSearch(criteria: any): void {
     if (Object.keys(criteria).length === 0 || this.isEmptySearch(criteria)) {
-      this.getAllClasses();
+      this.getAllClasses(this.id_filiere);
       return;
     }
 

@@ -37,8 +37,7 @@ class SalleController extends Controller
             'type_salle' => 'required|in:TP,Amphi,Cours',
             'capacite' => 'required|integer|min:1',
             'localisation' => 'required|string|max:150',
-            'etat' => 'sometimes|in:Disponible,Occupee,Maintenance',
-            'photo' => 'sometimes|string|max:255',
+            'etat' => 'sometimes|in:Disponible,Occupée,Maintenance',
         ]);
 
         $salle = Salle::create($validated);

@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alertes } from 'src/app/util/alerte';
 import { EquipementService } from 'src/app/services/equipement/equipement.service';
 import { SalleService } from 'src/app/services/salle/salle.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-equipement',
@@ -25,15 +26,19 @@ export class EditEquipementComponent implements OnInit {
 
   salles: any[] = [];
   loading = false;
+  id_salle : any;
 
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
+    private route: ActivatedRoute,
     private equipementService: EquipementService,
     private salleService: SalleService
   ) {}
 
   ngOnInit(): void {
+    this.id_salle = this.route.snapshot.paramMap.get('id_salle');
+
     this.initForm();
     this.loadSalles();
     
@@ -73,7 +78,7 @@ export class EditEquipementComponent implements OnInit {
       nom: ['', [Validators.required, Validators.minLength(2)]],
       quantite: [1, [Validators.required, Validators.min(1)]],
       description: [''],
-      id_salle: [null, Validators.required]
+      id_salle: [this.id_salle, Validators.required]
     });
   }
 

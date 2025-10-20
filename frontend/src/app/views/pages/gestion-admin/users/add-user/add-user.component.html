@@ -2,129 +2,107 @@
   <form [formGroup]="form">
     <div class="row">
 
-      <!-- nom -->
+      <!-- Nom -->
       <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('nom')"
-            id="nom" 
-            placeholder="Entrez le nom" 
-            formControlName="nom">
-          <div class="invalid-feedback" *ngIf="hasError('nom')">
-            {{ getErrorMessage('nom') }}
-          </div>
+        <label>Nom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control form-control-lg"
+               [class.is-invalid]="hasError('nom')" formControlName="nom">
+        <div class="invalid-feedback" *ngIf="hasError('nom')">
+          {{ getErrorMessage('nom') }}
         </div>
       </div>
 
-      <!-- prenom -->
+      <!-- Prénom -->
       <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('prenom')"
-            id="prenom" 
-            placeholder="Entrez le prénom" 
-            formControlName="prenom">
-          <div class="invalid-feedback" *ngIf="hasError('prenom')">
-            {{ getErrorMessage('prenom') }}
-          </div>
+        <label>Prénom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control form-control-lg"
+               [class.is-invalid]="hasError('prenom')" formControlName="prenom">
+        <div class="invalid-feedback" *ngIf="hasError('prenom')">
+          {{ getErrorMessage('prenom') }}
         </div>
       </div>
 
-      <!-- email -->
+      <!-- Email -->
       <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
-          <input 
-            type="email" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('email')"
-            id="email" 
-            placeholder="exemple@email.com" 
-            formControlName="email">
-          <div class="invalid-feedback" *ngIf="hasError('email')">
-            {{ getErrorMessage('email') }}
-          </div>
+        <label>Email <span class="text-danger">*</span></label>
+        <input type="email" class="form-control form-control-lg"
+               [class.is-invalid]="hasError('email')" formControlName="email">
+        <div class="invalid-feedback" *ngIf="hasError('email')">
+          {{ getErrorMessage('email') }}
         </div>
       </div>
 
-      <!-- roles -->
+      <!-- Rôle -->
       <div class="col-sm-6">
-        <div class="mb-3">
-          <label class="form-label">Rôle <span class="text-danger">*</span></label>
-          <ng-select
-            [items]="roles"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Sélectionner un rôle..."
-            [class.is-invalid]="hasError('role_id')"
-            formControlName="role_id">
-          </ng-select>
-          <div class="invalid-feedback" *ngIf="hasError('role_id')">
-            {{ getErrorMessage('role_id') }}
-          </div>
+        <label>Rôle <span class="text-danger">*</span></label>
+        <ng-select [items]="roles" bindLabel="label" bindValue="value"
+                   placeholder="Sélectionner un rôle..."
+                   [class.is-invalid]="hasError('role_id')" formControlName="role_id">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="hasError('role_id')">
+          {{ getErrorMessage('role_id') }}
         </div>
       </div>
 
-      <!-- password (seulement pour l'ajout) -->
+      <!-- Filières -->
+      <div class="col-sm-6">
+        <label>Filières <span class="text-danger">*</span></label>
+        <ng-select [items]="filieres" bindLabel="label" bindValue="value"
+                   placeholder="Choisir une ou plusieurs filières..."
+                   [multiple]="true" formControlName="filieres">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="hasError('filieres')">
+          {{ getErrorMessage('filieres') }}
+        </div>
+      </div>
+
+      <!-- Classes dépendantes -->
+      <div class="col-sm-6">
+        <label>Classes <span class="text-danger">*</span></label>
+        <ng-select [items]="filteredClasses"
+                   bindLabel="label"
+                   bindValue="value"
+                   placeholder="Choisir une ou plusieurs classes..."
+                   [multiple]="true"
+                   formControlName="classes"
+                   [disabled]="!filteredClasses.length">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="hasError('classes')">
+          {{ getErrorMessage('classes') }}
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
       <div class="col-sm-6" *ngIf="!isSearch">
-        <div class="mb-3">
-          <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
-          <input 
-            type="password" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('password')"
-            id="password" 
-            placeholder="Entrez le mot de passe" 
-            formControlName="password">
-          <div class="invalid-feedback" *ngIf="hasError('password')">
-            {{ getErrorMessage('password') }}
-          </div>
+        <label>Mot de passe <span class="text-danger">*</span></label>
+        <input type="password" class="form-control form-control-lg"
+               [class.is-invalid]="hasError('password')" formControlName="password">
+        <div class="invalid-feedback" *ngIf="hasError('password')">
+          {{ getErrorMessage('password') }}
         </div>
       </div>
 
-      <!-- password_confirmation (seulement pour l'ajout) -->
+      <!-- Confirmation -->
       <div class="col-sm-6" *ngIf="!isSearch">
-        <div class="mb-3">
-          <label for="password_confirmation" class="form-label">Confirmation mot de passe <span class="text-danger">*</span></label>
-          <input 
-            type="password" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('password_confirmation')"
-            id="password_confirmation" 
-            placeholder="Confirmez le mot de passe" 
-            formControlName="password_confirmation">
-          <div class="invalid-feedback" *ngIf="hasError('password_confirmation')">
-            {{ getErrorMessage('password_confirmation') }}
-          </div>
+        <label>Confirmez le mot de passe <span class="text-danger">*</span></label>
+        <input type="password" class="form-control form-control-lg"
+               [class.is-invalid]="hasError('password_confirmation')" formControlName="password_confirmation">
+        <div class="invalid-feedback" *ngIf="hasError('password_confirmation')">
+          {{ getErrorMessage('password_confirmation') }}
         </div>
       </div>
-   
     </div>
   </form>
 
   <!-- Boutons -->
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
-    <button 
-      type="button" 
-      class="btn btn-primary" 
-      *ngIf="!isSearch" 
-      (click)="create()" 
-      [disabled]="!form.valid || loading">
+  <div class="modal-footer mt-3">
+    <button class="btn btn-secondary" (click)="close()">Fermer</button>
+    <button class="btn btn-primary" *ngIf="!isSearch" 
+            (click)="create()" [disabled]="!form.valid || loading">
       <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
       {{ loading ? 'Création...' : 'Enregistrer' }}
     </button>
-    <button 
-      type="button" 
-      class="btn btn-primary" 
-      *ngIf="isSearch" 
-      (click)="doSearch()">
+    <button class="btn btn-primary" *ngIf="isSearch" (click)="doSearch()">
       <i class="feather icon-search me-2"></i>Rechercher
     </button>
   </div>

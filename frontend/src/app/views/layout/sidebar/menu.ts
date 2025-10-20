@@ -35,7 +35,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Filières',
-    icon: 'git-branch', 
+    icon: 'layers', 
     link: '/admin/gestion-planning/filieres',
     roles: ['Admin']
   },
@@ -52,20 +52,8 @@ export const MENU: MenuItem[] = [
     roles: ['Admin']
   },
   {
-    label: 'Equipements',
-    icon: 'cpu', 
-    link: '/admin/gestion-planning/equipements',
-    roles: ['Admin']
-  },
-  {
-    label: 'Classes',
-    icon: 'users', 
-    link: '/admin/gestion-planning/classes',
-    roles: ['Admin']
-  },
-  {
     label: 'Planning',
-    icon: 'clock',
+    icon: 'calendar',
     link: '/admin/gestion-planning/planning',
     roles: ['Admin']
   },
@@ -90,7 +78,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Historique reservation',
-    icon: 'bookmark', 
+    icon: 'clock', 
     link: '/admin/gestion-planning/historique-resevations',
     roles: ['Admin']
   },
@@ -103,7 +91,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Réserver une salle',
-    icon: 'plus-circle',
+    icon: 'home',
     link: '/users/gestion-reservation/reserver-salles',
     roles: ['Etudiant', 'Enseignant']
   },
@@ -114,14 +102,8 @@ export const MENU: MenuItem[] = [
     roles: ['Etudiant', 'Enseignant']
   },
   {
-    label: 'Historique reservation',
-    icon: 'bookmark', 
-    link: '/users/gestion-reservation/historiques',
-    roles: ['Etudiant', 'Enseignant']
-  },
-  {
     label: 'Emploi du temps',
-    icon: 'clock', 
+    icon: 'calendar', 
     link: '/users/gestion-reservation/emploi-du-temps',
     roles: ['Etudiant', 'Enseignant']
   },

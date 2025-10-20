@@ -41,7 +41,7 @@ class EquipementController extends Controller
     public function show($id)
     {
         try {
-            $equipement = Equipement::findOrFail($id);
+            $equipement = Equipement::where('id_salle' , $id)->get();
 
             return response()->json([
                 'success' => true,
@@ -106,4 +106,26 @@ class EquipementController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Recherche filtrée d'utilisateurs.
+     * GET /api/equipement/search?nom=&quantite=&description=
+     */
+    public function search(Request $request)
+    {
+        $equipement = Equipement::query();
+
+        if ($request->filled('nom')) {
+            $equipement->where('nom', 'LIKE', '%' . $request->nom . '%');
+        }
+        if ($request->filled('quantite')) {
+            $equipement->where('quantite', 'LIKE', '%' . $request->quantite . '%');
+        }
+        if ($request->filled('description')) {
+            $equipement->where('description', 'LIKE', '%' . $request->description . '%');
+        }
+
+        return response()->json(['success' => true, 'data' => $equipement->get()], 200);
+    }
+
 }

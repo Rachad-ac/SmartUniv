@@ -13,21 +13,20 @@ class PlanningController extends Controller
      */
     protected function formatEventForFullCalendar(Planning $planning)
     {
-        // Supposons que vos modèles Salle, Classe, User et Cours ont un champ 'nom' ou 'titre'
         return [
             'id' => $planning->id_planning,
-            // Correction potentielle : utilisez titre si c'est le nom du champ de cours
-            'title' => $planning->cours->nom . ' - ' . $planning->classe->nom . ' (' . $planning->salle->nom . ')'.  ' - Mr. ' . $planning->user->prenom . ' ' . $planning->user->nom , 
+            'title' => $planning->cours?->nom . ' - ' . $planning->classe?->nom . ' (' . $planning->salle?->nom . ')'.  ' - M. ' . $planning->user?->prenom . ' ' . $planning->user?->nom , 
             'start' => $planning->date_debut,
             'end' => $planning->date_fin,
             'extendedProps' => [
-                'salle_nom' => $planning->salle->nom,
-                'classe_nom' => $planning->classe->nom,
-                'cours_id' => $planning->id_cours,
-                'filiere_nom' => $planning->classe->filiere->nom,
-                'id_filiere' => $planning->classe->filiere->id_filiere, // Assurez-vous d'utiliser la relation pour l'ID de filière
+                'id_salle' => $planning->id_salle,
+                'id_user' => $planning->id_user,
+                'salle_nom' => $planning->salle?->nom,
+                'classe_nom' => $planning->classe?->nom,
+                'id_cours' => $planning->id_cours,
+                'filiere_nom' => $planning->classe?->filiere?->nom,
+                'id_filiere' => $planning->classe?->filiere?->id_filiere,
                 'id_classe' => $planning->id_classe,
-                'user_id' => $planning->id_user,
                 'description' => $planning->description,
             ],
             // Vous pouvez définir des couleurs en fonction de la salle, du cours, etc.
@@ -107,6 +106,17 @@ class PlanningController extends Controller
             'message' => "Planning chargé pour la classe $id_classe et la filière $id_filiere",
             'data' => $events,
         ]);
+    }
+
+    // 🔹 2. Renvoyer les plannings d’un enseignant
+    public function getByUser($id_user)
+    {
+        $plannings = Planning::with(['cours', 'salle', 'classe.filiere', 'user'])
+            ->where('id_user', $id_user)
+            ->get();
+
+        $events = $plannings->map(fn($p) => $this->formatEventForFullCalendar($p));
+        return response()->json(['data' => $events]);
     }
 
     /**
@@ -226,7 +236,7 @@ class PlanningController extends Controller
 
         // Recharger les relations AVANT de formater la réponse
         $planning->refresh();
-        $planning->load(['cours', 'salle', 'classe', 'user']);
+        $planning->load(['cours', 'salle', 'classe.filiere', 'user']);
 
         // Formater la réponse avec gestion des relations null
         return response()->json($this->formatEventForFullCalendar($planning));

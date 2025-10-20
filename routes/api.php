@@ -60,14 +60,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('reservations')->group(function () {
             Route::get('/all', [ReservationController::class, 'index']);
             Route::get('/en-attente', [ReservationController::class, 'reservationEnAttente']);
-            Route::post('/reserver', [ReservationController::class, 'store']);
             Route::get('/{id}', [ReservationController::class, 'show']);
             Route::put('/valider/{id}', [ReservationController::class, 'valider']);
             Route::put('/rejeter/{id}', [ReservationController::class, 'rejeter']);
         });
 
         Route::prefix('salles')->group(function () {
-            Route::get('/all', [SalleController::class, 'index']);
             Route::post('/create', [SalleController::class, 'store']);
             Route::put('/{id}', [SalleController::class, 'update']);
             Route::delete('/{id}' , [SalleController::class , 'destroy']);
@@ -89,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [EquipementController::class, 'show']);
             Route::put('/{id}', [EquipementController::class, 'update']);
             Route::delete('/{id}', [EquipementController::class, 'destroy']);
+            Route::get('/search/{id}', [EquipementController::class, 'search']);
         });
 
         Route::prefix('filieres')->group(function () {
@@ -109,13 +108,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('classes')->group(function () {
             Route::get('/all', [ClasseController::class , 'index']);
             Route::post('/create', [ClasseController::class , 'store']);
+            Route::get('/{id}', [ClasseController::class , 'show']);
             Route::delete('/{id}', [ClasseController::class , 'destroy']);
             Route::put('/{id}', [ClasseController::class , 'update']);
         });
 
         Route::prefix('plannings')->group(function () {
-            Route::get('/all', [PlanningController::class , 'index']);
-            Route::get('/by-filiere-classe/{id_filiere}/{id_classe}', [PlanningController::class, 'getPlanningFiliereClasse']);
             Route::post('/create', [PlanningController::class , 'store']);
             Route::delete('/{id}', [PlanningController::class , 'destroy']);
             Route::put('/{id}', [PlanningController::class , 'update']);
@@ -141,12 +139,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes Enseigant et Etudiant uniquement
     Route::middleware(['role:Enseignant,Etudiant'])->group(function () {
 
-        Route::get('salles/all', [SalleController::class, 'index']);
-        Route::get('salles/{id}', [SalleController::class, 'show']);
-        Route::get('equipements/{id}', [EquipementController::class, 'show']);
-
-        
-
         Route::prefix('reservations')->group(function () {
             Route::post('/reserver', [ReservationController::class, 'store']);
             Route::put('/{id}', [ReservationController::class, 'update']);
@@ -158,7 +150,30 @@ Route::middleware('auth:sanctum')->group(function () {
 
         
     });
+
+    Route::prefix('plannings')->group(function () {
+        Route::get('/all', [PlanningController::class , 'index']);
+        Route::get('/by-user/{id_user}', [PlanningController::class, 'getByUser']);
+        Route::get('/by-filiere-classe/{id_filiere}/{id_classe}', [PlanningController::class, 'getPlanningFiliereClasse']);
+    });
+
+    Route::get('equipements/{id}', [EquipementController::class, 'show']); 
+
+
+    Route::prefix('reservations')->group(function () {
+        Route::post('/reserver', [ReservationController::class, 'store']);
+        Route::put('/{id}', [ReservationController::class, 'update']);
+        Route::post('/annuler/{id}', [ReservationController::class, 'annulerReservation']);
+        Route::delete('/{id}', [ReservationController::class, 'destroy']);
+        Route::get('/mes-reservations/{id}', [ReservationController::class, 'mesReservations']);
+    });
+
+    Route::prefix('salles')->group(function () {
+        Route::get('/all', [SalleController::class, 'index']);
+        Route::get('/{id}', [SalleController::class, 'show']);
+    });
    
+
     Route::prefix('/notifications')->group(function () {
         Route::get('/{userId}', [NotificationController::class, 'index']); 
         Route::patch('/{id}/read', [NotificationController::class, 'markAsRead']); 

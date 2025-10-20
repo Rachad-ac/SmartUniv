@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->integer('capacite');
             $table->string('localisation');
             $table->enum('etat', ['Disponible', 'Occupée', 'Maintenance'])->default('Disponible');
-            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

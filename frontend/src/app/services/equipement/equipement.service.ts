@@ -21,21 +21,20 @@ export class EquipementService {
 
   /**
    * Recherche d'équipements avec critères
-   * GET /api/equipments/search?nom=&type=&localisation=
+   * GET /api/equipments/search
    */
   searchEquipments(criteria: any): Observable<any> {
     let params = new HttpParams();
 
     for (const key in criteria) {
-        // Check if the property exists, is not null, and is not an empty string
         if (criteria.hasOwnProperty(key) && criteria[key] !== null && criteria[key] !== '') {
             params = params.set(key, criteria[key]);
         }
     }
     
-    // The second argument of http.get is an options object, where 'params' is set.
     return this.http.get(`${environment.baseUrl}equipements/search`, { params: params });
   }
+
 
   /**
    * Récupère un équipement par ID
@@ -51,7 +50,7 @@ export class EquipementService {
    */
   createEquipment(equipment: any): Observable<any> {
     // Assuming a POST request is used for creation, without an ID in the URL.
-    return this.http.post<any>(`${environment.baseUrl}equipements`, equipment);
+    return this.http.post<any>(`${environment.baseUrl}equipements/create`, equipment);
   }
 
 

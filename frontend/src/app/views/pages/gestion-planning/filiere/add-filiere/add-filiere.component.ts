@@ -14,6 +14,7 @@ export class AddFiliereComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   message = '';
+  id_filiere : any;
 
   @Output() submit: EventEmitter<boolean> = new EventEmitter();
   @Output() search: EventEmitter<any> = new EventEmitter();

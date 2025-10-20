@@ -56,10 +56,13 @@
             </td>
           </ng-container>
   
-          <ng-container matColumnDef="photo">
+          <ng-container matColumnDef="equipements">
             <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Equipements</th>
             <td mat-cell *matCellDef="let salle" class="text-center">
-              <button class="btn btn-info text-white" mat-icon-button (click)="openEquipements(EquipementsModal , equipements)">
+              <button 
+              class="border-0 bg-transparent text-warning" 
+              mat-icon 
+              (click)="detailSalle(salle?.id_salle)">
                 <mat-icon>precision_manufacturing</mat-icon>
               </button>
             </td>
@@ -146,27 +149,33 @@
   <ng-template #EquipementsModal let-modal>
     <div class="modal-header">
       <h5 class="modal-title">Liste des Equipements</h5>
-      <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+      <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
-      <section class="table-container mat-elevation-z8" tabindex="0">
-        <table mat-table [dataSource]="salleToEquipements?.equipements">
-          <ng-container matColumnDef="nom">
-            <th mat-header-cell *matHeaderCellDef class="table-head-text">Nom</th>
-            <td mat-cell *matCellDef="let equipement">{{ equipement.nom }}</td>
-          </ng-container>
-          <ng-container matColumnDef="quantite">
-            <th mat-header-cell *matHeaderCellDef class="table-head-text">Quantité</th>
-            <td mat-cell *matCellDef="let equipement">{{ equipement.quantite }}</td>
-          </ng-container>
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef class="table-head-text">Description</th>
-            <td mat-cell *matCellDef="let equipement">{{ equipement.description }}</td>
-          </ng-container>
-        </table>
-      </section>
+    <div class="modal-body mb-5">
+      <table mat-table [dataSource]="salleToEquipements?.equipements">
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef class="text-warning">Nom</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="quantite">
+          <th mat-header-cell *matHeaderCellDef class="text-warning">Quantité</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.quantite }}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef class="text-warning">Description</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.description }}</td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="['nom', 'quantite', 'description']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['nom', 'quantite', 'description']"></tr>
+      </table>
+  
+      <span *ngIf="!salleToEquipements?.equipements?.length" class="text-danger text-center mt-2 d-block">
+        Aucun équipement associé à cette salle
+      </span>
     </div>
   </ng-template>
+  
 
   <ng-template #ReservationsModal let-modal>
     <div class="modal-header">
@@ -174,6 +183,5 @@
       <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-      <app-infos-planning ></app-infos-planning>
     </div>
   </ng-template>

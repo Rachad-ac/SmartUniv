@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FiliereService } from 'src/app/services/filiere/filiere.service';
 import { Alertes } from 'src/app/util/alerte';
@@ -14,8 +15,7 @@ export class ListFiliereComponent implements OnInit {
     'nom',
     'code',
     'description',
-    'nb_classes',
-    'nb_etudiants',
+    'classe',
     'actions'
   ];
 
@@ -27,6 +27,7 @@ export class ListFiliereComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    private router : Router,
     private filiereService: FiliereService
   ) {}
 
@@ -85,6 +86,17 @@ export class ListFiliereComponent implements OnInit {
       () => {},
       () => {}
     );
+  }
+
+  detailFiliere(id: number) {
+
+    if (!id) {
+
+      console.error('⚠️ ID non défini');
+      return;
+    }
+
+    this.router.navigate(['admin/gestion-planning/filieres/classes', id]);
   }
 
   /**

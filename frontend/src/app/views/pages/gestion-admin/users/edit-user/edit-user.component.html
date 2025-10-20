@@ -1,122 +1,88 @@
 <section>
-  <form [formGroup]="form">
-    <div class="row">
+  <form [formGroup]="form" class="row">
 
-      <!-- nom -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('nom')"
-            id="nom" 
-            placeholder="Entrez le nom" 
-            formControlName="nom">
-          <div class="invalid-feedback" *ngIf="hasError('nom')">
-            {{ getErrorMessage('nom') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- prenom -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('prenom')"
-            id="prenom" 
-            placeholder="Entrez le prénom" 
-            formControlName="prenom">
-          <div class="invalid-feedback" *ngIf="hasError('prenom')">
-            {{ getErrorMessage('prenom') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- email -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-          <input 
-            type="email" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('email')"
-            id="email" 
-            placeholder="exemple@email.com" 
-            formControlName="email">
-          <div class="invalid-feedback" *ngIf="hasError('email')">
-            {{ getErrorMessage('email') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- role -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label class="form-label">Rôle <span class="text-danger">*</span></label>
-          <ng-select
-            [items]="roles"
-            bindValue="value"
-            bindLabel="label"
-            placeholder="Sélectionner un rôle..."
-            [class.is-invalid]="hasError('role_id')"
-            formControlName="role_id">
-          </ng-select>
-          <div class="invalid-feedback" *ngIf="hasError('role_id')">
-            {{ getErrorMessage('role_id') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- password (optionnel pour la modification) -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="password" class="form-label">Nouveau mot de passe <small class="text-muted">(optionnel)</small></label>
-          <input 
-            type="password" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('password')"
-            id="password" 
-            placeholder="Laissez vide pour ne pas changer" 
-            formControlName="password">
-          <div class="invalid-feedback" *ngIf="hasError('password')">
-            {{ getErrorMessage('password') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- password_confirmation (optionnel pour la modification) -->
-      <div class="col-sm-6">
-        <div class="mb-3">
-          <label for="password_confirmation" class="form-label">Confirmation mot de passe</label>
-          <input 
-            type="password" 
-            class="form-control form-control-lg" 
-            [class.is-invalid]="hasError('password_confirmation')"
-            id="password_confirmation" 
-            placeholder="Confirmez le nouveau mot de passe" 
-            formControlName="password_confirmation">
-          <div class="invalid-feedback" *ngIf="hasError('password_confirmation')">
-            {{ getErrorMessage('password_confirmation') }}
-          </div>
-        </div>
-      </div>
-
+    <!-- Nom -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Nom <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="nom" [class.is-invalid]="hasError('nom')">
+      <div class="invalid-feedback">{{ getErrorMessage('nom') }}</div>
     </div>
+
+    <!-- Prénom -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Prénom <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="prenom" [class.is-invalid]="hasError('prenom')">
+      <div class="invalid-feedback">{{ getErrorMessage('prenom') }}</div>
+    </div>
+
+    <!-- Email -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Email <span class="text-danger">*</span></label>
+      <input type="email" class="form-control" formControlName="email" [class.is-invalid]="hasError('email')">
+      <div class="invalid-feedback">{{ getErrorMessage('email') }}</div>
+    </div>
+
+    <!-- Rôle -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Rôle <span class="text-danger">*</span></label>
+      <ng-select [items]="roles" bindValue="value" bindLabel="label" formControlName="role_id"
+        placeholder="Sélectionner un rôle" [class.is-invalid]="hasError('role_id')"></ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('role_id') }}</div>
+    </div>
+
+    <!-- Filière -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Filière <span class="text-danger">*</span></label>
+      <ng-select 
+          [items]="filieres" 
+          bindValue="value" 
+          bindLabel="label" 
+          formControlName="filieres"
+          placeholder="Sélectionner une ou plusieurs filières"
+          [multiple]="true"
+          [class.is-invalid]="hasError('filieres')">
+      </ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('filieres') }}</div>
+    </div>
+
+    <!-- Classe -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Classe <span class="text-danger">*</span></label>
+      <ng-select 
+          [items]="filteredClasses" 
+          bindValue="value" 
+          bindLabel="label" 
+          formControlName="classes"
+          placeholder="Sélectionner une ou plusieurs classes"
+          [multiple]="true"
+          [disabled]="filteredClasses.length === 0"
+          [class.is-invalid]="hasError('classes')">
+      </ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('classes') }}</div>
+    </div>
+
+    <!-- Mot de passe -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" formControlName="password" [class.is-invalid]="hasError('password')">
+      <div class="invalid-feedback">{{ getErrorMessage('password') }}</div>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Confirmation mot de passe</label>
+      <input type="password" class="form-control" formControlName="password_confirmation"
+        [class.is-invalid]="hasError('password_confirmation')">
+      <div class="invalid-feedback">{{ getErrorMessage('password_confirmation') }}</div>
+    </div>
+
   </form>
 
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
-    <button 
-      type="button" 
-      class="btn btn-primary" 
-      (click)="update()" 
-      [disabled]="!form.valid || loading">
+    <button type="button" class="btn btn-primary" (click)="update()" [disabled]="loading || form.invalid">
       <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-      {{ loading ? 'Modification...' : 'Enregistrer' }}
+      {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
     </button>
   </div>
 </section>

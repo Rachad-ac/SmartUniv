@@ -26,6 +26,7 @@ class ClasseController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
+            'effectif' => 'required|integer|min:1',
             'id_filiere' => 'required|exists:filieres,id_filiere',
             'niveau' => 'required|string|max:50',
         ]);
@@ -43,7 +44,7 @@ class ClasseController extends Controller
     public function show($id)
     {
         try {
-            $classe = Classe::with('filiere')->findOrFail($id);
+            $classe = Classe::where('id_filiere' , $id)->get();
 
             return response()->json([
                 'success' => true,
@@ -66,6 +67,7 @@ class ClasseController extends Controller
 
             $validated = $request->validate([
                 'nom' => 'sometimes|string|max:255',
+                'effectif' => 'required|integer|min:1',
                 'id_filiere' => 'sometimes|exists:filieres,id_filiere',
                 'niveau' => 'sometimes|string|max:50',
             ]);
