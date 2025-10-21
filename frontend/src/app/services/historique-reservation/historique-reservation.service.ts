@@ -11,21 +11,21 @@ export class HistoriqueReservationService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Récupère toutes les filières
+   * Récupère toutes l'historiques
    */
   getHistoriqueReservations(): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}historique-reservations/all`);
   }
 
   /**
-   * Met à jour une filière existante
+   * Met à jour une historique existante
    */
   updateHistoriqueReservations(id: number, Data: any): Observable<any> {
     return this.http.put<any>(`${environment.baseUrl}historique-reservations/${id}`, Data);
   }
 
   /**
-   * Supprime une filière
+   * Supprime une historiques
    */
   deleteHistoriqueReservations(id: number): Observable<any> {
     return this.http.delete(`${environment.baseUrl}historique-reservations/${id}`);

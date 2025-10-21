@@ -96,6 +96,7 @@ export class MesReservationsComponent implements OnInit {
   }
 
   annulerReservation(reservation: any) {
+    this.loadingIndicator = true;
     Alertes.confirmAction(
       'Voulez-vous annuler cette réservation ?',
       `Vous allez annuler la réservation de la salle ${reservation.salle.nom}.`,
@@ -105,11 +106,16 @@ export class MesReservationsComponent implements OnInit {
             if (res.success) {
               Alertes.alerteAddSuccess('Réservation annulée avec succès');
               this.loadMesReservations();
+              this.loadingIndicator = false;
             } else Alertes.alerteAddDanger(res.message || 'Erreur lors de l’annulation');
           },
           error: err => {
             Alertes.alerteAddDanger(err?.error?.message || 'Erreur lors de l’annulation');
-          }
+            this.loadingIndicator = false;
+          },
+          complete : () => {
+            this.loadingIndicator = false;
+          } 
         });
       }
     );

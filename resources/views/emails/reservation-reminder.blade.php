@@ -79,7 +79,7 @@
     </div>
 
     <div class="footer">
-        <p>Ce message a été envoyé automatiquement par le système de gestion des réservations.</p>
+        <p>📧 Notification automatique – Merci de ne pas répondre à cet email</p>
         <p>Pour toute question, contactez l'administration.</p>
     </div>
 </body>

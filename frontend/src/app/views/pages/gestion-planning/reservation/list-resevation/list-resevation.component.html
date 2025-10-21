@@ -59,6 +59,7 @@
               <span *ngIf="res.statut == 'En attente' " class="text-warning"><i *ngIf="res.statut == 'En attente' " class="feather icon-clock me-1 text-warning"></i>{{ res.statut | titlecase }}</span>
               <span *ngIf="res.statut == 'Validée' " class="text-success"><i *ngIf="res.statut == 'Validée' " class="feather icon-check me-1 text-succes" ></i>{{ res.statut | titlecase }}</span>
               <span *ngIf="res.statut == 'Refusée' " class="text-danger"><i *ngIf="res.statut == 'Refusée' " class="feather icon-x me-1 text-danger" ></i>{{ res.statut | titlecase }}</span>
+              <span *ngIf="res.statut == 'Annulée' " class="text-danger"><i *ngIf="res.statut == 'Annulée' " class="feather icon-x me-1 text-danger" ></i>{{ res.statut | titlecase }}</span>
             </td>
           </ng-container>
   

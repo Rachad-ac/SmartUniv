@@ -21,7 +21,7 @@
         </button>
   
         <button type="button" class="btn btn-success btn-sm"
-          (click)="openModal(ReserverModal, 'md')">
+          (click)="openModal(ReserverModal, 'lg')">
           <i class="feather icon-check-circle me-1"></i> Réserver la salle
         </button>
       </div>
@@ -147,18 +147,53 @@
   
     <form [formGroup]="reservationForm" (ngSubmit)="reserver()">
       <div class="modal-body">
+
         <div class="row g-3">
-          <div class="col-md-12">
+
+          <div class="col-md-6" *ngIf="currentUser.role === 'Enseignant' ">
+            <label>Filiere <small class="text-danger">*</small></label>
+            <ng-select
+              [items]="filieres"
+              bindValue="value"
+              bindLabel="label"
+              placeholder="Sélectionner..."
+              formControlName="id_filiere">
+            </ng-select>
+          </div>
+  
+          <div class="col-md-6" *ngIf="currentUser.role === 'Enseignant' ">
+            <label>Classe <small class="text-danger">*</small></label>
+            <ng-select
+              [items]="classes"
+              bindValue="value"
+              bindLabel="label"
+              placeholder="Sélectionner..."
+              formControlName="id_classe">
+            </ng-select>
+          </div>
+  
+          <div class="col-md-6" *ngIf="currentUser.role === 'Enseignant' ">
+            <label>Cours <small class="text-danger">*</small></label>
+            <ng-select
+              [items]="cours"
+              bindValue="value"
+              bindLabel="label"
+              placeholder="Sélectionner..."
+              formControlName="id_cours">
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
             <label>Date de début <small class="text-danger">*</small></label>
             <input type="datetime-local" class="form-control" formControlName="date_debut" />
           </div>
   
-          <div class="col-md-12">
+          <div class="col-md-6">
             <label>Date de fin <small class="text-danger">*</small></label>
             <input type="datetime-local" class="form-control" formControlName="date_fin" />
           </div>
   
-          <div class="col-md-12">
+          <div class="col-md-6">
             <label>Type réservation <small class="text-danger">*</small></label>
             <ng-select
               [items]="types"

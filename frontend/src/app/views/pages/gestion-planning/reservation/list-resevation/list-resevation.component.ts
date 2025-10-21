@@ -41,6 +41,7 @@ export class ListResevationComponent implements OnInit{
     this.loadingIndicator = true;
     this.reservationService.getAllReservations().subscribe({
       next: (response: any) => {
+        console.log('res : ', response);
         if (response.success) {
           this.dataSource = { 
             payload: response.data || [], 

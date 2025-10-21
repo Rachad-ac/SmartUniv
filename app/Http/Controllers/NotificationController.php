@@ -16,6 +16,7 @@ class NotificationController extends Controller
     {
         try {
             $notifications = Notification::where('id_user', $userId)
+                                         ->where('lu', false)
                                          ->orderBy('date_envoi', 'desc')
                                          ->get();
 

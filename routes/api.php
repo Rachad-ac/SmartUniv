@@ -10,6 +10,7 @@ use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\HistoriqueReservationController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CoursController;
@@ -51,10 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('historique-reservations')->group(function () {
-            Route::get('/all', [RoleController::class, 'index']);    
-            Route::post('/create', [RoleController::class, 'store']); 
-            Route::put('/{id}', [RoleController::class, 'update']);
-            Route::delete('/{id}', [RoleController::class, 'destroy']);
+            Route::get('/all', [HistoriqueReservationController::class, 'index']);    
+            Route::put('/{id}', [HistoriqueReservationController::class, 'update']);
+            Route::delete('/{id}', [HistoriqueReservationController::class, 'destroy']);
         });
 
         Route::prefix('reservations')->group(function () {
@@ -151,6 +151,19 @@ Route::middleware('auth:sanctum')->group(function () {
         
     });
 
+    Route::prefix('classes')->group(function () {
+        Route::get('/all', [ClasseController::class , 'index']);
+    });
+
+    Route::prefix('filieres')->group(function () {
+        Route::get('/all', [FiliereController::class, 'index']);
+    });
+
+
+    Route::prefix('cours')->group(function () {
+        Route::get('/all', [CoursController::class, 'index']);
+    });
+
     Route::prefix('plannings')->group(function () {
         Route::get('/all', [PlanningController::class , 'index']);
         Route::get('/by-user/{id_user}', [PlanningController::class, 'getByUser']);
@@ -176,7 +189,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('/notifications')->group(function () {
         Route::get('/{userId}', [NotificationController::class, 'index']); 
-        Route::patch('/{id}/read', [NotificationController::class, 'markAsRead']); 
+        Route::put('/read/{id}', [NotificationController::class, 'markAsRead']); 
         Route::delete('/{id}', [NotificationController::class, 'destroy']);
     });
 

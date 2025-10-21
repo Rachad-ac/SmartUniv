@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Models\Salle;
 use App\Models\Notification;
+use App\Models\HistoriqueReservation;
 use App\Services\ConflictDetectionService;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -77,6 +78,14 @@ class ReservationController extends Controller
                 'id_reservation' => $reservation->id_reservation,
             ]);
 
+            // Après la validation de la réservation
+            HistoriqueReservation::create([
+                'reservation_id' => $reservation->id_reservation,
+                'utilisateur_id' => auth()->id(), 
+                'action' => 'valider réservation',
+                'details' => 'Réservation marquée comme validée par ' . " " . auth()->user()->nom . " " . auth()->user()->prenom,
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Réservation validée et notification envoyée',
@@ -106,6 +115,14 @@ class ReservationController extends Controller
                 'lu' => false,
                 'id_user' => $reservation->id_user,
                 'id_reservation' => $reservation->id_reservation,
+            ]);
+
+            // Après le rejet de la réservation
+            HistoriqueReservation::create([
+                'reservation_id' => $reservationId,
+                'utilisateur_id' => auth()->id(), 
+                'action' => 'rejeter réservation',
+                'details' => 'Réservation rejetée par '. " " . auth()->user()->nom . " " . auth()->user()->prenom,
             ]);
 
             return response()->json([
@@ -166,6 +183,14 @@ class ReservationController extends Controller
             'id_reservation' => $reservation->id_reservation,
         ]);
 
+        // Après qu'une nouvelle réservation a été créée
+        HistoriqueReservation::create([
+            'reservation_id' => $reservation->id_reservation,
+            'utilisateur_id' => auth()->id(), 
+            'action' => 'demander réservation',
+            'details' => 'Nouvelle réservation demandée par l\'utilisateur.' . " " . auth()->user()->nom . " " . auth()->user()->prenom,
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'Réservation créée et demande envoyée',
@@ -180,12 +205,6 @@ class ReservationController extends Controller
             $reservation = Reservation::findOrFail($id);
             $reservation->statut = 'Annulée';
             $reservation->save();
-
-            // Envoi de mail à l'utilisateur
-            Mail::to($reservation->user->email)
-                ->send(new ValidationMail($reservation, 'Annulée'));
-
-            Mail::to('bent35005@gmail.com')->send(new ReservationMail($reservation));
 
             // Création de notification
             Notification::create([
@@ -202,6 +221,14 @@ class ReservationController extends Controller
                 'lu' => false,
                 'id_user' => 1, // id de l'admin
                 'id_reservation' => $reservation->id_reservation,
+            ]);
+
+            // Après l'annulation de la réservation
+            HistoriqueReservation::create([
+                'reservation_id' => $reservation->id_reservation,
+                'utilisateur_id' => auth()->id(), 
+                'action' => 'annuler réservation',
+                'details' => 'Réservation annulée par ' . " " . auth()->user()->nom . " " . auth()->user()->prenom,
             ]);
             
 
@@ -276,6 +303,14 @@ class ReservationController extends Controller
                 'lu' => false,
                 'id_user' => $reservation->id_user,
                 'id_reservation' => $reservation->id_reservation,
+            ]);
+
+            // Après la modification (update) de la réservation
+            HistoriqueReservation::create([
+                'reservation_id' => $reservation->id_reservation,
+                'utilisateur_id' => auth()->id(), 
+                'action' => 'modifier réservation',
+                'details' => 'Détails de la réservation mis à jour par ' . " " . auth()->user()->nom . " " . auth()->user()->prenom,
             ]);
 
             return response()->json([

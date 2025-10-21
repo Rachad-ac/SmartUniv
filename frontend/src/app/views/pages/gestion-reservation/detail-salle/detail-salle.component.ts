@@ -5,6 +5,9 @@ import { SalleService } from 'src/app/services/salle/salle.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alertes } from 'src/app/util/alerte';
+import { CoursService } from 'src/app/services/cours/cours.service';
+import { FiliereService } from 'src/app/services/filiere/filiere.service';
+import { ClasseService } from 'src/app/services/classe/classe.service';
 
 @Component({
   selector: 'app-detail-salle',
@@ -20,6 +23,9 @@ export class DetailSalleComponent implements OnInit {
     { value: 'TP', label: 'Travaux Pratiques' }
   ];
 
+  cours : any;
+  classes : any;
+  filieres : any;
   salle: any;
   reservationForm!: FormGroup;
   disponibiliteForm!: FormGroup;
@@ -33,6 +39,9 @@ export class DetailSalleComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private salleService: SalleService,
+    private coursService : CoursService,
+    private filiereService : FiliereService,
+    private classeService : ClasseService,
     private reservationService: ReservationService,
     private modalService: NgbModal,
     private fb: FormBuilder
@@ -41,6 +50,9 @@ export class DetailSalleComponent implements OnInit {
   ngOnInit(): void {
     const id_salle = this.route.snapshot.paramMap.get('id');
     if (id_salle) this.getSalleDetails(+id_salle);
+    this.loadClasses();
+    this.loadCours();
+    this.loadFilieres();
 
     const user = localStorage.getItem('user');
     if(user){
@@ -51,10 +63,13 @@ export class DetailSalleComponent implements OnInit {
     this.reservationForm = this.fb.group({
       id_user: [this.currentUser.id, Validators.required],
       id_salle: [id_salle, Validators.required],
+      id_cours: [null],
+      id_classe: [null],
+      id_filiere: [null],
       date_debut: ['', Validators.required],
       date_fin: ['', Validators.required],
       type_reservation: ['', Validators.required],
-      motif: ['']
+      motif: [''] 
     });
 
     // 🧩 Formulaire de disponibilité séparé
@@ -66,7 +81,7 @@ export class DetailSalleComponent implements OnInit {
   }
 
   // 🔹 Charger les détails de la salle
-  getSalleDetails(id: number) {
+  getSalleDetails(id : any) {
     this.loading = true;
     this.salleService.getSalle(id).subscribe({
       next: (res: any) => {
@@ -77,6 +92,68 @@ export class DetailSalleComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur salle :', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  /** Charger toutes les filières */
+  loadFilieres(): any {
+    this.loading = true;
+    this.filiereService.getFilieres().subscribe({
+      next: (res: any) => {
+        console.log(' filiere : ', res.data);
+        if (res.success) {
+          this.filieres = res.data.map((f: any) => ({
+            ...f,
+            value: f.id_filiere,
+            label: f.nom
+          }));
+        }
+      },
+      error: (err) => {
+        console.error('Erreur chargement des filieres :', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  /** Charger toutes les classes */
+  loadClasses(): any {
+    this.loading = true;
+    this.classeService.getClasses().subscribe({
+      next: (res: any) => {
+        console.log(' classe : ', res.data);
+        if (res.success) {
+          this.classes = res.data.map((c: any) => ({
+            ...c,
+            value: c.id_classe,
+            label: c.nom,
+            id_filiere: c.id_filiere
+          }));
+        }
+      },
+      error: (err) => {
+        console.error('Erreur chargement des classes :', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  loadCours() : any {
+    this.coursService.getCours().subscribe({
+      next: (res: any) => {
+        console.log(' cours : ', res.data);
+        if (res.success) {
+          this.cours = res.data.map((c : any) => ({
+            ...c,
+            value: c.id_cours,
+            label: c.nom
+          }));
+        }
+      },
+      error: (err) => {
+        console.error('Erreur chargement des cours :', err);
         this.loading = false;
       }
     });
@@ -97,9 +174,9 @@ export class DetailSalleComponent implements OnInit {
         this.checking = false;
         this.disponibilite = res.available;
         if (res.available) {
-          Alertes.alerteAddSuccess('✅ La salle est disponible.');
+          Alertes.alerteAddSuccess('La salle est disponible.');
         } else {
-          Alertes.alerteAddDanger('❌ La salle est déjà réservée pour cette période.');
+          Alertes.alerteAddDanger('La salle est déjà réservée pour cette période.');
         }
       },
       error: () => {

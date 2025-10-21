@@ -80,9 +80,8 @@
             <p>
                 a fait une demande de réservation pour la salle  
                 <span class="badge">{{ $reservation->salle->nom }}</span> 
-                le <strong>{{ \Carbon\Carbon::parse($reservation->date_reservation)->format('d/m/Y') }}</strong> 
-                de <strong>{{ \Carbon\Carbon::parse($reservation->date_debut)->format('H:i') }}</strong> 
-                à <strong>{{ \Carbon\Carbon::parse($reservation->date_fin)->format('H:i') }}</strong>.
+                pour de periode du <strong>{{$reservation->date_debut }}</strong> 
+                au <strong>{{$reservation->date_fin}}</strong>.
             </p>
 
             <div class="alert">

@@ -35,7 +35,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     HttpClientModule,
     PipeModule,
     FormsModule,
-    FullCalendarModule
+    FullCalendarModule,
   ],
   providers: [
     AuthGuard,

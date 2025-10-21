@@ -64,7 +64,7 @@
                 <p>
                     Votre réservation de la salle 
                     <strong>{{ $reservation->salle->nom }}</strong> 
-                    pour periode du <strong>{{ $reservation->date_debut->format('d/m/Y à H:i') }} au {{ $reservation->date_fin->format('d/m/Y à H:i') }}</strong> 
+                    pour periode du <strong>{{ $reservation->date_debut}} au {{ $reservation->date_fin }}</strong> 
                     a été <span class="status-valid">validée ✅</span>.
                 </p>
             @else

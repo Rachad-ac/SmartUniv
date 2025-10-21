@@ -12,15 +12,24 @@ class HistoriqueReservationController extends Controller
      */
     public function index()
     {
-        $historiques = HistoriqueReservation::with(['reservation', 'utilisateur'])
-            ->orderBy('date_action', 'desc')
-            ->get();
+        try {
+            $historiques = HistoriqueReservation::with(['reservation', 'utilisateur'])
+                ->orderBy('date_action', 'desc')
+                ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $historiques,
-            'count' => $historiques->count()
-        ]);
+            return response()->json([
+                'success' => true,
+                'data' => $historiques,
+                'count' => $historiques->count()
+            ]);
+        } catch (\Exception $e) {
+            // L'erreur sera affichée dans le frontend (Network tab > Response)
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur de BDD/Relation : ' . $e->getMessage() . ' à la ligne ' . $e->getLine(),
+                'trace' => $e->getTraceAsString() // Pour le débogage approfondi
+            ], 500);
+        }
     }
 
     /**
@@ -53,7 +62,7 @@ class HistoriqueReservationController extends Controller
             'utilisateur_id' => 'required|exists:users,id',
             'action' => 'required|string|max:100',
             'details' => 'nullable|string',
-            'date_action' => 'nullable|date'
+            'date_action' => now()
         ]);
 
         $validated['date_action'] = $validated['date_action'] ?? now();
