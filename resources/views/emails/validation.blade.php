@@ -71,7 +71,7 @@
                 <p>
                     Votre réservation de la salle 
                     <strong>{{ $reservation->salle->nom }}</strong> 
-                    pour la periode du <strong>{{ $reservation->date_debut }} au {{ $reservation->date_fin }}</strong> 
+                    pour la periode du <strong>{{ $reservation->date_debut->format('d/m/Y \à H:i') }} au {{ $reservation->date_fin->format('d/m/Y \à H:i') }}</strong> 
                     a été <span class="status-refused">refusée ❌</span>.
                 </p>
             @endif

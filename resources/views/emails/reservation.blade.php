@@ -57,6 +57,12 @@
             color: #777777;
             background: #f8f9fa;
         }
+        .green {
+            color : green;
+        }
+        .red {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -80,12 +86,12 @@
             <p>
                 a fait une demande de réservation pour la salle  
                 <span class="badge">{{ $reservation->salle->nom }}</span> 
-                pour de periode du <strong>{{$reservation->date_debut }}</strong> 
-                au <strong>{{$reservation->date_fin}}</strong>.
+                pour de periode du <strong>{{$reservation->date_debut->format('d/m/Y \à H:i') }}</strong> 
+                au <strong>{{ $reservation->date_fin->format('d/m/Y \à H:i') }}</strong>.
             </p>
 
             <div class="alert">
-                Connectez-vous au système pour <strong>valider</strong> ou <strong>refuser</strong> cette demande.
+                Connectez-vous au système pour <strong class="green">valider</strong> ou <strong class="red">refuser</strong> cette demande.
             </div>
         </div>
         <div class="card-footer">
