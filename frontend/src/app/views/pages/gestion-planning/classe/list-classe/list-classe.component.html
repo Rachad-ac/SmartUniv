@@ -1,0 +1,151 @@
+<!-- EN-TÊTE AVEC BREADCRUMB ET BOUTONS -->
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin mb-1">
+  <nav aria-label="breadcrumb" class="mb-0">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item">
+        <a routerLink="/admin/gestion-planning/filieres" class="text-decoration-none text-primary">
+          <i class="feather icon-layers me-1"></i>Liste des filieres
+        </a>
+      </li>
+      <li class="breadcrumb-item active text-secondary" aria-current="page">Classes associé</li>
+    </ol>
+  </nav>
+  
+    <div class="d-flex justify-content-end align-items-center gap-2">
+      <!-- Bouton Recherche -->
+      <button type="button" class="btn btn-secondary btn-icon me-2" (click)="openAddClasse(SearchClasseModal)">
+        <i class="feather icon-search"></i>
+      </button>
+  
+      <!-- Bouton Ajouter -->
+      <button type="button" class="btn btn-primary btn-icon-text" (click)="openAddClasse(AddClasseModal)">
+        <i class="feather icon-plus-circle me-2"></i> Nouvelle Classe
+      </button>
+  
+      <!-- Bouton Actualiser -->
+      <button type="button" class="btn btn-info btn-icon-text" (click)="refresh()">
+        <i class="feather icon-refresh-cw me-2"></i> Actualiser
+      </button>
+    </div>
+  </div>
+  
+  <!-- TABLEAU DES CLASSES -->
+  <div class="card mt-4">
+    <div class="card-body p-0">
+      <section class="table-container mat-elevation-z8" tabindex="0">
+  
+        <table mat-table [dataSource]="dataSource?.payload">
+  
+          <!-- Nom -->
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Nom</th>
+            <td mat-cell *matCellDef="let classe">{{ classe.nom }}</td>
+          </ng-container>
+  
+          <!-- Niveau -->
+          <ng-container matColumnDef="niveau">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Niveau</th>
+            <td mat-cell *matCellDef="let classe" class="text-center">
+              <span [class]="getLevelClass(classe.niveau)">
+                {{ classe.niveau | uppercase }}
+              </span>
+            </td>
+          </ng-container>
+  
+          <!-- Effectif -->
+          <ng-container matColumnDef="effectif">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Effectif</th>
+            <td mat-cell *matCellDef="let classe" class="text-center">
+              {{ classe.effectif || 0 }} étudiants
+            </td>
+          </ng-container>
+  
+          <!-- Filière -->
+          <ng-container matColumnDef="filiere">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Filière</th>
+            <td mat-cell *matCellDef="let classe">
+              {{ classe.filiereName || 'Non défini' }}
+            </td>
+          </ng-container>
+  
+          <!-- Actions -->
+          <ng-container matColumnDef="actions" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Actions</th>
+            <td mat-cell *matCellDef="let classe">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu d’actions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditClasse(EditClasseModal , classe)">
+                  <mat-icon class="text-warning">edit</mat-icon>
+                  <span class="text-warning">Modifier</span>
+                </button>
+                <button mat-menu-item (click)="deleteClasse(classe)">
+                  <mat-icon class="text-danger">delete</mat-icon>
+                  <span class="text-danger">Supprimer</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+  
+          <!-- Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-head-bg"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+  
+        <!-- Message si vide -->
+        <span *ngIf="dataSource?.payload?.length === 0" class="paginate text-danger mt-4">
+          Aucune classe trouvée
+        </span>
+  
+        <!-- Pagination -->
+        <div class="paginate">
+          <ngb-pagination
+            [collectionSize]="dataSource?.metadata?.totalElements"
+            [page]="pageOptions.page + 1"
+            [pageSize]="pageOptions.size"
+            [maxSize]="5"
+            (pageChange)="paginate($event)"
+            size="sm"
+            [rotate]="true"
+            [ellipses]="true"
+            [boundaryLinks]="true">
+          </ngb-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  <!-- MODALE : Ajouter Classe -->
+  <ng-template #AddClasseModal let-modal>
+    <div class="modal-header mb-0">
+      <h5 class="modal-title">Ajouter une classe</h5>
+      <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <app-add-classe [isSearch]="false" (submit)="close()"></app-add-classe>
+    </div>
+  </ng-template>
+  
+  <!-- MODALE : Modifier Classe -->
+  <ng-template #EditClasseModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Modifier Classe</h5>
+      <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <app-edit-classe (submit)="close()" [classeToUpdate]="classeToUpdate"></app-edit-classe>
+    </div>
+  </ng-template>
+  
+  <!-- MODALE : Recherche Classe -->
+  <ng-template #SearchClasseModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Recherche Classe</h5>
+      <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <app-add-classe (search)="doSearch($event)" [isSearch]="true" (submit)="close()"></app-add-classe>
+    </div>
+  </ng-template>
+  

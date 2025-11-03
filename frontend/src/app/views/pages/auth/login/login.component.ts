@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   returnUrl: any;
   message : string = '';
+  loading = false;
 
   constructor(private router: Router, private route: ActivatedRoute , private authService: AuthService) { }
 
@@ -26,6 +27,7 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
     return;
   }
 
+  this.loading = true;
   this.authService.login(formValues).subscribe({
     next: (res: any) => {
       // Stocker le token
@@ -36,9 +38,17 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
         id: res.user.id,
         nom: res.user.nom,
         prenom: res.user.prenom,
+        telephone: res.user.telephone,
         email: res.user.email,
-        role: res.user.role
+        statut: res.user.statut,
+        date_inscription: res.user.date_inscription,
+        role_id: res.user.role_id,
+        role: res.user?.role.nom,
+        filieres: res.user?.filieres[0]?.id_filiere || 0,
+        classes: res.user?.classes[0]?.id_classe || 0
       };
+
+      console.log('role : ', user);
 
       this.authService.saveUser(user);
 
@@ -46,7 +56,6 @@ onLoggedin(e: Event, formValues: { email: string, password: string }) {
       if (user.role === 'Admin') {
           this.router.navigate(['/admin/gestion-admin']);
         } else if (user.role === 'Etudiant' || user.role === 'Enseignant') {
-          console.log(`role : ${user.role}`)
           this.router.navigate(['/users/gestion-reservation']);
         } else {
           this.router.navigate(['/error']);

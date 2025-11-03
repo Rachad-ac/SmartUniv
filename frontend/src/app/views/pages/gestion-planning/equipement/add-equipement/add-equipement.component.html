@@ -1,0 +1,81 @@
+<section>
+    <form [formGroup]="form">
+      <div class="row">
+  
+        <!-- Nom -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg"
+              id="nom" 
+              placeholder="Entrez le nom de l'équipement"
+              formControlName="nom"
+              [class.is-invalid]="hasError('nom')">
+            <div class="invalid-feedback" *ngIf="hasError('nom')">
+              {{ getErrorMessage('nom') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Quantité -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="quantite" class="form-label">Quantité <span class="text-danger">*</span></label>
+            <input 
+              type="number" 
+              class="form-control form-control-lg"
+              id="quantite" 
+              placeholder="Entrez la quantité"
+              formControlName="quantite"
+              [class.is-invalid]="hasError('quantite')">
+            <div class="invalid-feedback" *ngIf="hasError('quantite')">
+              {{ getErrorMessage('quantite') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- Description -->
+        <div class="col-sm-12">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea 
+              class="form-control form-control-lg"
+              id="description" 
+              rows="2"
+              placeholder="Ajoutez une description (facultatif)"
+              formControlName="description"
+              [class.is-invalid]="hasError('description')"></textarea>
+            <div class="invalid-feedback" *ngIf="hasError('description')">
+              {{ getErrorMessage('description') }}
+            </div>
+          </div>
+        </div>
+
+  
+      </div>
+    </form>
+  
+    <!-- Boutons -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+      <button 
+      type="button" 
+      class="btn btn-primary" 
+      *ngIf="!isSearch" 
+      (click)="create()" 
+      [disabled]="!form.valid || loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ loading ? 'Création...' : 'Enregistrer' }}
+    </button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        *ngIf="isSearch" 
+        (click)="doSearch()">
+        <i class="feather icon-search me-2"></i>Rechercher
+      </button>
+    </div>
+  </section>
+  

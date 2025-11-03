@@ -6,6 +6,7 @@ import MetisMenu from 'metismenujs';
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
 import { Router, NavigationEnd } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,8 +20,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   currentUser: any;
   menuItems: MenuItem[] = [];
+  
 
-  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, router: Router) { 
+  constructor(@Inject(DOCUMENT) private document: Document, 
+          private renderer: Renderer2, 
+          router: Router,
+          private authService: AuthService) {
+
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
 
@@ -41,10 +47,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.loadCurrentUser();
+
     const userData = localStorage.getItem('user');
     if(userData){
       this.currentUser = JSON.parse(userData);
     }
+    
 
     // Filtrer le menu selon le rôle
     this.menuItems = MENU.filter(item => 
@@ -57,6 +66,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.iconSidebar(desktopMedium);
     });
     this.iconSidebar(desktopMedium);
+  }
+
+  loadCurrentUser(): void {
+    const user = this.authService.getUser();
+    if (user) {
+      this.currentUser = user;
+    }
+  }
+
+  onLogout(e: Event) {
+    e.preventDefault();
+
+    this.authService.logout().subscribe({
+      next: res => console.log(res.message),
+      error: err => console.error('Erreur lors de la déconnexion', err)
+    });
+  }
+
+  getInitials(prenom: string, nom: string): string {
+    if (!prenom || !nom) return 'U';
+    return (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
   }
 
   ngAfterViewInit() {
@@ -109,6 +139,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.document.body.classList.remove("open-sidebar-folded");
     }
   }
+
+  isSidebarFolded(): boolean {
+    return this.document.body.classList.contains('sidebar-folded');
+  }
+  
 
   /**
    * Sidebar-folded on desktop (min-width:992px and max-width: 1199px)

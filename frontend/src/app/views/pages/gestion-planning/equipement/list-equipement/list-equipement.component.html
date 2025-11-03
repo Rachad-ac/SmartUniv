@@ -1,0 +1,172 @@
+<!-- EN-TÊTE AVEC BREADCRUMB ET BOUTONS -->
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin mb-1">
+  <nav aria-label="breadcrumb" class="mb-0">
+    <ol class="breadcrumb bg-transparent mb-0">
+      <li class="breadcrumb-item">
+        <a routerLink="/admin/gestion-planning/salles" class="text-decoration-none text-primary">
+          <i class="feather icon-home me-1"></i>Liste des salles
+        </a>
+      </li>
+      <li class="breadcrumb-item active text-secondary" aria-current="page">Equipements associé</li>
+    </ol>
+  </nav>
+  
+
+  <div class="d-flex justify-content-end align-items-center gap-2">
+    <!-- Bouton Recherche (Ouvre la modale AddEquipement en mode recherche) -->
+    <!-- openAddEquipement doit être appelé avec le template de la modale -->
+    <button type="button" class="btn btn-secondary btn-icon me-2" (click)="openAddEquipement(SearchEquipementModal)">
+      <i class="feather icon-search"></i>
+    </button>
+    
+    <!-- Bouton Ajouter (Ouvre la modale AddEquipement en mode ajout) -->
+    <button type="button" class="btn btn-primary btn-icon-text" (click)="openAddEquipement(AddEquipementModal)">
+      <i class="feather icon-plus-circle me-2"></i> Nouvel Équipement
+    </button>
+
+    <!-- Bouton Actualiser -->
+    <button type="button" class="btn btn-info btn-icon-text" (click)="refresh()">
+      <i class="feather icon-refresh-cw me-2"></i> Actualiser
+    </button>
+  </div>
+</div>
+
+<!-- TABLEAU DES ÉQUIPEMENTS -->
+<div class="card mt-4">
+  <div class="card-body p-0">
+    <section class="table-container mat-elevation-z8" tabindex="0">
+
+      <!-- Assurez-vous que 'dataSource' est défini dans le composant TS et contient les données -->
+      <table mat-table [dataSource]="dataSource?.payload">
+
+        <!-- Nom -->
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Equipement</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.nom }}</td>
+        </ng-container>
+
+        <!-- Quantité -->
+        <ng-container matColumnDef="quantite">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Quantité</th>
+          <td mat-cell *matCellDef="let equipement" class="text-center">
+            <span [class]="getQuantityClass(equipement.quantite)">
+              {{ equipement.quantite }}
+            </span>
+          </td>
+        </ng-container>
+        
+        <!-- Description -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Description</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.description | slice:0:50 }}{{ equipement.description.length > 50 ? '...' : '' }}</td>
+        </ng-container>
+
+        <!-- Salle -->
+        <ng-container matColumnDef="salle">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Salle</th>
+          <!-- Utilisation de getSalleName pour afficher le nom et getSalleClass pour le style -->
+          <td mat-cell *matCellDef="let equipement">
+            <span [class]="getSalleClass(equipement.salle?.nom || equipement.nom_salle)">
+              {{ equipement.salle?.nom || getSalleName(equipement.id_salle) || 'N/A' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Date Ajout -->
+        <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Date Ajout</th>
+          <td mat-cell *matCellDef="let equipement">{{ equipement.created_at | date:'dd/MM/yyyy \'à\' HH:mm' }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef class="table-head-text">Actions</th>
+          <td mat-cell *matCellDef="let equipement">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu d’actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <!-- Ouvre la modale d'édition et passe l'équipement à modifier -->
+              <button mat-menu-item (click)="openEditEquipement(EditEquipementModal , equipement)">
+                <mat-icon class="text-warning">edit</mat-icon>
+                <span class="text-warning">Modifier</span>
+              </button>
+              <button mat-menu-item (click)="deleteEquipement(equipement)">
+                <mat-icon class="text-danger">delete</mat-icon>
+                <span class="text-danger">Supprimer</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <!-- Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-head-bg"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <!-- Message si vide -->
+      <span *ngIf="dataSource?.payload?.length === 0" class="paginate text-danger mt-4">
+        Aucun équipement trouvé
+      </span>
+
+      <!-- Pagination -->
+      <div class="paginate">
+        <ngb-pagination
+          [collectionSize]="dataSource?.metadata?.totalElements"
+          [page]="pageOptions.page + 1"
+          [pageSize]="pageOptions.size"
+          [maxSize]="5"
+          (pageChange)="paginate($event)"
+          size="sm"
+          [rotate]="true"
+          [ellipses]="true"
+          [boundaryLinks]="true">
+        </ngb-pagination>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+<!-- MODALE : AJOUT Équipement -->
+<!-- Utilise app-add-equipement en mode AJOUT ([isSearch]="false") -->
+<ng-template #AddEquipementModal let-modal>
+  <div class="modal-header mb-0">
+    <h5 class="modal-title">Ajouter un équipement</h5>
+    <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <!-- Le 'submit' de app-add-equipement appelle close() qui ferme la modale et rafraîchit la liste -->
+    <app-add-equipement [isSearch]="false" (submit)="close()"></app-add-equipement>
+  </div>
+</ng-template>
+
+
+<!-- MODALE : MODIFICATION Équipement -->
+<ng-template #EditEquipementModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Modifier Équipement</h5>
+    <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <!-- Supposons un composant app-edit-equipement similaire à app-edit-user -->
+    <app-edit-equipement 
+      (submit)="close()" 
+      [equipementToUpdate]="equipementToUpdate">
+    </app-edit-equipement>
+  </div>
+</ng-template> 
+
+<!-- MODALE : Recherche Équipement -->
+<!-- Utilise app-add-equipement en mode RECHERCHE ([isSearch]="true") -->
+<ng-template #SearchEquipementModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Recherche Équipement</h5>
+    <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <app-add-equipement 
+    (search)="doSearch($event)" [isSearch]="true" (submit)="close()">
+    </app-add-equipement>
+  </div>
+</ng-template>

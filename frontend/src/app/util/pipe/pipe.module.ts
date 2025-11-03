@@ -4,6 +4,7 @@ import { AlerteFormatterPipe } from './alerte/alerte-formatter.pipe';
 import { TextFormatterPipe } from './text/text-formatter.pipe';
 import { SafeUrlPipe } from './safe-url/safe-url.pipe';
 import { ThousandsSeparatorPipe } from './text/number-formatter.pipe';
+import { TimeAgoPipe } from './timeAgo/time-ago.pipe';
 
 
 
@@ -12,7 +13,8 @@ import { ThousandsSeparatorPipe } from './text/number-formatter.pipe';
     AlerteFormatterPipe,
     TextFormatterPipe,
     SafeUrlPipe,
-    ThousandsSeparatorPipe
+    ThousandsSeparatorPipe,
+    TimeAgoPipe
   ],
   imports: [
     CommonModule
@@ -21,7 +23,8 @@ import { ThousandsSeparatorPipe } from './text/number-formatter.pipe';
     AlerteFormatterPipe,
     TextFormatterPipe,
     SafeUrlPipe,
-    ThousandsSeparatorPipe
+    ThousandsSeparatorPipe,
+    TimeAgoPipe
   ]
 })
 export class PipeModule { }

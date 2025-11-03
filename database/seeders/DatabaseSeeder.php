@@ -3,39 +3,63 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // 🔹 Les rôles doivent être créés avant les utilisateurs
         $this->call([
-            RoleSeeder::class,
+            RolesSeeder::class,
         ]);
 
-        User::create([
-            'nom' => 'Rachad',
-            'prenom' => 'Ahmed Combo',
-            'email' => 'bent35005@gmail.com',
-            'password' => 'rachad123',
-            'role' => 'Admin',
+        // 🔹 Utilisateurs
+        $this->call([
+            UsersSeeder::class,
         ]);
 
-        User::create([
-            'nom' => 'Sow',
-            'prenom' => 'Ali',
-            'email' => 'ali@example.com',
-            'password' => 'ali123',
-            'role' => 'Etudiant',
+        // 🔹 Filières et pivot user_filiere
+        $this->call([
+            FilieresSeeder::class,
         ]);
 
-        User::create([
-            'nom' => 'Ba',
-            'prenom' => 'Said',
-            'email' => 'said@example.com',
-            'password' => 'said123',
-            'role' => 'Enseignant',
+        // 🔹 Salles et équipements
+        $this->call([
+            SallesSeeder::class,
+            EquipementsSeeder::class,
+        ]);
+
+        // 🔹 Matières et cours
+        $this->call([
+            MatieresSeeder::class,
+            CoursSeeder::class,
+            CoursUsersSeeder::class,
+        ]);
+
+        // 🔹 Classes et pivot user_classe
+        $this->call([
+            ClassesSeeder::class,
+            UsersClassesSeeder::class,
+        ]);
+
+        // 🔹 Réservations
+        $this->call([
+            ReservationsSeeder::class,
+        ]);
+
+        // 🔹 Plannings
+        $this->call([
+            PlanningsSeeder::class,
+        ]);
+
+        // 🔹 Notifications
+        $this->call([
+            NotificationsSeeder::class,
+        ]);
+
+        // 🔹 Historique des réservations
+        $this->call([
+            HistoriqueReservationsSeeder::class,
         ]);
     }
 }

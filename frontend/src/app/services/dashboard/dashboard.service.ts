@@ -13,4 +13,9 @@ export class DashboardService {
   getStats(): Observable<any> {
     return this.http.get<any>(`${environment.baseUrl}dashboard`);
   }
+
+  getLatestUsers(): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}latest-users`);
+  }
+
 }

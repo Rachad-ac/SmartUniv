@@ -1,0 +1,88 @@
+<section>
+  <form [formGroup]="form">
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3">
+        <label for="nom" class="form-label">Nom <span *ngIf="!isSearch" class="text-danger">*</span></label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="nom" 
+          placeholder="Nom de la salle"
+          formControlName="nom"
+          [class.is-invalid]="hasError('nom')">
+        <div class="invalid-feedback" *ngIf="hasError('nom')">
+          {{ getErrorMessage('nom') }}
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="type_salle" class="form-label">Type de salle <span *ngIf="!isSearch" class="text-danger">*</span></label>
+        <ng-select 
+          [items]="typesSalles" 
+          bindLabel="self" 
+          bindValue="self" 
+          placeholder="Sélectionner un type..." 
+          formControlName="type_salle"
+          [class.is-invalid]="hasError('type_salle')">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="hasError('type_salle')">
+          {{ getErrorMessage('type_salle') }}
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="capacite" class="form-label">Capacité <span *ngIf="!isSearch" class="text-danger">*</span></label>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="capacite" 
+          placeholder="Capacite de la salle"
+          formControlName="capacite"
+          [class.is-invalid]="hasError('capacite')">
+        <div class="invalid-feedback" *ngIf="hasError('capacite')">
+          {{ getErrorMessage('capacite') }}
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="localisation" class="form-label">Localisation <span *ngIf="!isSearch" class="text-danger">*</span></label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="localisation" 
+          placeholder="ex : etage - batiment x"
+          formControlName="localisation"
+          [class.is-invalid]="hasError('localisation')">
+        <div class="invalid-feedback" *ngIf="hasError('localisation')">
+          {{ getErrorMessage('localisation') }}
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="etat" class="form-label">État <span *ngIf="!isSearch" class="text-danger">*</span></label>
+        <ng-select 
+          [items]="etats" 
+          bindLabel="label" 
+          bindValue="value" 
+          placeholder="Sélectionner..." 
+          formControlName="etat"
+          [class.is-invalid]="hasError('etat')">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="hasError('etat')">
+          {{ getErrorMessage('etat') }}
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+    <button type="button" class="btn btn-primary" *ngIf="!isSearch" (click)="create()" [disabled]="!form.valid || loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ loading ? 'Création...' : 'Enregistrer' }}
+    </button>
+    <button type="button" class="btn btn-primary" *ngIf="isSearch" (click)="doSearch()">
+      <i class="feather icon-search me-2"></i>Rechercher
+    </button>
+  </div>
+</section>

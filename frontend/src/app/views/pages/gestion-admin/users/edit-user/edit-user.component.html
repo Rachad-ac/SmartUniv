@@ -1,1 +1,88 @@
-<p>edit-user works!</p>
+<section>
+  <form [formGroup]="form" class="row">
+
+    <!-- Nom -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Nom <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="nom" [class.is-invalid]="hasError('nom')">
+      <div class="invalid-feedback">{{ getErrorMessage('nom') }}</div>
+    </div>
+
+    <!-- Prénom -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Prénom <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="prenom" [class.is-invalid]="hasError('prenom')">
+      <div class="invalid-feedback">{{ getErrorMessage('prenom') }}</div>
+    </div>
+
+    <!-- Email -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Email <span class="text-danger">*</span></label>
+      <input type="email" class="form-control" formControlName="email" [class.is-invalid]="hasError('email')">
+      <div class="invalid-feedback">{{ getErrorMessage('email') }}</div>
+    </div>
+
+    <!-- Rôle -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Rôle <span class="text-danger">*</span></label>
+      <ng-select [items]="roles" bindValue="value" bindLabel="label" formControlName="role_id"
+        placeholder="Sélectionner un rôle" [class.is-invalid]="hasError('role_id')"></ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('role_id') }}</div>
+    </div>
+
+    <!-- Filière -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Filière <span class="text-danger">*</span></label>
+      <ng-select 
+          [items]="filieres" 
+          bindValue="value" 
+          bindLabel="label" 
+          formControlName="filieres"
+          placeholder="Sélectionner une ou plusieurs filières"
+          [multiple]="true"
+          [class.is-invalid]="hasError('filieres')">
+      </ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('filieres') }}</div>
+    </div>
+
+    <!-- Classe -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Classe <span class="text-danger">*</span></label>
+      <ng-select 
+          [items]="filteredClasses" 
+          bindValue="value" 
+          bindLabel="label" 
+          formControlName="classes"
+          placeholder="Sélectionner une ou plusieurs classes"
+          [multiple]="true"
+          [disabled]="filteredClasses.length === 0"
+          [class.is-invalid]="hasError('classes')">
+      </ng-select>
+      <div class="invalid-feedback">{{ getErrorMessage('classes') }}</div>
+    </div>
+
+    <!-- Mot de passe -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" formControlName="password" [class.is-invalid]="hasError('password')">
+      <div class="invalid-feedback">{{ getErrorMessage('password') }}</div>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Confirmation mot de passe</label>
+      <input type="password" class="form-control" formControlName="password_confirmation"
+        [class.is-invalid]="hasError('password_confirmation')">
+      <div class="invalid-feedback">{{ getErrorMessage('password_confirmation') }}</div>
+    </div>
+
+  </form>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+    <button type="button" class="btn btn-primary" (click)="update()" [disabled]="loading || form.invalid">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+  </div>
+</section>

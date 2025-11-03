@@ -1,0 +1,172 @@
+<!-- EN-TÊTE AVEC BREADCRUMB ET BOUTONS -->
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin mb-1">
+    <nav class="page-breadcrumb cursor-pointer">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item active"><a>Liste des Cours</a></li>
+      </ol>
+    </nav>
+  
+    <div class="d-flex justify-content-end align-items-center gap-2">
+      <!-- Bouton Recherche -->
+      <button type="button" class="btn btn-secondary btn-icon me-2" (click)="openAddCours(SearchCoursModal)">
+        <i class="feather icon-search"></i>
+      </button>
+      
+      <!-- Bouton Ajouter -->
+      <button type="button" class="btn btn-primary btn-icon-text" (click)="openAddCours(AddCoursModal)">
+        <i class="feather icon-plus-circle me-2"></i> Nouveau Cours
+      </button>
+  
+      <!-- Bouton Actualiser -->
+      <button type="button" class="btn btn-info btn-icon-text" (click)="refresh()">
+        <i class="feather icon-refresh-cw me-2"></i> Actualiser
+      </button>
+    </div>
+  </div>
+  
+  <!-- TABLEAU DES COURS -->
+  <div class="card mt-4">
+    <div class="card-body p-0">
+      <section class="table-container mat-elevation-z8" tabindex="0">
+  
+        <table mat-table [dataSource]="dataSource?.payload">
+  
+          <!-- Nom -->
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Nom</th>
+            <td mat-cell *matCellDef="let cours">{{ cours.nom }}</td>
+          </ng-container>
+  
+          <!-- Code -->
+          <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Code</th>
+            <td mat-cell *matCellDef="let cours" class="text-warning">{{ cours.code }}</td>
+          </ng-container>
+  
+          <!-- Filière -->
+          <ng-container matColumnDef="filiere">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Filière</th>
+            <!-- Utilise la relation filiere (si "eager loaded") ou la fonction getFiliereName -->
+            <td mat-cell *matCellDef="let cours">
+              {{ cours.filiere?.nom || getFiliereName(cours.id_filiere) }}
+            </td>
+          </ng-container>
+          
+          <!-- Matière -->
+          <ng-container matColumnDef="matiere">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Matière</th>
+            <!-- Utilise la relation matiere (si "eager loaded") ou la fonction getMatiereName -->
+            <td mat-cell *matCellDef="let cours">
+              {{ cours.matiere?.nom || getMatiereName(cours.id_matiere) }}
+            </td>
+          </ng-container>
+          
+          <!-- Semestre -->
+          <ng-container matColumnDef="semestre">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Semestre</th>
+            <td mat-cell *matCellDef="let cours" class="text-center">
+              <span [class]="getSemestreClass(cours.semestre)">
+                {{ cours.semestre }}
+              </span>
+            </td>
+          </ng-container>
+  
+          <!-- Volume Horaire -->
+          <ng-container matColumnDef="volume_horaire">
+            <th mat-header-cell *matHeaderCellDef class="table-head-text text-center">Vol. Horaire</th>
+            <td mat-cell *matCellDef="let cours" class="text-center">
+              {{ cours.volume_horaire }}h
+            </td>
+          </ng-container>
+  
+          <!-- Actions -->
+          <ng-container matColumnDef="actions" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef class="table-head-text">Actions</th>
+            <td mat-cell *matCellDef="let cours">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu d’actions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditCours(EditCoursModal , cours)">
+                  <mat-icon class="text-warning">edit</mat-icon>
+                  <span class="text-warning">Modifier</span>
+                </button>
+                <button mat-menu-item (click)="deleteCours(cours)">
+                  <mat-icon class="text-danger">delete</mat-icon>
+                  <span class="text-danger">Supprimer</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+  
+          <!-- Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-head-bg"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+  
+        <!-- Message si vide -->
+        <span *ngIf="dataSource?.payload?.length === 0" class="paginate text-danger mt-4">
+          Aucun cours trouvé
+        </span>
+  
+        <!-- Pagination -->
+        <div class="paginate">
+          <ngb-pagination
+            [collectionSize]="dataSource?.metadata?.totalElements"
+            [page]="pageOptions.page + 1"
+            [pageSize]="pageOptions.size"
+            [maxSize]="5"
+            (pageChange)="paginate($event)"
+            size="sm"
+            [rotate]="true"
+            [ellipses]="true"
+            [boundaryLinks]="true">
+          </ngb-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  <!-- MODALE : AJOUT COURS -->
+  <ng-template #AddCoursModal let-modal>
+    <div class="modal-header mb-0">
+      <h5 class="modal-title">Ajouter un cours</h5>
+      <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <!-- app-add-cours doit gérer l'ajout et émettre 'submit' -->
+      <app-add-cours [isSearch]="false" (submit)="close()"></app-add-cours>
+    </div>
+  </ng-template>
+  
+  <!-- MODALE : MODIFICATION COURS -->
+  <ng-template #EditCoursModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Modifier Cours</h5>
+      <button type="button" class="btn-close" (click)="modal.close('close')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <!-- app-edit-cours doit gérer la modification et émettre 'submit' -->
+      <app-edit-cours 
+        (submit)="close()" 
+        [coursToUpdate]="coursToUpdate">
+      </app-edit-cours>
+    </div>
+  </ng-template> 
+  
+  <!-- MODALE : Recherche COURS -->
+  <ng-template #SearchCoursModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Recherche Cours</h5>
+      <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <!-- app-add-cours utilisé en mode recherche doit émettre 'search' -->
+      <app-add-cours 
+        (search)="doSearch($event)" 
+        [isSearch]="true" 
+        (submit)="close()">
+      </app-add-cours>
+    </div>
+  </ng-template>
+  

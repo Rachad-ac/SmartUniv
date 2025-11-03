@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Classe;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 class ClasseController extends Controller
 {
     // Liste toutes les classes
     public function index()
     {
-        $classe = Classe::with('filiere')->get();
-        
+        $classes = Classe::with('filiere')->get();
+
         return response()->json([
+            'success' => true,
             'message' => 'Liste des classes',
-            'data'    => $classe
-        ]);
+            'data'    => $classes
+        ], 200);
     }
 
     // Créer une classe
@@ -23,51 +26,89 @@ class ClasseController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
-            'id_filiere' => 'required|exists:filieres,id',
+            'effectif' => 'required|integer|min:1',
+            'id_filiere' => 'required|exists:filieres,id_filiere',
             'niveau' => 'required|string|max:50',
         ]);
 
         $classe = Classe::create($validated);
-        
+
         return response()->json([
-            'message' => 'Classe creer avec succes',
+            'success' => true,
+            'message' => 'Classe créée avec succès',
             'data'    => $classe
-        ]);
+        ], 201);
     }
 
     // Afficher une classe
-    public function show(Classe $classe)
+    public function show($id)
     {
-        return $classe->load('filiere');
+        try {
+            $classe = Classe::where('id_filiere' , $id)->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Classe trouvée',
+                'data' => $classe
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Classe non trouvée'
+            ], 404);
+        }
     }
 
     // Modifier une classe
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'nom' => 'sometimes|string|max:255',
-            'id_filiere' => 'sometimes|exists:filieres,id',
-            'niveau' => 'sometimes|string|max:50',
-        ]);
+        try {
+            $classe = Classe::findOrFail($id);
 
-        $classe = Classe::firstOrFail($id);
-        $classe->update($validated);
+            $validated = $request->validate([
+                'nom' => 'sometimes|string|max:255',
+                'effectif' => 'required|integer|min:1',
+                'id_filiere' => 'sometimes|exists:filieres,id_filiere',
+                'niveau' => 'sometimes|string|max:50',
+            ]);
 
-        return response()->json([
-            'message' => 'Classe mise a jour avec succes',
-            'data'    => $classe
-        ]);
+            $classe->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Classe mise à jour avec succès',
+                'data' => $classe
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Classe non trouvée'
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur serveur',
+                'details' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
+        }
     }
 
     // Supprimer une classe
     public function destroy($id)
     {
-        $classe = Classe::firstOrFail($id);
+        try {
+            $classe = Classe::findOrFail($id);
+            $classe->delete();
 
-        $classe->delete();
-
-        return response()->json([
-            'message' => 'Classe supprimer avec succes',
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Classe supprimée avec succès'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Classe non trouvée'
+            ], 404);
+        }
     }
 }

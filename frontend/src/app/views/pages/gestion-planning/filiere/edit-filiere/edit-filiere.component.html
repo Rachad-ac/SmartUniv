@@ -1,0 +1,74 @@
+<section>
+    <form [formGroup]="form">
+      <div class="row">
+  
+        <!-- nom -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom de la filière <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              [class.is-invalid]="hasError('nom')"
+              id="nom"
+              placeholder="Entrez le nom de la filière"
+              formControlName="nom"
+            />
+            <div class="invalid-feedback" *ngIf="hasError('nom')">
+              {{ getErrorMessage('nom') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- code -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label for="code" class="form-label">Code <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              [class.is-invalid]="hasError('code')"
+              id="code"
+              placeholder="Ex: INFO01"
+              formControlName="code"
+            />
+            <div class="invalid-feedback" *ngIf="hasError('code')">
+              {{ getErrorMessage('code') }}
+            </div>
+          </div>
+        </div>
+  
+        <!-- description -->
+        <div class="col-sm-12">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              rows="3"
+              class="form-control form-control-lg"
+              [class.is-invalid]="hasError('description')"
+              placeholder="Entrez une description (facultatif)"
+              formControlName="description">
+            </textarea>
+            <div class="invalid-feedback" *ngIf="hasError('description')">
+              {{ getErrorMessage('description') }}
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </form>
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="update()"
+        [disabled]="!form.valid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loading ? 'Modification...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </section>
+  

@@ -64,14 +64,14 @@
                 <p>
                     Votre réservation de la salle 
                     <strong>{{ $reservation->salle->nom }}</strong> 
-                    pour le <strong>{{ $reservation->date_reservation }}</strong> 
+                    pour periode du <strong>{{ $reservation->date_debut}} au {{ $reservation->date_fin }}</strong> 
                     a été <span class="status-valid">validée ✅</span>.
                 </p>
             @else
                 <p>
                     Votre réservation de la salle 
                     <strong>{{ $reservation->salle->nom }}</strong> 
-                    pour le <strong>{{ $reservation->date_reservation }}</strong> 
+                    pour la periode du <strong>{{ $reservation->date_debut }} au {{ $reservation->date_fin }}</strong> 
                     a été <span class="status-refused">refusée ❌</span>.
                 </p>
             @endif

@@ -1,72 +1,75 @@
-<div class="container-fluid w-100 d-flex align-items-center justify-content-center min-vh-100 bg-light">
-  <div class="col-12 col-md-8 col-xl-4 col-xxl-4">
-    <div class="card shadow">
-      <!-- En-tête -->
-      <div class="card-header bg-primary text-white text-center py-3">
-        <h3 class="fw-normal mb-0">Connexion</h3>
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light py-4">
+  <div class="row w-100 justify-content-center">
+    <div class="col-8 col-md-8 d-flex flex-column flex-md-row shadow-lg rounded-3 overflow-hidden bg-primary px-0">
+
+      <!-- IMAGE -->
+      <div class="col-12 col-md-5 d-flex align-items-center justify-content-center bg-white py-4 px-0 border-end">
+        <img src="./assets/images/home.png" alt="home" class="img-fluid rounded w-75"> 
       </div>
 
-      <!-- Corps -->
-      <div class="card-body px-4 py-4">
-        <form #loginForm="ngForm" class="needs-validation" novalidate>
-          <div class="mb-3">
-            <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
-            <input 
-              type="email" 
-              class="form-control" 
-              id="email" 
-              name="email"
-              ngModel
-              autocomplete="email"
-              placeholder="votre.email@exemple.com"
-              required>
-            <div class="invalid-feedback">
-              Veuillez saisir une adresse e-mail valide.
-            </div>
-          </div>
+      <!-- FORMULAIRE -->
+      <div class="col-12 col-md-7 d-flex flex-column justify-content-between">
+        <!-- En-tête -->
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h3 class="fw-normal mb-0">Connexion</h3>
+        </div>
 
-          <div class="mb-3">
-            <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
-            <input 
-              type="password" 
-              class="form-control" 
-              id="password" 
-              name="password"
-              ngModel
-              autocomplete="current-password"
-              placeholder="Votre mot de passe"
-              required>
-            <div class="invalid-feedback">
-              Veuillez saisir votre mot de passe.
-            </div>
-          </div>
+        <!-- Corps -->
+        <div class="px-4 py-4 bg-white flex-grow-1">
+          <p class="text-muted small mb-3 text-center">Accédez à votre espace SmartUniv</p>
 
-          <!-- Message d'erreur -->
-          <div class="mb-3" *ngIf="message">
-            <div class="alert alert-warning alert-dismissible text-warning show" role="alert">
+          <form #loginForm="ngForm" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-control" 
+                ngModel 
+                placeholder="votre.email@exemple.com" 
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe <span class="text-danger">*</span></label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="form-control" 
+                ngModel 
+                placeholder="Votre mot de passe" 
+                required>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div *ngIf="message" class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
               {{ message }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-          </div>
 
-          <!-- Bouton connexion -->
-          <div class="d-grid gap-2 mb-2">
-            <button 
-              type="submit" 
-              class="btn btn-primary btn-sm" 
-              (click)="onLoggedin($event, loginForm.value)">
-              <i class="fas fa-sign-in-alt me-2"></i> Se connecter
-            </button>
-          </div>
-        </form>
-      </div>
+            <!-- Bouton connexion -->
+            <div class="d-grid mb-2">
+              <button 
+                type="submit" 
+                [disabled]="loginForm.invalid || loading" 
+                class="btn btn-primary btn-sm"
+                (click)="onLoggedin($event, loginForm.value)">
+                <i *ngIf="!loading" class="feather icon-log-out me-2 text-success"></i>
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ loading ? 'Connexion...' : 'Se connecter' }}
+              </button>
+            </div>
+          </form>
+        </div>
 
-      <!-- Pied -->
-      <div class="card-footer bg-white text-center py-4">
-       <div class="text-center">
+        <!-- Pied -->
+        <div class="card-footer bg-white text-center py-3 border-top">
           <h4>Smart<span class="text-warning">Univ</span></h4>
         </div>
       </div>
+
     </div>
   </div>
 </div>

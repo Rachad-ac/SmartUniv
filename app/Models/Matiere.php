@@ -4,17 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Matiere extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'code', 'description'];
+    protected $table = 'matieres';
+    protected $primaryKey = 'id_matiere';
+    public $timestamps = true;
 
-    // Une matière peut avoir plusieurs cours
+    protected $fillable = [
+        'nom',
+        'code',
+        'description',
+    ];
+
     public function cours()
     {
-        return $this->hasMany(Cours::class);
+        return $this->hasMany(Cours::class, 'id_matiere', 'id_matiere');
     }
 }

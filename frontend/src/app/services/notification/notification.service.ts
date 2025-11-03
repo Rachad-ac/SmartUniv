@@ -15,7 +15,7 @@ export class NotificationService {
   }
 
   ReadNotifs(userId : any): Observable<any > {
-    return this.http.get<any>(`${environment.baseUrl}notifications/${userId}/read`);
+    return this.http.put<any>(`${environment.baseUrl}notifications/read/${userId}` , {});
   }
 
   deleteNotifs(userId : any): Observable<any > {

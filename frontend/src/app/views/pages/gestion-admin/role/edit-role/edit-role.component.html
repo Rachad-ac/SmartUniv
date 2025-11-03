@@ -1,0 +1,28 @@
+<section>
+  <form [formGroup]="form">
+    <div class="col-sm-12">
+
+      <!-- Nom du rôle -->
+      <div class="row">
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom du rôle <small style="color: red;">*</small></label>
+          <input type="text" class="form-control form-control-lg" id="nom" placeholder="Nom du rôle" formControlName="nom">
+        </div>
+      </div>
+
+      <!-- Description du rôle -->
+      <div class="row">
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control form-control-lg" id="description" placeholder="Description" formControlName="description">
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Fermer</button>
+    <button type="button" class="btn btn-primary" (click)="update()" [disabled]="!form.valid">Enregistrer</button>
+  </div>
+</section>

@@ -2,36 +2,51 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use HasFactory;
 
 class Cours extends Model
 {
+    use HasFactory;
 
-    protected $fillable = ['nom', 'code', 'description', 'id_matiere', 'id_filiere'];
+    protected $table = 'cours';
+    protected $primaryKey = 'id_cours';
+    public $timestamps = true;
 
-    // Relations (commentées pour tests indépendants)
-    // Un cours appartient à une matière
+    protected $fillable = [
+        'nom',
+        'code',
+        'description',
+        'id_matiere',
+        'id_filiere',
+        'semestre',
+        'volume_horaire',
+    ];
+
     public function matiere()
-     {
-         return $this->belongsTo(Matiere::class);
-     }
-
-    // Un cours appartient à une filière
-     public function filiere()
-     {
-         return $this->belongsTo(Filiere::class);
-     }
-
-    // Un cours peut avoir plusieurs enseignants
-    public function enseignants()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(Matiere::class, 'id_matiere', 'id_matiere');
     }
 
-    // Un cours peut être lié à plusieurs réservations
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class, 'id_filiere', 'id_filiere');
+    }
+
+    public function enseignants()
+    {
+        // pivot table 'cours_user' (cours_id, user_id)
+        return $this->belongsToMany(User::class, 'cours_user', 'cours_id', 'user_id')
+                    ->withTimestamps();
+    }
+
     public function reservations()
     {
-        return $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class, 'id_cours', 'id_cours');
+    }
+
+    public function plannings()
+    {
+        return $this->hasMany(Planning::class, 'id_cours', 'id_cours');
     }
 }

@@ -3,17 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Equipement extends Model
 {
-    protected $fillable = ['nom', 'quantite', 'description'];
+    use HasFactory;
 
-    // Relations (commentées pour tests indépendants)
-    // Un équipement appartient à une salle
-    // public function salle()
-    // {
-    //     return $this->belongsTo(Salle::class);
-    // }
+    protected $table = 'equipements';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
+    protected $fillable = [
+        'nom',
+        'quantite',
+        'description',
+        'id_salle',
+    ];
+
+    protected $casts = [
+        'quantite' => 'integer',
+    ];
+
+    public function salle()
+    {
+        return $this->belongsTo(Salle::class, 'id_salle', 'id_salle');
+    }
 }
