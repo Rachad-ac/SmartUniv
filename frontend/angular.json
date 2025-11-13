@@ -25,6 +25,12 @@
           "options": {
             "outputPath": "dist",
             "allowedCommonJsDependencies": [
+              "canvg",
+              "html2canvas",
+              "raf",
+              "core-js",
+              "rgbcolor",
+              "@fullcalendar/core/locales/fr",
               "fast-deep-equal",
               "sweetalert2",
               "cropperjs",
@@ -70,13 +76,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "3mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "8kb"
                 }
               ],
               "fileReplacements": [

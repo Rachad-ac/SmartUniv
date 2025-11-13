@@ -15,7 +15,8 @@ class NotificationController extends Controller
     public function index($userId)
     {
         try {
-            $notifications = Notification::where('id_user', $userId)
+            $notifications = Notification::with(['user' , 'reservation'])
+                                         ->where('id_user', $userId)
                                          ->where('lu', false)
                                          ->orderBy('date_envoi', 'desc')
                                          ->get();
