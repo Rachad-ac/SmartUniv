@@ -1,4 +1,4 @@
-# 🏫 APP-G.R.S.U - Système de Gestion des Réservations de Salles Universitaires
+# 🏫 SmartUniv - Système de Gestion des Réservations et des plannings de Salles Universitaires
 
 [![Laravel](https://img.shields.io/badge/Laravel-12.0-red.svg)](https://laravel.com)
 [![Angular](https://img.shields.io/badge/Angular-14.2-red.svg)](https://angular.io)
