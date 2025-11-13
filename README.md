@@ -222,9 +222,9 @@ Après les seeders, les comptes suivants sont disponibles :
 
 | Rôle | Email | Mot de passe |
 |------|-------|-------------|
-| Administrateur | admin@grsu.com | password |
-| Enseignant | teacher@grsu.com | password |
-| Étudiant | student@grsu.com | password |
+| Administrateur | admin@smartuniv.com | password |
+| Enseignant | teacher@smartuniv.com | password |
+| Étudiant | student@smartuniv.com | password |
 
 ## 🔧 API Documentation
 
@@ -386,9 +386,9 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 
 ## 👥 Équipe
 
-- **Développeur Principal** : [Votre Nom]
-- **Email** : votre.email@example.com
-- **LinkedIn** : [Votre LinkedIn]
+- **Développeur Principal** : Ahmed Combo Rachad
+- **Email** : ahmedcomborachad@gmail.com
+- **LinkedIn** : www.linkedin.com/in/ahmed-combo-rachad-385b5b302
 
 ## 🙏 Remerciements
 
