@@ -77,7 +77,7 @@ export const MENU: MenuItem[] = [
     roles: ['Admin']
   },
   {
-    label: 'Historique reservation',
+    label: 'Historiques',
     icon: 'clock', 
     link: '/admin/gestion-planning/historique-resevations',
     roles: ['Admin']
