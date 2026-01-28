@@ -102,7 +102,7 @@ frontend/src/app/
 
 1. **Cloner le repository**
 ```bash
-git clone https://github.com/votre-username/app-grsu.git
+git clone https://github.com/Rachad-ac/SmartUniv.git
 cd app-grsu
 ```
 
@@ -275,23 +275,6 @@ Toutes les réponses suivent ce format :
 }
 ```
 
-## 🧪 Tests
-
-### **Tests Backend**
-```bash
-# Exécuter tous les tests
-php artisan test
-
-# Tests avec couverture
-php artisan test --coverage
-```
-
-### **Tests Frontend**
-```bash
-cd frontend
-ng test
-```
-
 ### **Tests de l'API**
 ```bash
 # Tester la détection de conflits
@@ -330,41 +313,6 @@ crontab -e
 # Ajouter : * * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-### **Déploiement avec Docker** (Optionnel)
-
-```dockerfile
-# Dockerfile
-FROM php:8.2-fpm
-
-# Installation des dépendances système
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
-
-# Installation des extensions PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Installation de Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Copie du code source
-COPY . /var/www/html
-WORKDIR /var/www/html
-
-# Installation des dépendances
-RUN composer install --optimize-autoloader --no-dev
-
-# Permissions
-RUN chown -R www-data:www-data /var/www/html/storage
-RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
-
-EXPOSE 9000
-CMD ["php-fpm"]
 ```
 
 ## 🤝 Contribution
@@ -382,7 +330,7 @@ CMD ["php-fpm"]
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Ce projet est sous licence MIT.
 
 ## 👥 Équipe
 
@@ -390,16 +338,8 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 - **Email** : ahmedcomborachad@gmail.com
 - **LinkedIn** : www.linkedin.com/in/ahmed-combo-rachad-385b5b302
 
-## 🙏 Remerciements
-
-- [Laravel](https://laravel.com) - Framework PHP
-- [Angular](https://angular.io) - Framework Frontend
-- [MySQL](https://mysql.com) - Base de données
-- [Bootstrap](https://getbootstrap.com) - Framework CSS
-- [SweetAlert2](https://sweetalert2.github.io) - Alertes modernes
-
 ---
 
 **⭐ Si ce projet vous plaît, n'hésitez pas à lui donner une étoile !**
 
-Pour plus d'informations, consultez la [documentation complète](./docs/) ou contactez l'équipe de développement.
+Pour plus d'informations, contactez l'équipe de développement.
