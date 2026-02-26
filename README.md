@@ -8,19 +8,6 @@
 
 Un système complet de gestion des réservations de salles universitaires avec détection automatique des conflits et rappels intelligents.
 
-## 📋 Table des Matières
-
-- [✨ Fonctionnalités](#-fonctionnalités)
-- [🏗️ Architecture](#️-architecture)
-- [🚀 Installation](#-installation)
-- [⚙️ Configuration](#️-configuration)
-- [📊 Utilisation](#-utilisation)
-- [🔧 API Documentation](#-api-documentation)
-- [🧪 Tests](#-tests)
-- [📈 Déploiement](#-déploiement)
-- [🤝 Contribution](#-contribution)
-- [📄 Licence](#-licence)
-
 ## ✨ Fonctionnalités
 
 ### 🔍 **Gestion des Conflits de Réservation**
