@@ -300,8 +300,6 @@ crontab -e
 # Ajouter : * * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-```
-```
 ## 🤝 Contribution
 
 1. Fork le projet
