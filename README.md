@@ -46,7 +46,7 @@ Un système complet de gestion des réservations de salles universitaires avec d
 - ✅ Notifications en attente
 - ✅ Vue d'ensemble des réservations
 
-## Interfaces
+## Interfaces Principales 
 
 ### LoginInterface
 ![Texte alternatif](./frontend/src/assets/images/screenshots/Login.jpg)
