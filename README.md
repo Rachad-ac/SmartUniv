@@ -46,6 +46,20 @@ Un système complet de gestion des réservations de salles universitaires avec d
 - ✅ Notifications en attente
 - ✅ Vue d'ensemble des réservations
 
+## Interfaces
+
+### LoginInterface
+![Texte alternatif](frontend/src/assets/images/screenshots/Login.png)
+
+### DashboardInterface
+![Texte alternatif](frontend/src/assets/images/screenshots/Dashboad.png)
+
+### UserInterface
+![Texte alternatif](frontend/src/assets/images/screenshots/UserInterface.png)
+
+### PlanningInterface
+![Texte alternatif](frontend/src/assets/images/screenshots/planning.png)
+
 ## 🏗️ Architecture
 
 ### **Backend (Laravel)**
