@@ -49,16 +49,16 @@ Un système complet de gestion des réservations de salles universitaires avec d
 ## Interfaces
 
 ### LoginInterface
-![Texte alternatif](frontend/src/assets/images/screenshots/Login.png)
+![Texte alternatif](./frontend/src/assets/images/screenshots/Login.jpg)
 
 ### DashboardInterface
-![Texte alternatif](frontend/src/assets/images/screenshots/Dashboad.png)
+![Texte alternatif](./frontend/src/assets/images/screenshots/Dashboad.png)
 
 ### UserInterface
-![Texte alternatif](frontend/src/assets/images/screenshots/UserInterface.png)
+![Texte alternatif](./frontend/src/assets/images/screenshots/UserInterface.png)
 
 ### PlanningInterface
-![Texte alternatif](frontend/src/assets/images/screenshots/planning.png)
+![Texte alternatif](./frontend/src/assets/images/screenshots/planning.jpg)
 
 ## 🏗️ Architecture
 
