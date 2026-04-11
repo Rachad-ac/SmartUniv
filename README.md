@@ -331,12 +331,6 @@ crontab -e
 
 Ce projet est sous licence MIT.
 
-## 👥 Équipe
-
-- **Développeur Principal** : Ahmed Combo Rachad
-- **Email** : ahmedcomborachad@gmail.com
-- **LinkedIn** : www.linkedin.com/in/ahmed-combo-rachad-385b5b302
-
 ---
 
 **⭐ Si ce projet vous plaît, n'hésitez pas à lui donner une étoile !**
