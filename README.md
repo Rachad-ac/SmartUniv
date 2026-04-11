@@ -8,15 +8,20 @@
 
 Un système complet de gestion des réservations de salles universitaires avec détection automatique des conflits et rappels intelligents.
 
-### 🤔 PROBLÉMATIQUE
+## 🤔 PROBLÉMATIQUE
 Dans les universités, les doubles réservations de salles et conflits de planning créent du chaos quotidien :
 - ❌ Étudiants/enseignants frustrés
 - ❌ Perte de temps administratif
 - ❌ Salles inutilisées malgré la demande
 
-### 🎯 OBJECTIF
+## 🎯 OBJECTIF
 Créer un système intelligent qui : 
-- ✔️ Détecte + Automatise + Optimise 
+- ✔️ Détecte + Automatise + Optimise
+
+## 📈 RESULTATS
+- 👍 0% doubles réservations grâce à la vérification automatique
+- 👍 +30% occupation salles optimisée
+- 👍 Gestion 3+ rôles utilisateurs
 
 ## ✨ Fonctionnalités
 
@@ -55,11 +60,6 @@ Créer un système intelligent qui :
 - ✅ Graphiques et métriques
 - ✅ Notifications en attente
 - ✅ Vue d'ensemble des réservations
-
-## 📈 IMPACTS
-- 👍  0% doubles réservations grâce à la vérification automatique
-- 👍 +30% occupation salles optimisée
-- 👍 Gestion 3+ rôles utilisateurs
 
 ## 🛠️ Stack technique :
 - **Backend** : Laravel 12 + PHP 8.2 + MySQL 
